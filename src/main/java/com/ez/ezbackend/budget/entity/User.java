@@ -1,4 +1,4 @@
-package com.ez.ezbackend.Budget.entity;
+package com.ez.ezbackend.budget.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;

@@ -1,6 +1,6 @@
-package com.ez.ezbackend.Budget.repository;
+package com.ez.ezbackend.budget.repository;
 
-import com.ez.ezbackend.Budget.entity.User;
+import com.ez.ezbackend.budget.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

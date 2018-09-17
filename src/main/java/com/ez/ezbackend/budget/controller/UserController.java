@@ -1,9 +1,9 @@
-package com.ez.ezbackend.Budget.controller;
+package com.ez.ezbackend.budget.controller;
 
-import com.ez.ezbackend.Budget.entity.Transaction;
-import com.ez.ezbackend.Budget.entity.User;
-import com.ez.ezbackend.Budget.repository.UserRepository;
-import com.ez.ezbackend.Budget.service.UserService;
+import com.ez.ezbackend.budget.entity.Transaction;
+import com.ez.ezbackend.budget.entity.User;
+import com.ez.ezbackend.budget.repository.UserRepository;
+import com.ez.ezbackend.budget.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

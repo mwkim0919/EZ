@@ -1,7 +1,7 @@
-package com.ez.ezbackend.Budget.controller;
+package com.ez.ezbackend.budget.controller;
 
-import com.ez.ezbackend.Budget.entity.Transaction;
-import com.ez.ezbackend.Budget.repository.TransactionRepository;
+import com.ez.ezbackend.budget.entity.Transaction;
+import com.ez.ezbackend.budget.repository.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
