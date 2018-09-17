@@ -6,6 +6,7 @@
 * ez-Calendar
 
 ### Rules
+* Don't directly push things into `Master`!!!
 * Whenever requesting for merge
   * Please report test coverage
   * Please report if build has been successful
