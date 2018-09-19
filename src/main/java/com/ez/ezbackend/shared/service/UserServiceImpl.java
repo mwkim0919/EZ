@@ -1,4 +1,4 @@
-package com.ez.ezbackend.budget.service;
+package com.ez.ezbackend.shared.service;
 
 import com.ez.ezbackend.budget.entity.Transaction;
 import org.springframework.stereotype.Service;

@@ -18,7 +18,8 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {
-    "com.ez.ezbackend.budget.repository"
+    "com.ez.ezbackend.budget.repository",
+    "com.ez.ezbackend.shared.repository"
 })
 @EnableTransactionManagement
 public class H2JpaConfig {
@@ -43,7 +44,9 @@ public class H2JpaConfig {
     entityManager.setDataSource(dataSource());
     entityManager.setPackagesToScan(
         "com.ez.ezbackend.budget.repository",
-        "com.ez.ezbackend.budget.entity");
+        "com.ez.ezbackend.shared.repository",
+        "com.ez.ezbackend.budget.entity",
+        "com.ez.ezbackend.shared.entity");
     entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
     entityManager.setJpaProperties(additionalProperties());
     return entityManager;

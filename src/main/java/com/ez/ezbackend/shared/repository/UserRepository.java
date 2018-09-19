@@ -1,12 +1,9 @@
-package com.ez.ezbackend.budget.repository;
+package com.ez.ezbackend.shared.repository;
 
-import com.ez.ezbackend.budget.entity.User;
+import com.ez.ezbackend.shared.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-  Optional<User> findByEmail(String email);
 }

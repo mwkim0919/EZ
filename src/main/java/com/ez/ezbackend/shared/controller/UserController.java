@@ -1,7 +1,7 @@
-package com.ez.ezbackend.budget.controller;
+package com.ez.ezbackend.shared.controller;
 
 import com.ez.ezbackend.budget.entity.Transaction;
-import com.ez.ezbackend.budget.service.UserService;
+import com.ez.ezbackend.shared.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
