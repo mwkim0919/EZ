@@ -5,5 +5,7 @@ import com.ez.ezbackend.budget.entity.Transaction;
 import java.util.List;
 
 public interface TransactionService {
-  List<Transaction> getTransactionByUserId(long userId);
+  List<Transaction> getTransactionsForUser(long userId);
+
+  Transaction saveTransactionForUser(Transaction transaction, long userId);
 }
