@@ -1,6 +1,7 @@
 package com.ez.ezbackend.budget.service;
 
 import com.ez.ezbackend.budget.entity.Transaction;
+import com.ez.ezbackend.budget.model.TransactionModel;
 import com.ez.ezbackend.budget.repository.TransactionRepository;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
@@ -32,14 +33,32 @@ public class TransactionServiceImpl implements TransactionService {
     return transactionRepository.findByUser(userOpt.get());
   }
 
-
   @Override
-  public Transaction saveTransactionForUser(Transaction transaction, long userId) {
+  public Transaction saveTransactionForUser(TransactionModel transactionRequest, long userId) {
     Optional<User> userOpt = userRepository.findById(userId);
     if (!userOpt.isPresent()) {
       throw new EzNotFoundException("test");
     }
-    transaction.setUser(userOpt.get());
+    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, userOpt.get());
     return transactionRepository.saveAndFlush(transaction);
+  }
+
+  @Override
+  public Transaction updateTransactionForUser(TransactionModel transactionRequest, long transactionId, long userId) {
+    Optional<User> userOpt = userRepository.findById(userId);
+    userOpt.orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
+    Optional<Transaction> transactionOpt = transactionRepository.findById(transactionId);
+    transactionOpt.orElseThrow(() -> new EzNotFoundException("Transaction with ID: " + transactionId + " not found."));
+    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, userOpt.get(), transactionId);
+    return transactionRepository.saveAndFlush(transaction);
+  }
+
+  @Override
+  public void deleteTransactionForUser(long transactionId, long userId) {
+    userRepository.findById(userId)
+        .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
+    Optional<Transaction> transactionOpt = transactionRepository.findById(transactionId);
+    transactionOpt.orElseThrow(() -> new EzNotFoundException("Transaction with ID: " + transactionId + " not found."));
+    transactionRepository.delete(transactionOpt.get());
   }
 }

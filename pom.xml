@@ -170,6 +170,11 @@
             <configuration>
               <dataFile>target/jacoco.exec</dataFile>
               <outputDirectory>target/jacoco-ut</outputDirectory>
+              <excludes>
+                <exclude>com/ez/ezbackend/**/serializer/**</exclude>
+                <exclude>com/ez/ezbackend/shared/exception/**</exclude>
+                <exclude>com/ez/ezbackend/**/enums/**</exclude>
+              </excludes>
             </configuration>
           </execution>
           <execution>
@@ -179,7 +184,9 @@
             </goals>
             <configuration>
               <excludes>
-                <exclude>com/ez/ezbackend/**/entity/**</exclude>
+                <exclude>com/ez/ezbackend/**/serializer/**</exclude>
+                <exclude>com/ez/ezbackend/shared/exception/**</exclude>
+                <exclude>com/ez/ezbackend/**/enums/**</exclude>
               </excludes>
               <rules>
                 <rule>
@@ -189,7 +196,7 @@
                       <!-- COUNTER CAN BE LINE, BRANCHES, COMPLEXITY COVERAGE -->
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.43</minimum>
+                      <minimum>0.63</minimum>
                     </limit>
                   </limits>
                 </rule>

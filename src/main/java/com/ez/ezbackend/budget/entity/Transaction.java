@@ -48,14 +48,9 @@ public class Transaction {
   @Column(name = "create_datetime")
   private LocalDateTime createDatetime;
 
-  @Column(name = "transaction_datetime")
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+  @Column(name = "transaction_datetime", nullable = false)
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime transactionDatetime;
-
-  // feels very hacky...
-  public void setUser(User user) {
-    this.user = user;
-  }
 
   @Override
   public boolean equals(Object o) {

@@ -17,17 +17,35 @@ import java.util.Arrays;
 public class EzExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(Exception.class)
-  public final ResponseEntity<ExceptionResponse> handleGeneralException(Exception ex, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handleGeneralException(
+      Exception ex, WebRequest request) {
     log.error("General exception", ex);
     ExceptionResponse response = createExceptionResponse(ex, request);
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(EzReadOnlyException.class)
+  public final ResponseEntity<ExceptionResponse> handleReadOnlyException(
+      EzReadOnlyException ex, WebRequest request) {
+    log.error("Read only", ex);
+    ExceptionResponse response = createExceptionResponse(ex, request);
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(EzNotFoundException.class)
-  public final ResponseEntity<ExceptionResponse> handleNotFoundException(Exception ex, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handleNotFoundException(
+      EzNotFoundException ex, WebRequest request) {
     log.error("Not found", ex);
     ExceptionResponse response = createExceptionResponse(ex, request);
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(EzIllegalRequestException.class)
+  public final ResponseEntity<ExceptionResponse> handleIllegalRequestException(
+      EzIllegalRequestException ex, WebRequest request) {
+    log.error("Illegal request.", ex);
+    ExceptionResponse response = createExceptionResponse(ex, request);
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
   private ExceptionResponse createExceptionResponse(Exception ex, WebRequest request) {
