@@ -27,18 +27,14 @@ public class TransactionServiceImpl implements TransactionService {
   @Override
   public List<Transaction> getTransactionsForUser(long userId) {
     Optional<User> userOpt = userRepository.findById(userId);
-    if (!userOpt.isPresent()) {
-      throw new EzNotFoundException("User with ID: " + userId + " not found.");
-    }
+    userOpt.orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
     return transactionRepository.findByUser(userOpt.get());
   }
 
   @Override
   public Transaction saveTransactionForUser(TransactionModel transactionRequest, long userId) {
     Optional<User> userOpt = userRepository.findById(userId);
-    if (!userOpt.isPresent()) {
-      throw new EzNotFoundException("test");
-    }
+    userOpt.orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
     Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, userOpt.get());
     return transactionRepository.saveAndFlush(transaction);
   }

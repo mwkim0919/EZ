@@ -19,7 +19,6 @@ import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 @Entity
 @Getter
@@ -64,17 +63,5 @@ public class Transaction {
   @Override
   public int hashCode() {
     return Objects.hash(id, user);
-  }
-
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", Transaction.class.getSimpleName() + "[", "]")
-        .add("id=" + id)
-        .add("description='" + description + "'")
-        .add("withdraw=" + withdraw)
-        .add("deposit=" + deposit)
-        .add("createDatetime=" + createDatetime)
-        .add("transactionDatetime=" + transactionDatetime)
-        .toString();
   }
 }

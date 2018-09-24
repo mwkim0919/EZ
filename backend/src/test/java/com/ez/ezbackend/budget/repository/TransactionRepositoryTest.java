@@ -1,16 +1,11 @@
 package com.ez.ezbackend.budget.repository;
 
-import com.ez.ezbackend.EzBackendApplication;
-import com.ez.ezbackend.H2JpaConfig;
+import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.repository.UserRepository;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -21,10 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {EzBackendApplication.class, H2JpaConfig.class})
-@ActiveProfiles("test")
-public class TransactionRepositoryTest {
+public class TransactionRepositoryTest extends DatabaseIntegrationTest {
   @Inject
   private TransactionRepository transactionRepository;
 

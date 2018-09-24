@@ -7,6 +7,7 @@ import com.ez.ezbackend.shared.exception.EzReadOnlyException;
 import com.ez.ezbackend.shared.serializer.PriceJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class TransactionModel {
   private BigDecimal deposit;
   private LocalDateTime createDatetime;
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime transactionDatetime;
 
   public static TransactionModel convertFromTransaction(Transaction transaction) {

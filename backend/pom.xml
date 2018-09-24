@@ -196,7 +196,7 @@
                       <!-- COUNTER CAN BE LINE, BRANCHES, COMPLEXITY COVERAGE -->
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.63</minimum>
+                      <minimum>0.72</minimum>
                     </limit>
                   </limits>
                 </rule>

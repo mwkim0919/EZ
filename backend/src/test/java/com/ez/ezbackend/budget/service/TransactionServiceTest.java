@@ -1,17 +1,12 @@
 package com.ez.ezbackend.budget.service;
 
-import com.ez.ezbackend.EzBackendApplication;
-import com.ez.ezbackend.H2JpaConfig;
+import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.budget.model.TransactionModel;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
 import com.ez.ezbackend.shared.exception.EzReadOnlyException;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -20,10 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {EzBackendApplication.class, H2JpaConfig.class})
-@ActiveProfiles("test")
-public class TransactionServiceTest {
+public class TransactionServiceTest extends DatabaseIntegrationTest {
   @Inject
   private TransactionService transactionService;
 
