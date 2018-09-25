@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pylava = "*"
+pylava-pylint = "*"
+mypy = "*"
+colorama = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+check = "pylava ."
+mypy = "mypy . --disallow-untyped-defs --disallow-incomplete-defs  --disallow-untyped-calls --check-untyped-defs"
