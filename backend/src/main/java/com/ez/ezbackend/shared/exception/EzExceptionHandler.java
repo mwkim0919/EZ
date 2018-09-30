@@ -4,11 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -18,15 +19,23 @@ public class EzExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public final ResponseEntity<ExceptionResponse> handleGeneralException(
-      Exception ex, WebRequest request) {
+      Exception ex, HttpServletRequest request) {
     log.error("General exception", ex);
     ExceptionResponse response = createExceptionResponse(ex, request);
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(AuthenticationException.class)
+  public final ResponseEntity<ExceptionResponse> handleAuthenticationException(
+      AuthenticationException ex, HttpServletRequest request) {
+    log.error("UnAuthorized", ex);
+    ExceptionResponse response = createExceptionResponse(ex, request);
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
+
   @ExceptionHandler(EzReadOnlyException.class)
   public final ResponseEntity<ExceptionResponse> handleReadOnlyException(
-      EzReadOnlyException ex, WebRequest request) {
+      EzReadOnlyException ex, HttpServletRequest request) {
     log.error("Read only", ex);
     ExceptionResponse response = createExceptionResponse(ex, request);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -34,7 +43,7 @@ public class EzExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(EzNotFoundException.class)
   public final ResponseEntity<ExceptionResponse> handleNotFoundException(
-      EzNotFoundException ex, WebRequest request) {
+      EzNotFoundException ex, HttpServletRequest request) {
     log.error("Not found", ex);
     ExceptionResponse response = createExceptionResponse(ex, request);
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -42,16 +51,16 @@ public class EzExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(EzIllegalRequestException.class)
   public final ResponseEntity<ExceptionResponse> handleIllegalRequestException(
-      EzIllegalRequestException ex, WebRequest request) {
+      EzIllegalRequestException ex, HttpServletRequest request) {
     log.error("Illegal request.", ex);
     ExceptionResponse response = createExceptionResponse(ex, request);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-  private ExceptionResponse createExceptionResponse(Exception ex, WebRequest request) {
+  private ExceptionResponse createExceptionResponse(Exception ex, HttpServletRequest request) {
     return ExceptionResponse.builder()
         .message(ex.getMessage())
-        .detail(request.getDescription(false))
+        .detail(request.getRequestURI())
         .stacktraces(Arrays.asList(ExceptionUtils.getStackFrames(ex)))
         .timestamp(LocalDateTime.now())
         .build();

@@ -44,10 +44,20 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-hateoas</artifactId>
     </dependency>
-    <!--<dependency>-->
-    <!--<groupId>org.springframework.boot</groupId>-->
-    <!--<artifactId>spring-boot-starter-security</artifactId>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-jwt</artifactId>
+      <version>1.0.9.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security.oauth</groupId>
+      <artifactId>spring-security-oauth2</artifactId>
+      <version>2.3.3.RELEASE</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -113,6 +123,11 @@
       <artifactId>commons-lang</artifactId>
       <version>2.6</version>
     </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -174,6 +189,9 @@
                 <exclude>com/ez/ezbackend/**/serializer/**</exclude>
                 <exclude>com/ez/ezbackend/shared/exception/**</exclude>
                 <exclude>com/ez/ezbackend/**/enums/**</exclude>
+                <exclude>com/ez/ezbackend/shared/config/**</exclude>
+                <exclude>com/ez/ezbackend/shared/security/JwtAuthenticationFilter</exclude>
+                <exclude>com/ez/ezbackend/shared/security/JwtAuthenticationEntryPoint</exclude>
               </excludes>
             </configuration>
           </execution>
@@ -187,6 +205,9 @@
                 <exclude>com/ez/ezbackend/**/serializer/**</exclude>
                 <exclude>com/ez/ezbackend/shared/exception/**</exclude>
                 <exclude>com/ez/ezbackend/**/enums/**</exclude>
+                <exclude>com/ez/ezbackend/shared/config/**</exclude>
+                <exclude>com/ez/ezbackend/shared/security/JwtAuthenticationFilter.*</exclude>
+                <exclude>com/ez/ezbackend/shared/security/JwtAuthenticationEntryPoint.*</exclude>
               </excludes>
               <rules>
                 <rule>
@@ -196,7 +217,7 @@
                       <!-- COUNTER CAN BE LINE, BRANCHES, COMPLEXITY COVERAGE -->
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.72</minimum>
+                      <minimum>0.71</minimum>
                     </limit>
                   </limits>
                 </rule>

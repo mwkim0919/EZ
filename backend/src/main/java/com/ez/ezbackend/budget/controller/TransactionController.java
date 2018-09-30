@@ -7,12 +7,14 @@ import com.ez.ezbackend.shared.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
+@RequestMapping("/api")
+@PreAuthorize("#userId == principal.id")
 public class TransactionController {
 
   private static final String GET_TRANSACTIONS_URI = "/users/{userId}/transactions";
@@ -32,7 +36,8 @@ public class TransactionController {
   private final TransactionService transactionService;
 
   @GetMapping(GET_TRANSACTIONS_URI)
-  public ResponseEntity<List<TransactionModel>> getTransactionsForUser(@PathVariable("userId") long userId) {
+  public ResponseEntity<List<TransactionModel>> getTransactionsForUser(
+      @PathVariable("userId") long userId) {
     List<Transaction> transactions = transactionService.getTransactionsForUser(userId);
     List<TransactionModel> transactionResponse = transactions.stream()
         .map(TransactionModel::convertFromTransaction)
@@ -67,5 +72,4 @@ public class TransactionController {
     transactionService.deleteTransactionForUser(transactionId, userId);
     return ResponseEntity.accepted().build();
   }
-
 }

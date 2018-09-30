@@ -1,8 +1,8 @@
 INSERT INTO user(id, email, password, role, create_datetime, last_login_datetime)
-VALUES (1, 'test@test.com', 'test', 'ADMIN', now(), now());
+VALUES (1, 'test@test.com', '$2a$10$jmSLtwnLJtr16IrgIqOOge3Q7cc2pqkaYDwvfCHwOCz.oFSO6O4qy', 'ADMIN', now(), now());
 
 INSERT INTO user(id, email, password, role, create_datetime, last_login_datetime)
-VALUES (2, 'test2@test.com', 'test', 'USER', now(), now());
+VALUES (2, 'test2@test.com', '$2a$10$jmSLtwnLJtr16IrgIqOOge3Q7cc2pqkaYDwvfCHwOCz.oFSO6O4qy', 'USER', now(), now());
 
 INSERT INTO transaction(id, description, withdraw, deposit, transaction_datetime, create_datetime, user_id)
 VALUES (1, 'My first expense', 100.00, null, now(), now(), 1);

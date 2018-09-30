@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,26 +25,26 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Override
   public List<Transaction> getTransactionsForUser(long userId) {
-    Optional<User> userOpt = userRepository.findById(userId);
-    userOpt.orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    return transactionRepository.findByUser(userOpt.get());
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
+    return transactionRepository.findByUser(user);
   }
 
   @Override
   public Transaction saveTransactionForUser(TransactionModel transactionRequest, long userId) {
-    Optional<User> userOpt = userRepository.findById(userId);
-    userOpt.orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, userOpt.get());
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
+    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, user);
     return transactionRepository.saveAndFlush(transaction);
   }
 
   @Override
   public Transaction updateTransactionForUser(TransactionModel transactionRequest, long transactionId, long userId) {
-    Optional<User> userOpt = userRepository.findById(userId);
-    userOpt.orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    Optional<Transaction> transactionOpt = transactionRepository.findById(transactionId);
-    transactionOpt.orElseThrow(() -> new EzNotFoundException("Transaction with ID: " + transactionId + " not found."));
-    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, userOpt.get(), transactionId);
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
+    transactionRepository.findById(transactionId)
+        .orElseThrow(() -> new EzNotFoundException("Transaction with ID: " + transactionId + " not found."));
+    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, user, transactionId);
     return transactionRepository.saveAndFlush(transaction);
   }
 
@@ -53,8 +52,8 @@ public class TransactionServiceImpl implements TransactionService {
   public void deleteTransactionForUser(long transactionId, long userId) {
     userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    Optional<Transaction> transactionOpt = transactionRepository.findById(transactionId);
-    transactionOpt.orElseThrow(() -> new EzNotFoundException("Transaction with ID: " + transactionId + " not found."));
-    transactionRepository.delete(transactionOpt.get());
+    Transaction transaction = transactionRepository.findById(transactionId)
+        .orElseThrow(() -> new EzNotFoundException("Transaction with ID: " + transactionId + " not found."));
+    transactionRepository.delete(transaction);
   }
 }
