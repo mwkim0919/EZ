@@ -3,6 +3,7 @@ package com.ez.ezbackend.budget.service;
 import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.budget.model.TransactionModel;
+import com.ez.ezbackend.shared.exception.EzNotAuthorizedException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
 import com.ez.ezbackend.shared.exception.EzReadOnlyException;
 import org.junit.Test;
@@ -90,6 +91,16 @@ public class TransactionServiceTest extends DatabaseIntegrationTest {
     transactionService.updateTransactionForUser(transactionRequest, -1, 1);
   }
 
+  @Test(expected = EzNotAuthorizedException.class)
+  public void test_updateTransactionForUser_with_nonMatching_user() {
+    TransactionModel transactionRequest = TransactionModel.builder()
+        .description("updated")
+        .withdraw(new BigDecimal("999.99"))
+        .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0))
+        .build();
+    transactionService.updateTransactionForUser(transactionRequest, 1, 2);
+  }
+
   @Test(expected = EzReadOnlyException.class)
   public void test_updateTransactionForUser_with_invalid_request() {
     TransactionModel transactionRequest = TransactionModel.builder()
@@ -117,5 +128,10 @@ public class TransactionServiceTest extends DatabaseIntegrationTest {
   @Test(expected = EzNotFoundException.class)
   public void test_deleteTransactionForUser_with_invalid_transactionId() {
     transactionService.deleteTransactionForUser(-1, 1);
+  }
+
+  @Test(expected = EzNotAuthorizedException.class)
+  public void test_deleteTransactionForUser_with_nonMatching_user() {
+    transactionService.deleteTransactionForUser(1, 2);
   }
 }
