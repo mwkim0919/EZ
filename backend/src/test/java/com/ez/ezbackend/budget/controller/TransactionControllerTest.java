@@ -1,6 +1,5 @@
 package com.ez.ezbackend.budget.controller;
 
-import com.ez.ezbackend.RestIntegrationTest;
 import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.budget.model.TransactionModel;
 import com.ez.ezbackend.budget.service.TransactionService;
@@ -9,8 +8,11 @@ import com.ez.ezbackend.shared.exception.EzNotFoundException;
 import com.ez.ezbackend.shared.exception.EzReadOnlyException;
 import com.ez.ezbackend.shared.util.JsonUtil;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.inject.Inject;
@@ -27,9 +29,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class TransactionControllerTest extends RestIntegrationTest {
+@RunWith(SpringRunner.class)
+@WebMvcTest(
+    controllers = TransactionController.class,
+    secure = false
+)
+public class TransactionControllerTest {
   @Inject
   private MockMvc mockMvc;
 
@@ -39,14 +47,18 @@ public class TransactionControllerTest extends RestIntegrationTest {
   @Test
   public void test_getTransactionsForUser_success() throws Exception {
     when(transactionService.getTransactionsForUser(1)).thenReturn(Collections.emptyList());
-    mockMvc.perform(get("/api/users/1/transactions")).andDo(print()).andExpect(status().isOk())
+    mockMvc.perform(get("/api/users/1/transactions"))
+        .andDo(print())
+        .andExpect(status().isOk())
         .andExpect(content().json("[]"));
   }
 
   @Test
   public void test_getTransactionsForUser_failure() throws Exception {
     when(transactionService.getTransactionsForUser(1)).thenThrow(new EzNotFoundException("Not found"));
-    mockMvc.perform(get("/api/users/1/transactions")).andDo(print()).andExpect(status().isNotFound());
+    mockMvc.perform(get("/api/users/1/transactions"))
+        .andDo(print())
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -65,7 +77,12 @@ public class TransactionControllerTest extends RestIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
-        .andExpect(status().isCreated());
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value("1"))
+        .andExpect(jsonPath("$.description").value("test"))
+        .andExpect(jsonPath("$.withdraw").value("100.00"))
+        .andExpect(jsonPath("$.deposit").doesNotExist())
+        .andExpect(jsonPath("$.transactionDatetime").exists());
   }
 
   @Test
@@ -104,7 +121,12 @@ public class TransactionControllerTest extends RestIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value("1"))
+        .andExpect(jsonPath("$.description").value("test"))
+        .andExpect(jsonPath("$.withdraw").value("100.00"))
+        .andExpect(jsonPath("$.deposit").doesNotExist())
+        .andExpect(jsonPath("$.transactionDatetime").exists());
   }
 
   @Test

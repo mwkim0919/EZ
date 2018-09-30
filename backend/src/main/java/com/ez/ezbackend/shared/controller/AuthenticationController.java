@@ -1,8 +1,8 @@
 package com.ez.ezbackend.shared.controller;
 
 import com.ez.ezbackend.shared.entity.User;
-import com.ez.ezbackend.shared.model.SignUpResponse;
 import com.ez.ezbackend.shared.model.JwtAuthenticationResponse;
+import com.ez.ezbackend.shared.model.SignUpResponse;
 import com.ez.ezbackend.shared.model.UserModel;
 import com.ez.ezbackend.shared.security.JwtTokenProvider;
 import com.ez.ezbackend.shared.service.UserService;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -32,7 +31,7 @@ public class AuthenticationController {
   private final UserService userService;
 
   @PostMapping("/signin")
-  public ResponseEntity<JwtAuthenticationResponse> signinUser(@Valid @RequestBody UserModel userRequest) {
+  public ResponseEntity<JwtAuthenticationResponse> signinUser(@RequestBody UserModel userRequest) {
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             userRequest.getEmail(),
@@ -45,10 +44,9 @@ public class AuthenticationController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<SignUpResponse> signupUser(@Valid @RequestBody UserModel userRequest) {
+  public ResponseEntity<SignUpResponse> signupUser(@RequestBody UserModel userRequest) {
     User user = userService.createUser(userRequest);
-    UserModel userModel = UserModel.convertFromUser(user);
-    URI location = ControllerUtil.createUri(userModel.getId(), "users/{userId}");
+    URI location = ControllerUtil.createUri(user.getId(), "users/{userId}");
     SignUpResponse response = SignUpResponse.builder()
         .success(true)
         .message("User is successfully registered.")
