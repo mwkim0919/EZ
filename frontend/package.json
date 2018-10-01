@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
+    "immutable": "^3.8.2",
+    "ramda": "^0.25.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
     "react-scripts-ts": "2.17.0",
-    "styled-components": "^3.4.9"
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0",
+    "styled-components": "^3.4.9",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -21,19 +28,31 @@
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.11.0",
+    "@types/ramda": "^0.25.38",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
+    "@types/react-hot-loader": "^4.1.0",
     "@types/react-redux": "^6.0.9",
+    "@types/react-router-dom": "^4.3.1",
+    "@types/redux": "^3.6.0",
+    "@types/redux-logger": "^3.0.6",
+    "@types/redux-saga": "^0.10.5",
     "@types/styled-components": "^3.0.1",
+    "@types/uuid": "^3.4.4",
+    "@types/webpack-env": "^1.13.6",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "husky": "^1.0.0-rc.15",
+    "react-hot-loader": "^4.3.11",
     "react-test-renderer": "^16.5.2",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-logger": "^3.0.6",
     "typescript": "^3.0.3"
   },
   "husky": {
     "hooks": {
       "pre-push": "yarn run test"
     }
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

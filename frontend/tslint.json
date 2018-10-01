@@ -1,5 +1,6 @@
 {
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "defaultSeverity": "warning",
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
@@ -11,6 +12,12 @@
     "interface-name": [false],
     "member-access": false,
     "member-ordering": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "no-any": true,
+    "no-null-keyword": true,
+    "jsx-boolean-value": false,
+    "jsx-no-lambda": false
   }
 }
