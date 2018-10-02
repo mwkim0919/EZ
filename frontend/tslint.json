@@ -18,6 +18,7 @@
     "no-any": true,
     "no-null-keyword": true,
     "jsx-boolean-value": false,
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "jsdoc-format": false
   }
 }

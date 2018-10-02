@@ -25,6 +25,11 @@ yarn
 yarn start
 ```
 
+```sh
+# If you're developing a generic / reusable component like Button, use react-styleguidist. Refer to src/components/Button for an example.
+yarn styleguide
+```
+
 ## Testing
 
 ```sh
@@ -69,6 +74,10 @@ frontend/src
   - [React & Redux & TypeScript Guide](https://github.com/piotrwitek/react-redux-typescript-guide)
 - [**TSLint**](https://palantir.github.io/tslint/) - static analysis tool that checks TypeScript code for readability, maintainability, and functionality errors.
 - [**React**](https://reactjs.org/) - A JavaScript library for building user interfaces
+- [**React-Styleguidist**](https://react-styleguidist.js.org/) - Isolated React component development environment with a living style guide
+
+  - [Cookbook](https://github.com/styleguidist/react-styleguidist/blob/master/docs/Cookbook.md)
+
 - [**Redux**](https://redux.js.org/) - predictable state container for JavaScript apps
   - [Getting started with redux](https://egghead.io/courses/getting-started-with-redux)
   - [Building React Applications with Idiomatic Redux](https://egghead.io/courses/building-react-applications-with-idiomatic-redux)
