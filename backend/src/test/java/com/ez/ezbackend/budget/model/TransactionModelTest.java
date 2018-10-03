@@ -45,4 +45,24 @@ public class TransactionModelTest {
         .build();
     TransactionModel.convertToTransaction(transactionRequest);
   }
+
+  @Test(expected = EzIllegalRequestException.class)
+  public void test_convertToTransaction_with_deposit_less_than_0() {
+    TransactionModel transactionRequest = TransactionModel.builder()
+        .description("description")
+        .deposit(new BigDecimal("-1.00"))
+        .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
+        .build();
+    TransactionModel.convertToTransaction(transactionRequest);
+  }
+
+  @Test(expected = EzIllegalRequestException.class)
+  public void test_convertToTransaction_with_withdraw_less_than_0() {
+    TransactionModel transactionRequest = TransactionModel.builder()
+        .description("description")
+        .withdraw(new BigDecimal("-1.00"))
+        .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
+        .build();
+    TransactionModel.convertToTransaction(transactionRequest);
+  }
 }

@@ -26,7 +26,7 @@ public class TransactionRepositoryTest extends DatabaseIntegrationTest {
   @Test
   public void test_findAll() {
     List<Transaction> transactions = transactionRepository.findAll();
-    assertThat(transactions.size()).isEqualTo(3);
+    assertThat(transactions).hasSize(3);
   }
 
   @Test
@@ -49,7 +49,7 @@ public class TransactionRepositoryTest extends DatabaseIntegrationTest {
         .user(user.get())
         .build();
     Transaction savedTransaction = transactionRepository.saveAndFlush(transaction);
-    assertThat(transactionRepository.findAll().size()).isEqualTo(4);
+    assertThat(transactionRepository.findAll()).hasSize(4);
     assertThat(savedTransaction.getId()).isNotNull();
     assertThat(savedTransaction.getCreateDatetime()).isNotNull();
   }
@@ -58,7 +58,7 @@ public class TransactionRepositoryTest extends DatabaseIntegrationTest {
   @DirtiesContext
   public void test_delete() {
     transactionRepository.deleteById(1L);
-    assertThat(transactionRepository.findAll().size()).isEqualTo(2);
+    assertThat(transactionRepository.findAll()).hasSize(2);
     Optional<Transaction> transaction = transactionRepository.findById(1L);
     assertThat(transaction.isPresent()).isFalse();
   }
@@ -67,7 +67,7 @@ public class TransactionRepositoryTest extends DatabaseIntegrationTest {
   @Transactional
   public void test_findByUserId() {
     List<Transaction> transactions = transactionRepository.findByUserId(1);
-    assertThat(transactions.size()).isEqualTo(2);
+    assertThat(transactions).hasSize(2);
     transactions.forEach(transaction -> assertThat(transaction.getUser().getEmail()).isEqualTo("test@test.com"));
   }
 
@@ -76,7 +76,7 @@ public class TransactionRepositoryTest extends DatabaseIntegrationTest {
   public void test_findByUser() {
     Optional<User> user = userRepository.findById(1L);
     List<Transaction> transactions = transactionRepository.findByUser(user.get());
-    assertThat(transactions.size()).isEqualTo(2);
+    assertThat(transactions).hasSize(2);
     transactions.forEach(transaction -> assertThat(transaction.getUser().getEmail()).isEqualTo("test@test.com"));
   }
 }

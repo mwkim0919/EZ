@@ -61,6 +61,12 @@ public class TransactionModel {
     if (transactionModel.getDeposit() != null && transactionModel.getWithdraw() != null) {
       throw new EzIllegalRequestException("There can't be both deposit and withdraw. Please choose one.");
     }
+    if (transactionModel.getDeposit() != null && transactionModel.getDeposit().compareTo(BigDecimal.ZERO) < 0) {
+      throw new EzIllegalRequestException("Deposit should be greater than 0.");
+    }
+    if (transactionModel.getWithdraw() != null && transactionModel.getWithdraw().compareTo(BigDecimal.ZERO) < 0) {
+      throw new EzIllegalRequestException("Deposit should be greater than 0.");
+    }
     return Transaction.builder()
         .id(transactionId)
         .description(transactionModel.getDescription())
