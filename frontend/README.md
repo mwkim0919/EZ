@@ -2,7 +2,6 @@
 
 ## TODO
 
-- https://github.com/styleguidist/react-styleguidist
 - https://vscodecandothat.com/
 - https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync&WT.mc_id=vscodecandothat-dotcom-team
 - https://code.visualstudio.com/blogs/2017/11/15/live-share
@@ -62,6 +61,7 @@ frontend/src
 #### Library & Tools References
 
 - [**Enzyme**](http://airbnb.io/enzyme/) - JavaScript Testing utility for React that makes it easier to assert, manipulate, and traverse your React Components' output
+- [**Formik**](https://jaredpalmer.com/formik) - React form library
 - [**Immutable.js**](http://facebook.github.io/immutable-js/) - Immutable collections for JavaScript
 
   - [Getting started](https://medium.freecodecamp.org/immutable-js-is-intimidating-heres-how-to-get-started-2db1770466d6)
@@ -85,3 +85,7 @@ frontend/src
 - [**Ramda**](https://ramdajs.com/) - A practical functional library
   - [Why Ramda?](https://fr.umio.us/why-ramda/)
   - [Why Ramda over lodash or underscore?](https://www.codementor.io/michelre/functional-javascript-why-i-prefer-using-ramda-over-lodash-or-underscore-dzovysq11)
+
+# Tips
+
+- https://stackoverflow.com/questions/42827054/how-do-i-run-a-single-test-using-jest

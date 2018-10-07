@@ -1,12 +1,8 @@
-import { TodoApp } from '../types/todos';
-
-const STORAGE_KEY = 'EZTodo';
-
-export const loadState = (): TodoApp => {
+export const loadLocalStorageItem = (key: string) => {
   try {
-    const serialized = window.localStorage.getItem(STORAGE_KEY);
-    if (serialized === null) {
-      return {};
+    const serialized = window.localStorage.getItem(key);
+    if (!serialized) {
+      return undefined;
     }
     return JSON.parse(serialized);
   } catch (err) {
@@ -14,11 +10,15 @@ export const loadState = (): TodoApp => {
   }
 };
 
-export const saveState = (state: TodoApp) => {
+export const saveLocalStorageItem = <T>(key: string, state: T) => {
   try {
     const serialized = JSON.stringify(state);
-    window.localStorage.setItem(STORAGE_KEY, serialized);
+    window.localStorage.setItem(key, serialized);
   } catch (err) {
     throw new Error('Failed to save to localStorage');
   }
+};
+
+export const clearLocalStorageItem = (storageKey: string) => {
+  window.localStorage.removeItem(storageKey);
 };

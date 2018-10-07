@@ -6,6 +6,10 @@ interface ButtonProps {
   loading?: boolean;
   /** Change the background color of the button */
   color?: string;
+
+  type?: string;
+  onClick?: any;
+
   children: any;
 }
 
@@ -27,7 +31,7 @@ const Label = styled<{ loading?: boolean }, 'span'>('span')`
 export const Button = (props: ButtonProps) => {
   const { loading } = props;
   return (
-    <StyledButton color={props.color} disabled={loading}>
+    <StyledButton {...props} color={props.color} disabled={loading}>
       <Label>{props.children}</Label>
     </StyledButton>
   );

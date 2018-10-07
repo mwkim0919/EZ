@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Hello from './views/Hello';
+import Hello from './Hello';
 
 class Dashboard extends React.Component {
   render() {

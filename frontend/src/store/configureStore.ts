@@ -1,14 +1,20 @@
+import { createBrowserHistory } from 'history';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-// import * as Immutable from 'immutable';
 import rootReducer from '../reducers';
+import rootSaga from '../sagas';
+import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
+// import * as Immutable from 'immutable';
 // import { StoreState } from '../types';
+
+export const history = createBrowserHistory();
 
 const sagaMiddleware = createSagaMiddleware();
 
 // Add middlewares / enhancers here
-const middlewares = [sagaMiddleware, createLogger()];
+const middlewares = [routerMiddleware(history), sagaMiddleware, createLogger()];
 
 // tslint:disable-next-line
 const enhancers: any[] = [];
@@ -16,6 +22,9 @@ const enhancers: any[] = [];
 // Install Chrome extension for Redux devtools
 // https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd
 if (process.env.NODE_ENV === 'development') {
+  // https://github.com/leoasis/redux-immutable-state-invariant
+  middlewares.unshift(reduxImmutableStateInvariant());
+
   // tslint:disable-next-line
   const devToolsExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
@@ -33,13 +42,16 @@ const initialState = {};
 
 const configureStore = (state = initialState) => {
   const store = createStore(
-    rootReducer,
+    connectRouter(history)(rootReducer),
     state,
     compose(
       applyMiddleware(...middlewares),
       ...enhancers
     )
   );
+
+  // Start sagas
+  sagaMiddleware.run(rootSaga);
 
   if (module.hot) {
     module.hot.accept('../reducers', () => {

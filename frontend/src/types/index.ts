@@ -10,5 +10,5 @@ export interface StoreState {
   enthusiasm: Enthusiasm;
   planner: {};
   todos: TodoApp;
-  currentUser: {};
+  auth: any;
 }

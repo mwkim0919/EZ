@@ -1,4 +1,4 @@
-import * as TodoActions from './todos';
+import * as TodoActions from '../todos';
 
 describe('Todo action creators', () => {
   const { createTodo, updateTodo, deleteTodo } = TodoActions;

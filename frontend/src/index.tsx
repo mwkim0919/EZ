@@ -1,21 +1,31 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import './index.css';
-
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
+import { history } from './store/configureStore';
 import Routes from './hot-routes';
 import configureStore from './store/configureStore';
+import { loadLocalStorageItem } from './helpers/localStorage';
+import { APP_STORAGE_KEY } from 'src/constants';
+import './index.css';
 
-const store = configureStore();
+const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
+console.log('Stored Data ', storedData);
+
+// TODO: What should we do if token is expired?
+const store = configureStore({
+  auth: {
+    currentUser: storedData,
+  },
+});
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <React.Fragment>
         <Routes />
       </React.Fragment>
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
