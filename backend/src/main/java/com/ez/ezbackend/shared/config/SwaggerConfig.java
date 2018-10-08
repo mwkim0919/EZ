@@ -32,7 +32,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
   }
 
   private ApiKey apiKey() {
-    return new ApiKey("apiKey","Authorization","header");
+    return new ApiKey("apiKey", "Authorization", "header");
   }
 
   private SecurityContext securityContext() {

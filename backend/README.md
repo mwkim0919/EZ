@@ -28,5 +28,14 @@
    * pypl
    * pycodestyle
    * pydocstyle
+   
+### Swagger
+* `localhost:8080/swagger-ui.html`
+* How to use
+  * Use sign-in endpoint to get the auth token.
+  * Click `Authorize` button in Swagger UI to add auth token.
+  * Add `Bearer <auth token>` to the input box.
+  * Login and use other endpoints.
+
  
  #### Feel free to update this.
