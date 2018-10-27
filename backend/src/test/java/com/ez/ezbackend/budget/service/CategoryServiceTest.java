@@ -68,14 +68,14 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
         .categoryLimit(new BigDecimal("10000"))
         .build();
     Category saved = categoryService.saveCategory(category, 3L);
-    assertThat(saved.getId()).isEqualTo(4);
+    assertThat(saved.getId()).isEqualTo(7L);
     assertThat(saved.getParentCategory()).isNull();
     assertThat(saved.getCategoryLimit()).isEqualTo("10000");
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_saveCategory_invalid_userId() {
-    categoryService.saveCategory(CategoryModel.builder().build(), 4L);
+    categoryService.saveCategory(new CategoryModel(), 4L);
   }
 
   @Test
@@ -93,17 +93,17 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzNotFoundException.class)
   public void test_updateCategory_invalid_categoryId() {
-    categoryService.updateCategory(CategoryModel.builder().build(), 100L, 3L);
+    categoryService.updateCategory(new CategoryModel(), 100L, 3L);
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_updateCategory_invalid_userId() {
-    categoryService.updateCategory(CategoryModel.builder().build(), 1L, 100L);
+    categoryService.updateCategory(new CategoryModel(), 1L, 100L);
   }
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_updateCategory_invalid_ownership() {
-    categoryService.updateCategory(CategoryModel.builder().build(), 1L, 1L);
+    categoryService.updateCategory(new CategoryModel(), 1L, 1L);
   }
 
   @Test

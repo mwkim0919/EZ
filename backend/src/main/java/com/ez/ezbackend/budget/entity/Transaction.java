@@ -43,6 +43,10 @@ public class Transaction {
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id", nullable = false)
+  private Category category;
+
   @CreationTimestamp
   @Column(name = "create_datetime")
   private LocalDateTime createDatetime;

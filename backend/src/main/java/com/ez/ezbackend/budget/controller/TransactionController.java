@@ -1,7 +1,8 @@
 package com.ez.ezbackend.budget.controller;
 
 import com.ez.ezbackend.budget.entity.Transaction;
-import com.ez.ezbackend.budget.model.TransactionModel;
+import com.ez.ezbackend.budget.request.TransactionRequest;
+import com.ez.ezbackend.budget.response.TransactionResponse;
 import com.ez.ezbackend.budget.service.TransactionService;
 import com.ez.ezbackend.shared.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
@@ -36,32 +37,32 @@ public class TransactionController {
   private final TransactionService transactionService;
 
   @GetMapping(GET_TRANSACTIONS_URI)
-  public ResponseEntity<List<TransactionModel>> getTransactionsForUser(
+  public ResponseEntity<List<TransactionResponse>> getTransactionsForUser(
       @PathVariable("userId") long userId) {
     List<Transaction> transactions = transactionService.getTransactionsForUser(userId);
-    List<TransactionModel> transactionResponse = transactions.stream()
-        .map(TransactionModel::convertFromTransaction)
+    List<TransactionResponse> transactionResponse = transactions.stream()
+        .map(TransactionResponse::convertFromTransaction)
         .collect(Collectors.toList());
     return ResponseEntity.ok(transactionResponse);
   }
 
   @PostMapping(CREATE_TRANSACTION_URI)
-  public ResponseEntity<TransactionModel> saveTransactionForUser(
+  public ResponseEntity<TransactionResponse> saveTransactionForUser(
       @PathVariable("userId") long userId,
-      @RequestBody TransactionModel transactionRequest) {
+      @RequestBody TransactionRequest transactionRequest) {
     Transaction createdTransaction = transactionService.saveTransactionForUser(transactionRequest, userId);
-    TransactionModel transactionResponse = TransactionModel.convertFromTransaction(createdTransaction);
+    TransactionResponse transactionResponse = TransactionResponse.convertFromTransaction(createdTransaction);
     URI location = ControllerUtil.createUri(transactionResponse.getId(), "users/" + userId + "/transactions/{id}");
     return ResponseEntity.created(location).body(transactionResponse);
   }
 
   @PutMapping(UPDATE_DELETE_TRANSACTION_URI)
-  public ResponseEntity<TransactionModel> updateTransactionForUser(
+  public ResponseEntity<TransactionResponse> updateTransactionForUser(
       @PathVariable("userId") long userId,
       @PathVariable("transactionId") long transactionId,
-      @RequestBody TransactionModel transactionRequest) {
+      @RequestBody TransactionRequest transactionRequest) {
     Transaction updatedTransaction = transactionService.updateTransactionForUser(transactionRequest, transactionId, userId);
-    TransactionModel transactionResponse = TransactionModel.convertFromTransaction(updatedTransaction);
+    TransactionResponse transactionResponse = TransactionResponse.convertFromTransaction(updatedTransaction);
     return ResponseEntity.ok(transactionResponse);
   }
 

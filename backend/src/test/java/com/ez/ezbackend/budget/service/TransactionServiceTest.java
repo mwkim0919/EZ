@@ -2,7 +2,7 @@ package com.ez.ezbackend.budget.service;
 
 import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.budget.entity.Transaction;
-import com.ez.ezbackend.budget.model.TransactionModel;
+import com.ez.ezbackend.budget.request.TransactionRequest;
 import com.ez.ezbackend.shared.exception.EzNotAuthorizedException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
 import com.ez.ezbackend.shared.exception.EzReadOnlyException;
@@ -34,24 +34,28 @@ public class TransactionServiceTest extends DatabaseIntegrationTest {
 
   @Test
   public void test_saveTransactionForUser_success() {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("This is a test deposit")
         .deposit(new BigDecimal("1234.56"))
         .createDatetime(LocalDateTime.now())
         .transactionDatetime(LocalDateTime.now())
+        .categoryId(5L)
         .build();
+
     Transaction savedTransaction = transactionService.saveTransactionForUser(transactionRequest, 1L);
     assertThat(savedTransaction.getUser()).isNotNull();
     assertThat(savedTransaction.getId()).isNotNull();
+    assertThat(savedTransaction.getCategory().getName()).isEqualTo("Pizza");
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_saveTransactionForUser_with_invalid_userId() {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("This is a test deposit")
         .deposit(new BigDecimal("1234.56"))
         .createDatetime(LocalDateTime.now())
         .transactionDatetime(LocalDateTime.now())
+        .categoryId(5L)
         .build();
     transactionService.saveTransactionForUser(transactionRequest, 0L);
   }
@@ -59,55 +63,62 @@ public class TransactionServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_updateTransactionForUser_success() {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("updated")
         .withdraw(new BigDecimal("999.99"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0))
+        .categoryId(5L)
         .build();
     Transaction transaction = transactionService.updateTransactionForUser(transactionRequest, 1, 1);
     assertThat(transaction.getId()).isEqualTo(1);
     assertThat(transaction.getDeposit()).isNull();
     assertThat(transaction.getWithdraw()).isEqualTo("999.99");
     assertThat(transaction.getTransactionDatetime()).isEqualTo("2018-01-01T00:00:00");
+    assertThat(transaction.getCategory()).isNotNull();
+    assertThat(transaction.getCategory().getName()).isEqualTo("Pizza");
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_updateTransactionForUser_with_invalid_user() {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("updated")
         .withdraw(new BigDecimal("999.99"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0))
+        .categoryId(1L)
         .build();
     transactionService.updateTransactionForUser(transactionRequest, 1, -1);
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_updateTransactionForUser_with_invalid_transactionId() {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("updated")
         .withdraw(new BigDecimal("999.99"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0))
+        .categoryId(1L)
         .build();
     transactionService.updateTransactionForUser(transactionRequest, -1, 1);
   }
 
   @Test(expected = EzNotAuthorizedException.class)
   public void test_updateTransactionForUser_with_nonMatching_user() {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("updated")
         .withdraw(new BigDecimal("999.99"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0))
+        .categoryId(1L)
         .build();
     transactionService.updateTransactionForUser(transactionRequest, 1, 2);
   }
 
   @Test(expected = EzReadOnlyException.class)
   public void test_updateTransactionForUser_with_invalid_request() {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .id(100L)
         .description("updated")
         .withdraw(new BigDecimal("999.99"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0))
+        .categoryId(1L)
         .build();
     transactionService.updateTransactionForUser(transactionRequest, 1, 1);
   }

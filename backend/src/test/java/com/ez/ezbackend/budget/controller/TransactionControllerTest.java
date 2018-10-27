@@ -1,7 +1,8 @@
 package com.ez.ezbackend.budget.controller;
 
+import com.ez.ezbackend.budget.entity.Category;
 import com.ez.ezbackend.budget.entity.Transaction;
-import com.ez.ezbackend.budget.model.TransactionModel;
+import com.ez.ezbackend.budget.request.TransactionRequest;
 import com.ez.ezbackend.budget.service.TransactionService;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
@@ -63,14 +64,14 @@ public class TransactionControllerTest {
 
   @Test
   public void test_saveTransactionForUser_success() throws Exception {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("test")
         .withdraw(new BigDecimal("100.00"))
         .transactionDatetime(LocalDateTime.now())
         .build();
-    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, User.builder().build(), 1L);
-    String json = JsonUtil.convertToJson(transactionRequest, TransactionModel.class);
-    when(transactionService.saveTransactionForUser(any(TransactionModel.class), any(long.class))).thenReturn(transaction);
+    Transaction transaction = TransactionRequest.convertToTransaction(transactionRequest, new User(), new Category(), 1L);
+    String json = JsonUtil.convertToJson(transactionRequest, TransactionRequest.class);
+    when(transactionService.saveTransactionForUser(any(TransactionRequest.class), any(long.class))).thenReturn(transaction);
     mockMvc
         .perform(post("/api/users/1/transactions")
             .content(json)
@@ -87,13 +88,13 @@ public class TransactionControllerTest {
 
   @Test
   public void test_saveTransactionForUser_failure() throws Exception {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("test")
         .withdraw(new BigDecimal("100.00"))
         .transactionDatetime(LocalDateTime.now())
         .build();
-    String json = JsonUtil.convertToJson(transactionRequest, TransactionModel.class);
-    when(transactionService.saveTransactionForUser(any(TransactionModel.class), any(long.class)))
+    String json = JsonUtil.convertToJson(transactionRequest, TransactionRequest.class);
+    when(transactionService.saveTransactionForUser(any(TransactionRequest.class), any(long.class)))
         .thenThrow(new EzReadOnlyException("Id should be read-only."));
     mockMvc
         .perform(post("/api/users/1/transactions")
@@ -106,14 +107,14 @@ public class TransactionControllerTest {
 
   @Test
   public void test_updateTransactionForUser_success() throws Exception {
-    TransactionModel transactionRequest = TransactionModel.builder()
+    TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("test")
         .withdraw(new BigDecimal("100.00"))
         .transactionDatetime(LocalDateTime.now())
         .build();
-    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, User.builder().build(), 1L);
-    String json = JsonUtil.convertToJson(transactionRequest, TransactionModel.class);
-    when(transactionService.updateTransactionForUser(any(TransactionModel.class), any(long.class), any(long.class)))
+    Transaction transaction = TransactionRequest.convertToTransaction(transactionRequest, new User(), new Category(), 1L);
+    String json = JsonUtil.convertToJson(transactionRequest, TransactionRequest.class);
+    when(transactionService.updateTransactionForUser(any(TransactionRequest.class), any(long.class), any(long.class)))
         .thenReturn(transaction);
     mockMvc
         .perform(put("/api/users/1/transactions/1")

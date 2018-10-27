@@ -1,5 +1,6 @@
-package com.ez.ezbackend.budget.model;
+package com.ez.ezbackend.budget.request;
 
+import com.ez.ezbackend.budget.entity.Category;
 import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
@@ -20,8 +21,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionModel {
+public class TransactionRequest {
   private Long id;
+  private Long categoryId;
   private String description;
   @JsonSerialize(using = PriceJsonSerializer.class)
   private BigDecimal withdraw;
@@ -32,48 +34,42 @@ public class TransactionModel {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime transactionDatetime;
 
-  public static TransactionModel convertFromTransaction(Transaction transaction) {
-    return TransactionModel.builder()
-        .id(transaction.getId())
-        .description(transaction.getDescription())
-        .withdraw(transaction.getWithdraw())
-        .deposit(transaction.getDeposit())
-        .createDatetime(transaction.getCreateDatetime())
-        .transactionDatetime(transaction.getTransactionDatetime())
-        .build();
+  public static Transaction convertToTransaction(TransactionRequest transactionRequest) {
+    return convertToTransaction(transactionRequest, null);
   }
 
-  public static Transaction convertToTransaction(TransactionModel transactionModel) {
-    return convertToTransaction(transactionModel, null);
+  public static Transaction convertToTransaction(TransactionRequest transactionRequest, User user) {
+    return convertToTransaction(transactionRequest, user, null);
   }
 
-  public static Transaction convertToTransaction(TransactionModel transactionModel, User user) {
-    return convertToTransaction(transactionModel, user, null);
+  public static Transaction convertToTransaction(TransactionRequest transactionRequest, User user, Category category) {
+    return convertToTransaction(transactionRequest, user, category, null);
   }
 
-  public static Transaction convertToTransaction(TransactionModel transactionModel, User user, Long transactionId) {
-    if (transactionModel.getId() != null) {
+  public static Transaction convertToTransaction(TransactionRequest transactionRequest, User user, Category category, Long transactionId) {
+    if (transactionRequest.getId() != null) {
       throw new EzReadOnlyException("Id is read-only.");
     }
-    if (transactionModel.getDeposit() == null && transactionModel.getWithdraw() == null) {
+    if (transactionRequest.getDeposit() == null && transactionRequest.getWithdraw() == null) {
       throw new EzIllegalRequestException("There should be either deposit or withdraw.");
     }
-    if (transactionModel.getDeposit() != null && transactionModel.getWithdraw() != null) {
+    if (transactionRequest.getDeposit() != null && transactionRequest.getWithdraw() != null) {
       throw new EzIllegalRequestException("There can't be both deposit and withdraw. Please choose one.");
     }
-    if (transactionModel.getDeposit() != null && transactionModel.getDeposit().compareTo(BigDecimal.ZERO) < 0) {
+    if (transactionRequest.getDeposit() != null && transactionRequest.getDeposit().compareTo(BigDecimal.ZERO) < 0) {
       throw new EzIllegalRequestException("Deposit should be greater than 0.");
     }
-    if (transactionModel.getWithdraw() != null && transactionModel.getWithdraw().compareTo(BigDecimal.ZERO) < 0) {
+    if (transactionRequest.getWithdraw() != null && transactionRequest.getWithdraw().compareTo(BigDecimal.ZERO) < 0) {
       throw new EzIllegalRequestException("Deposit should be greater than 0.");
     }
     return Transaction.builder()
         .id(transactionId)
-        .description(transactionModel.getDescription())
-        .withdraw(transactionModel.getWithdraw())
-        .deposit(transactionModel.getDeposit())
-        .transactionDatetime(transactionModel.getTransactionDatetime())
+        .description(transactionRequest.getDescription())
+        .withdraw(transactionRequest.getWithdraw())
+        .deposit(transactionRequest.getDeposit())
+        .transactionDatetime(transactionRequest.getTransactionDatetime())
         .user(user)
+        .category(category)
         .build();
   }
 }

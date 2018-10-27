@@ -27,7 +27,7 @@ public class CategoryRepositoryTest extends DatabaseIntegrationTest {
   @Test
   public void test_findAll() {
     List<Category> categories = categoryRepository.findAll();
-    assertThat(categories.size()).isEqualTo(3);
+    assertThat(categories.size()).isEqualTo(6);
   }
 
   @Test
@@ -66,7 +66,7 @@ public class CategoryRepositoryTest extends DatabaseIntegrationTest {
         .build();
 
     Category savedCategory = categoryRepository.saveAndFlush(category);
-    assertThat(categoryRepository.findAll().size()).isEqualTo(4);
+    assertThat(categoryRepository.findAll().size()).isEqualTo(7);
     assertThat(savedCategory.getId()).isNotNull();
     assertThat(savedCategory.getCreateDatetime()).isNotNull();
     assertThat(savedCategory.getParentCategory().getId()).isEqualTo(1L);

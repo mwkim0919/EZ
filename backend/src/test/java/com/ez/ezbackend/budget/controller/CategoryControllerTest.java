@@ -69,7 +69,7 @@ public class CategoryControllerTest {
         .createDatetime(LocalDateTime.now())
         .build();
 
-    Category category = CategoryModel.convertToCategory(categoryRequest, User.builder().build(), 10L);
+    Category category = CategoryModel.convertToCategory(categoryRequest, new User(), 10L);
     String json = JsonUtil.convertToJson(categoryRequest, CategoryModel.class);
     when(categoryService.saveCategory(any(CategoryModel.class), any(long.class))).thenReturn(category);
     mockMvc
@@ -103,7 +103,7 @@ public class CategoryControllerTest {
         .categoryLimit(new BigDecimal("100.00"))
         .createDatetime(LocalDateTime.now())
         .build();
-    Category transaction = CategoryModel.convertToCategory(categoryRequest, User.builder().build(), 1L);
+    Category transaction = CategoryModel.convertToCategory(categoryRequest, new User(), 1L);
     String json = JsonUtil.convertToJson(categoryRequest, CategoryModel.class);
     when(categoryService.updateCategory(any(CategoryModel.class), any(long.class), any(long.class)))
         .thenReturn(transaction);

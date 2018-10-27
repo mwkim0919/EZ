@@ -1,7 +1,9 @@
 package com.ez.ezbackend.budget.service;
 
+import com.ez.ezbackend.budget.entity.Category;
 import com.ez.ezbackend.budget.entity.Transaction;
-import com.ez.ezbackend.budget.model.TransactionModel;
+import com.ez.ezbackend.budget.request.TransactionRequest;
+import com.ez.ezbackend.budget.repository.CategoryRepository;
 import com.ez.ezbackend.budget.repository.TransactionRepository;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzNotAuthorizedException;
@@ -23,6 +25,7 @@ public class TransactionServiceImpl implements TransactionService {
 
   private final UserRepository userRepository;
   private final TransactionRepository transactionRepository;
+  private final CategoryRepository categoryRepository;
 
   @Override
   public List<Transaction> getTransactionsForUser(long userId) {
@@ -32,15 +35,19 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
-  public Transaction saveTransactionForUser(TransactionModel transactionRequest, long userId) {
+  public Transaction saveTransactionForUser(TransactionRequest transactionRequest, long userId) {
+    Category category = categoryRepository.findById(transactionRequest.getCategoryId())
+        .orElseThrow(() -> new EzNotFoundException("Category with ID: " + transactionRequest.getCategoryId() + " not found."));
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    Transaction transaction = TransactionModel.convertToTransaction(transactionRequest, user);
+    Transaction transaction = TransactionRequest.convertToTransaction(transactionRequest, user, category);
     return transactionRepository.saveAndFlush(transaction);
   }
 
   @Override
-  public Transaction updateTransactionForUser(TransactionModel transactionRequest, long transactionId, long userId) {
+  public Transaction updateTransactionForUser(TransactionRequest transactionRequest, long transactionId, long userId) {
+    Category category = categoryRepository.findById(transactionRequest.getCategoryId())
+        .orElseThrow(() -> new EzNotFoundException("Category with ID: " + transactionRequest.getCategoryId() + " not found."));
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
     Transaction transaction = transactionRepository.findById(transactionId)
@@ -48,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
     if (userId != transaction.getUser().getId()) {
       throw new EzNotAuthorizedException("User with ID: " + userId + " not authorized to delete the requested transaction.");
     }
-    Transaction updatedTransaction = TransactionModel.convertToTransaction(transactionRequest, user, transactionId);
+    Transaction updatedTransaction = TransactionRequest.convertToTransaction(transactionRequest, user, category, transactionId);
     return transactionRepository.saveAndFlush(updatedTransaction);
   }
 

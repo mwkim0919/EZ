@@ -14,7 +14,7 @@ public class CategoryModelTest {
         .name("description")
         .categoryLimit(new BigDecimal("100.00"))
         .build();
-    CategoryModel.convertToCategory(categoryModel, User.builder().build());
+    CategoryModel.convertToCategory(categoryModel, new User());
   }
 }
 
