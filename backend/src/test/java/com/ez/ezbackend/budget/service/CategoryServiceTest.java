@@ -2,7 +2,7 @@ package com.ez.ezbackend.budget.service;
 
 import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.budget.entity.Category;
-import com.ez.ezbackend.budget.model.CategoryModel;
+import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.budget.repository.CategoryRepository;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
@@ -63,7 +63,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_saveCategory() {
-    CategoryModel category = CategoryModel.builder()
+    CategoryRequest category = CategoryRequest.builder()
         .name("Food")
         .categoryLimit(new BigDecimal("10000"))
         .build();
@@ -75,35 +75,35 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzNotFoundException.class)
   public void test_saveCategory_invalid_userId() {
-    categoryService.saveCategory(new CategoryModel(), 4L);
+    categoryService.saveCategory(new CategoryRequest(), 4L);
   }
 
   @Test
   @DirtiesContext
   public void test_updateCategory() {
     Category category = categoryRepository.findById(1L).get();
-    CategoryModel categoryModel = CategoryModel.builder()
+    CategoryRequest categoryRequest = CategoryRequest.builder()
         .name(category.getName())
         .categoryLimit(new BigDecimal("5500.00"))
         .build();
-    category = categoryService.updateCategory(categoryModel, 1L, 3L);
+    category = categoryService.updateCategory(categoryRequest, 1L, 3L);
     assertThat(category.getCategoryLimit()).isEqualTo("5500.00");
     assertThat(category.getName()).isEqualTo("Transportation");
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_updateCategory_invalid_categoryId() {
-    categoryService.updateCategory(new CategoryModel(), 100L, 3L);
+    categoryService.updateCategory(new CategoryRequest(), 100L, 3L);
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_updateCategory_invalid_userId() {
-    categoryService.updateCategory(new CategoryModel(), 1L, 100L);
+    categoryService.updateCategory(new CategoryRequest(), 1L, 100L);
   }
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_updateCategory_invalid_ownership() {
-    categoryService.updateCategory(new CategoryModel(), 1L, 1L);
+    categoryService.updateCategory(new CategoryRequest(), 1L, 1L);
   }
 
   @Test

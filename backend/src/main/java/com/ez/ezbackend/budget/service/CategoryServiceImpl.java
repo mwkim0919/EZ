@@ -1,7 +1,7 @@
 package com.ez.ezbackend.budget.service;
 
 import com.ez.ezbackend.budget.entity.Category;
-import com.ez.ezbackend.budget.model.CategoryModel;
+import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.budget.repository.CategoryRepository;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
@@ -42,14 +42,14 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category saveCategory(CategoryModel categoryModel, long userId) {
+  public Category saveCategory(CategoryRequest categoryRequest, long userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    return categoryRepository.saveAndFlush(CategoryModel.convertToCategory(categoryModel, user));
+    return categoryRepository.saveAndFlush(CategoryRequest.convertToCategory(categoryRequest, user));
   }
 
   @Override
-  public Category updateCategory(CategoryModel categoryModel, long categoryId, long userId) {
+  public Category updateCategory(CategoryRequest categoryRequest, long categoryId, long userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
     Category category = categoryRepository.findById(categoryId)
@@ -57,14 +57,16 @@ public class CategoryServiceImpl implements CategoryService {
     if (category.getUser().getId() != userId) {
       throw new EzIllegalRequestException("User " + userId + " does not own category with ID:" + categoryId);
     }
-    return categoryRepository.saveAndFlush(CategoryModel.convertToCategory(categoryModel, user));
+    return categoryRepository.saveAndFlush(
+        CategoryRequest.convertToCategory(categoryRequest, user, category.getParentCategory(), categoryId));
   }
 
   @Override
   public void deleteCategory(long categoryId, long userId) {
     userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new EzNotFoundException("Category with ID: " + categoryId + " not found."));
+    Category category = categoryRepository.findById(categoryId)
+        .orElseThrow(() -> new EzNotFoundException("Category with ID: " + categoryId + " not found."));
     if (category.getUser().getId() != userId) {
       throw new EzIllegalRequestException("User " + userId + " does not own category with ID:" + categoryId);
     }

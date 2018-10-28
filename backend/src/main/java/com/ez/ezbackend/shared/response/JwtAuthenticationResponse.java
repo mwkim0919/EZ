@@ -1,4 +1,4 @@
-package com.ez.ezbackend.shared.model;
+package com.ez.ezbackend.shared.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

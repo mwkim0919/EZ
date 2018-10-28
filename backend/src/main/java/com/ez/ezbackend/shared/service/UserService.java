@@ -1,8 +1,8 @@
 package com.ez.ezbackend.shared.service;
 
 import com.ez.ezbackend.shared.entity.User;
-import com.ez.ezbackend.shared.model.UserModel;
+import com.ez.ezbackend.shared.request.UserRequest;
 
 public interface UserService {
-  User createUser(UserModel userRequest);
+  User createUser(UserRequest userRequest);
 }

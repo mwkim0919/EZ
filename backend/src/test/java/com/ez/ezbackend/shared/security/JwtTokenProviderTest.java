@@ -1,9 +1,8 @@
 package com.ez.ezbackend.shared.security;
 
-import com.ez.ezbackend.shared.model.JwtAuthenticationResponse;
+import com.ez.ezbackend.shared.response.JwtAuthenticationResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

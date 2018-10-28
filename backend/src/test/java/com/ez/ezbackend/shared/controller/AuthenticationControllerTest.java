@@ -2,8 +2,8 @@ package com.ez.ezbackend.shared.controller;
 
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.enums.UserRole;
-import com.ez.ezbackend.shared.model.JwtAuthenticationResponse;
-import com.ez.ezbackend.shared.model.UserModel;
+import com.ez.ezbackend.shared.response.JwtAuthenticationResponse;
+import com.ez.ezbackend.shared.request.UserRequest;
 import com.ez.ezbackend.shared.security.JwtTokenProvider;
 import com.ez.ezbackend.shared.service.UserService;
 import com.ez.ezbackend.shared.util.JsonUtil;
@@ -55,12 +55,12 @@ public class AuthenticationControllerTest {
         .password("test")
         .role(UserRole.USER)
         .build();
-    when(userService.createUser(any(UserModel.class))).thenReturn(user);
-    UserModel userRequest = UserModel.builder()
+    when(userService.createUser(any(UserRequest.class))).thenReturn(user);
+    UserRequest userRequest = UserRequest.builder()
         .email("test@test.com")
         .password("test")
         .build();
-    String requestJson = JsonUtil.convertToJson(userRequest, UserModel.class);
+    String requestJson = JsonUtil.convertToJson(userRequest, UserRequest.class);
     mockMvc
         .perform(post("/api/auth/signup")
             .content(requestJson)
@@ -83,11 +83,11 @@ public class AuthenticationControllerTest {
         .expiryDate(new Date())
         .build();
     when(tokenProvider.generateToken(any(Authentication.class))).thenReturn(jwtResponse);
-    UserModel userRequest = UserModel.builder()
+    UserRequest userRequest = UserRequest.builder()
         .email("test@test.com")
         .password("test")
         .build();
-    String requestJson = JsonUtil.convertToJson(userRequest, UserModel.class);
+    String requestJson = JsonUtil.convertToJson(userRequest, UserRequest.class);
     mockMvc
         .perform(post("/api/auth/signin")
             .content(requestJson)

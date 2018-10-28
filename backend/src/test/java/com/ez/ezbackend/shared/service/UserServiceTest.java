@@ -4,7 +4,7 @@ import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.enums.UserRole;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
-import com.ez.ezbackend.shared.model.UserModel;
+import com.ez.ezbackend.shared.request.UserRequest;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -19,7 +19,7 @@ public class UserServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_createUser_success() {
-    UserModel userRequest = UserModel.builder()
+    UserRequest userRequest = UserRequest.builder()
         .email("email@email.com")
         .password("test")
         .build();
@@ -32,7 +32,7 @@ public class UserServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_createUser_failure() {
-    UserModel userRequest = UserModel.builder()
+    UserRequest userRequest = UserRequest.builder()
         .email("test@test.com")
         .password("test")
         .build();

@@ -3,7 +3,7 @@ package com.ez.ezbackend.shared.service;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.enums.UserRole;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
-import com.ez.ezbackend.shared.model.UserModel;
+import com.ez.ezbackend.shared.request.UserRequest;
 import com.ez.ezbackend.shared.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
 
   @Override
-  public User createUser(UserModel userRequest) {
+  public User createUser(UserRequest userRequest) {
     if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
       throw new EzIllegalRequestException("Email address is already in use.");
     }

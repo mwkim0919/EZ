@@ -1,9 +1,9 @@
 package com.ez.ezbackend.shared.controller;
 
 import com.ez.ezbackend.shared.entity.User;
-import com.ez.ezbackend.shared.model.JwtAuthenticationResponse;
-import com.ez.ezbackend.shared.model.SignUpResponse;
-import com.ez.ezbackend.shared.model.UserModel;
+import com.ez.ezbackend.shared.response.JwtAuthenticationResponse;
+import com.ez.ezbackend.shared.response.SignUpResponse;
+import com.ez.ezbackend.shared.request.UserRequest;
 import com.ez.ezbackend.shared.security.JwtTokenProvider;
 import com.ez.ezbackend.shared.service.UserService;
 import com.ez.ezbackend.shared.util.ControllerUtil;
@@ -31,7 +31,7 @@ public class AuthenticationController {
   private final UserService userService;
 
   @PostMapping("/signin")
-  public ResponseEntity<JwtAuthenticationResponse> signinUser(@RequestBody UserModel userRequest) {
+  public ResponseEntity<JwtAuthenticationResponse> signinUser(@RequestBody UserRequest userRequest) {
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             userRequest.getEmail(),
@@ -44,7 +44,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<SignUpResponse> signupUser(@RequestBody UserModel userRequest) {
+  public ResponseEntity<SignUpResponse> signupUser(@RequestBody UserRequest userRequest) {
     User user = userService.createUser(userRequest);
     URI location = ControllerUtil.createUri(user.getId(), "users/{userId}");
     SignUpResponse response = SignUpResponse.builder()

@@ -1,6 +1,6 @@
 package com.ez.ezbackend.shared.security;
 
-import com.ez.ezbackend.shared.model.JwtAuthenticationResponse;
+import com.ez.ezbackend.shared.response.JwtAuthenticationResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

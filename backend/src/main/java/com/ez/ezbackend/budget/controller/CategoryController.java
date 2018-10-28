@@ -1,7 +1,8 @@
 package com.ez.ezbackend.budget.controller;
 
 import com.ez.ezbackend.budget.entity.Category;
-import com.ez.ezbackend.budget.model.CategoryModel;
+import com.ez.ezbackend.budget.request.CategoryRequest;
+import com.ez.ezbackend.budget.response.CategoryResponse;
 import com.ez.ezbackend.budget.service.CategoryService;
 import com.ez.ezbackend.shared.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,25 +35,25 @@ public class CategoryController {
   private final CategoryService categoryService;
 
   @GetMapping(GET_OR_CREATE_CATEGORY_URI)
-  public ResponseEntity<List<CategoryModel>> get(@PathVariable("userId") long userId) {
+  public ResponseEntity<List<CategoryResponse>> get(@PathVariable("userId") long userId) {
     List<Category> categories = categoryService.getAllCategoriesForUser(userId);
-    List<CategoryModel> categoryModels = categories.stream().map(CategoryModel::convertFromCategory).collect(Collectors.toList());
-    return ResponseEntity.ok(categoryModels);
+    List<CategoryResponse> categoryResponses = categories.stream().map(CategoryResponse::convertFromCategory).collect(Collectors.toList());
+    return ResponseEntity.ok(categoryResponses);
   }
 
   @PostMapping(GET_OR_CREATE_CATEGORY_URI)
-  public ResponseEntity<CategoryModel> create(@PathVariable("userId") long userId, @RequestBody CategoryModel categoryModel) {
-    Category created = categoryService.saveCategory(categoryModel, userId);
-    CategoryModel createdCategoryModel = CategoryModel.convertFromCategory(created);
-    URI location = ControllerUtil.createUri(createdCategoryModel.getId(), "users/" + userId + "/categories/{id}");
-    return ResponseEntity.created(location).body(createdCategoryModel);
+  public ResponseEntity<CategoryResponse> create(@PathVariable("userId") long userId, @RequestBody CategoryRequest categoryRequest) {
+    Category created = categoryService.saveCategory(categoryRequest, userId);
+    CategoryResponse categoryResponse = CategoryResponse.convertFromCategory(created);
+    URI location = ControllerUtil.createUri(categoryResponse.getId(), "users/" + userId + "/categories/{id}");
+    return ResponseEntity.created(location).body(categoryResponse);
   }
 
   @PutMapping(UPDATE_OR_DELETE_CATEGORY_URI)
-  public ResponseEntity<CategoryModel> update(@PathVariable("userId") long userId, @PathVariable("categoryId") long categoryId, @RequestBody CategoryModel category) {
+  public ResponseEntity<CategoryResponse> update(@PathVariable("userId") long userId, @PathVariable("categoryId") long categoryId, @RequestBody CategoryRequest category) {
     Category updated = categoryService.updateCategory(category, categoryId, userId);
-    CategoryModel updatedModel = CategoryModel.convertFromCategory(updated);
-    return ResponseEntity.ok(updatedModel);
+    CategoryResponse categoryResponse = CategoryResponse.convertFromCategory(updated);
+    return ResponseEntity.ok(categoryResponse);
   }
 
   @DeleteMapping(UPDATE_OR_DELETE_CATEGORY_URI)

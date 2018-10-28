@@ -4,7 +4,6 @@ import com.ez.ezbackend.budget.entity.Category;
 import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
-import com.ez.ezbackend.shared.exception.EzReadOnlyException;
 import com.ez.ezbackend.shared.serializer.PriceJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,7 +21,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionRequest {
-  private Long id;
   private Long categoryId;
   private String description;
   @JsonSerialize(using = PriceJsonSerializer.class)
@@ -46,10 +44,22 @@ public class TransactionRequest {
     return convertToTransaction(transactionRequest, user, category, null);
   }
 
-  public static Transaction convertToTransaction(TransactionRequest transactionRequest, User user, Category category, Long transactionId) {
-    if (transactionRequest.getId() != null) {
-      throw new EzReadOnlyException("Id is read-only.");
-    }
+  public static Transaction convertToTransaction(TransactionRequest transactionRequest, User user,
+                                                 Category category, Long updatingTransactionId) {
+    validateTransactionRequest(transactionRequest);
+
+    return Transaction.builder()
+        .id(updatingTransactionId)
+        .description(transactionRequest.getDescription())
+        .withdraw(transactionRequest.getWithdraw())
+        .deposit(transactionRequest.getDeposit())
+        .transactionDatetime(transactionRequest.getTransactionDatetime())
+        .user(user)
+        .category(category)
+        .build();
+  }
+
+  private static void validateTransactionRequest(TransactionRequest transactionRequest) {
     if (transactionRequest.getDeposit() == null && transactionRequest.getWithdraw() == null) {
       throw new EzIllegalRequestException("There should be either deposit or withdraw.");
     }
@@ -62,14 +72,5 @@ public class TransactionRequest {
     if (transactionRequest.getWithdraw() != null && transactionRequest.getWithdraw().compareTo(BigDecimal.ZERO) < 0) {
       throw new EzIllegalRequestException("Deposit should be greater than 0.");
     }
-    return Transaction.builder()
-        .id(transactionId)
-        .description(transactionRequest.getDescription())
-        .withdraw(transactionRequest.getWithdraw())
-        .deposit(transactionRequest.getDeposit())
-        .transactionDatetime(transactionRequest.getTransactionDatetime())
-        .user(user)
-        .category(category)
-        .build();
   }
 }

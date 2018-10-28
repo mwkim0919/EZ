@@ -111,18 +111,6 @@ public class TransactionServiceTest extends DatabaseIntegrationTest {
     transactionService.updateTransactionForUser(transactionRequest, 1, 2);
   }
 
-  @Test(expected = EzReadOnlyException.class)
-  public void test_updateTransactionForUser_with_invalid_request() {
-    TransactionRequest transactionRequest = TransactionRequest.builder()
-        .id(100L)
-        .description("updated")
-        .withdraw(new BigDecimal("999.99"))
-        .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0))
-        .categoryId(1L)
-        .build();
-    transactionService.updateTransactionForUser(transactionRequest, 1, 1);
-  }
-
   @Test
   @DirtiesContext
   public void test_deleteTransactionForUser_success() {

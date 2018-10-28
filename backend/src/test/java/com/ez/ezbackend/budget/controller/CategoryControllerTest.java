@@ -1,7 +1,7 @@
 package com.ez.ezbackend.budget.controller;
 
 import com.ez.ezbackend.budget.entity.Category;
-import com.ez.ezbackend.budget.model.CategoryModel;
+import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.budget.service.CategoryService;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
@@ -63,15 +63,16 @@ public class CategoryControllerTest {
 
   @Test
   public void test_saveCategory_success() throws Exception {
-    CategoryModel categoryRequest = CategoryModel.builder()
+    CategoryRequest categoryRequest = CategoryRequest.builder()
         .name("Food")
         .categoryLimit(new BigDecimal("100.00"))
         .createDatetime(LocalDateTime.now())
         .build();
 
-    Category category = CategoryModel.convertToCategory(categoryRequest, new User(), 10L);
-    String json = JsonUtil.convertToJson(categoryRequest, CategoryModel.class);
-    when(categoryService.saveCategory(any(CategoryModel.class), any(long.class))).thenReturn(category);
+    Category category = CategoryRequest.convertToCategory(
+        categoryRequest, new User(), null, 10L);
+    String json = JsonUtil.convertToJson(categoryRequest, CategoryRequest.class);
+    when(categoryService.saveCategory(any(CategoryRequest.class), any(long.class))).thenReturn(category);
     mockMvc
         .perform(post("/api/users/1/categories")
             .content(json)
@@ -88,7 +89,7 @@ public class CategoryControllerTest {
 
   @Test
   public void test_saveCategory_failure() throws Exception {
-    when(categoryService.saveCategory(any(CategoryModel.class), any(long.class)))
+    when(categoryService.saveCategory(any(CategoryRequest.class), any(long.class)))
         .thenThrow(new EzReadOnlyException("Id should be read-only."));
     mockMvc
         .perform(post("/api/users/1/categories"))
@@ -98,14 +99,14 @@ public class CategoryControllerTest {
 
   @Test
   public void test_updateCategory_success() throws Exception {
-    CategoryModel categoryRequest = CategoryModel.builder()
+    CategoryRequest categoryRequest = CategoryRequest.builder()
         .name("Transportation Updated")
         .categoryLimit(new BigDecimal("100.00"))
         .createDatetime(LocalDateTime.now())
         .build();
-    Category transaction = CategoryModel.convertToCategory(categoryRequest, new User(), 1L);
-    String json = JsonUtil.convertToJson(categoryRequest, CategoryModel.class);
-    when(categoryService.updateCategory(any(CategoryModel.class), any(long.class), any(long.class)))
+    Category transaction = CategoryRequest.convertToCategory(categoryRequest, new User(), null, 1L);
+    String json = JsonUtil.convertToJson(categoryRequest, CategoryRequest.class);
+    when(categoryService.updateCategory(any(CategoryRequest.class), any(long.class), any(long.class)))
         .thenReturn(transaction);
     mockMvc
         .perform(put("/api/users/1/categories/1")
