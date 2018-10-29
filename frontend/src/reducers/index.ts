@@ -5,6 +5,7 @@ import enthusiasm from './enthusiasm';
 import todos from './todos';
 import auth from './auth';
 import ui from './ui';
+import transactions from './transactions';
 
 export default combineReducers({
   enthusiasm,
@@ -12,4 +13,5 @@ export default combineReducers({
   todos,
   auth,
   ui,
+  transactions,
 });

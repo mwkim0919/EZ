@@ -8,14 +8,13 @@ import configureStore from './store/configureStore';
 import { loadLocalStorageItem } from './helpers/localStorage';
 import { APP_STORAGE_KEY } from 'src/constants';
 import './index.css';
+import { parseJwt } from './helpers/parseJwt';
 
 const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
-console.log('Stored Data ', storedData);
-
-// TODO: What should we do if token is expired?
+// console.log('Parsed Token ', parseJwt(storedData.accessToken));
 const store = configureStore({
   auth: {
-    currentUser: storedData,
+    currentUser: parseJwt(storedData.accessToken),
   },
 });
 

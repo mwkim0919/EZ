@@ -13,7 +13,7 @@ interface State {
 }
 
 export default class TransactionForm extends React.Component<Props, State> {
-  addTransactionFormItem(e) {
+  addTransactionFormItem(e: any) {
     e.preventDefault();
   }
 

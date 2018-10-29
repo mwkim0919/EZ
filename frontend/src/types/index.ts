@@ -10,6 +10,7 @@ export interface AppState {
   enthusiasm: Enthusiasm;
   planner: {};
   todos: TodoApp;
+  transactions: any;
   // TODO: Change this
   auth: any;
 }
