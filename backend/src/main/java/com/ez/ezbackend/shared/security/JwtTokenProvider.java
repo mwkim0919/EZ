@@ -41,6 +41,8 @@ public class JwtTokenProvider {
         .compact();
     return JwtAuthenticationResponse.builder()
         .accessToken(accessToken)
+        .userId(userPrincipal.getId())
+        .email(userPrincipal.getUsername())
         .issueDate(issueDate)
         .expiryDate(expiryDate)
         .build();

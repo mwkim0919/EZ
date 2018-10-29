@@ -79,6 +79,8 @@ public class AuthenticationControllerTest {
         .thenReturn(new UsernamePasswordAuthenticationToken("principal", "credentials"));
     JwtAuthenticationResponse jwtResponse = JwtAuthenticationResponse.builder()
         .accessToken("thisismytoken")
+        .userId(1L)
+        .email("test@test.com")
         .issueDate(new Date())
         .expiryDate(new Date())
         .build();
@@ -96,6 +98,8 @@ public class AuthenticationControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.accessToken").value("thisismytoken"))
+        .andExpect(jsonPath("$.userId").value(1L))
+        .andExpect(jsonPath("$.email").value("test@test.com"))
         .andExpect(jsonPath("$.issueDate").exists())
         .andExpect(jsonPath("$.expiryDate").exists());
   }

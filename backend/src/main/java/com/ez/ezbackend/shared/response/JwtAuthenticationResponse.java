@@ -12,6 +12,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class JwtAuthenticationResponse {
   private String accessToken;
+  private Long userId;
+  private String email;
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private Date issueDate;
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

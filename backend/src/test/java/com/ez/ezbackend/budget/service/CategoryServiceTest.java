@@ -28,14 +28,14 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test
   public void test_getSubcategories() {
-    List<Category> subCategories = categoryService.getSubcategories(1L, 3L);
+    List<Category> subCategories = categoryService.getSubcategories(2L, 1L);
     assertThat(subCategories).hasSize(2);
   }
 
   @Test
   public void test_getSubcategories_empty() {
-    List<Category> categoryList = categoryService.getSubcategories(2L, 3L);
-    assertThat(categoryList).hasSize(0);
+    List<Category> categoryList = categoryService.getSubcategories(2L, 1L);
+    assertThat(categoryList).hasSize(2);
   }
 
   @Test(expected = EzNotFoundException.class)
@@ -50,13 +50,13 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_getSubcategories_invalid_ownership() {
-    categoryService.getSubcategories(1L, 1L);
+    categoryService.getSubcategories(1L, 2L);
   }
 
   @Test
   public void test_getAllCategoriesForUser() {
-    List<Category> categoryList = categoryService.getAllCategoriesForUser(3L);
-    assertThat(categoryList).hasSize(3);
+    List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
+    assertThat(categoryList).hasSize(9);
   }
 
   @Test(expected = EzNotFoundException.class)
@@ -71,9 +71,10 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
         .name("Food")
         .categoryLimit(new BigDecimal("10000"))
         .build();
-    Category savedCategory = categoryService.saveCategories(Collections.singletonList(category), 3L).get(0);
-    assertThat(savedCategory.getId()).isEqualTo(7L);
+    Category savedCategory = categoryService.saveCategories(Collections.singletonList(category), 2L).get(0);
+    assertThat(savedCategory.getId()).isNotNull();
     assertThat(savedCategory.getParentCategory()).isNull();
+    assertThat(savedCategory.getName()).isEqualTo("Food");
     assertThat(savedCategory.getCategoryLimit()).isEqualTo("10000");
   }
 
@@ -90,9 +91,9 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
         .name(category.getName())
         .categoryLimit(new BigDecimal("5500.00"))
         .build();
-    category = categoryService.updateCategory(categoryRequest, 1L, 3L);
+    category = categoryService.updateCategory(categoryRequest, 1L, 1L);
     assertThat(category.getCategoryLimit()).isEqualTo("5500.00");
-    assertThat(category.getName()).isEqualTo("Transportation");
+    assertThat(category.getName()).isEqualTo("TRANSPORTATION");
   }
 
   @Test(expected = EzNotFoundException.class)
@@ -107,22 +108,17 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_updateCategory_invalid_ownership() {
-    categoryService.updateCategory(new CategoryRequest(), 1L, 1L);
+    categoryService.updateCategory(new CategoryRequest(), 1L, 2L);
   }
 
+  // TODO: Make test cases for deleting categories that are associated to transactions.
   @Test
   @DirtiesContext
   public void test_deleteCategories() {
-    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L));
-    categoryService.deleteCategories(ids, 3L);
-    List<Category> categoryList = categoryService.getAllCategoriesForUser(3L);
-    assertThat(categoryList).hasSize(1);
-  }
-
-  public void test_deleteCategories_empty_delete() {
-    categoryService.deleteCategories(Collections.emptySet(), 3L);
-    List<Category> categoryList = categoryService.getAllCategoriesForUser(3L);
-    assertThat(categoryList).hasSize(3);
+    Set<Long> ids = new HashSet<>(Collections.singletonList(8L));
+    categoryService.deleteCategories(ids, 1L);
+    List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
+    assertThat(categoryList).hasSize(8);
   }
 
   @Test(expected = EzNotFoundException.class)
@@ -133,13 +129,12 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_deleteCategories_no_categoryId() {
-    categoryService.deleteCategories(Collections.emptySet(), 100L);
+    categoryService.deleteCategories(Collections.emptySet(), 1L);
   }
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_deleteCategories_invalid_categoryIds() {
-    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L, 4L));
-    categoryService.deleteCategories(ids, 3L);
+    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L, 14L));
+    categoryService.deleteCategories(ids, 1L);
   }
-
 }

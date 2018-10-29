@@ -51,7 +51,7 @@ public class CategoryRequest {
   }
 
   private static void validateCategoryRequest(CategoryRequest categoryRequest) {
-    if (categoryRequest.getCategoryLimit().compareTo(BigDecimal.ZERO) < 0) {
+    if (categoryRequest.getCategoryLimit() != null && categoryRequest.getCategoryLimit().compareTo(BigDecimal.ZERO) < 0) {
       throw new EzIllegalRequestException("Category limit should be greater than 0.");
     }
   }

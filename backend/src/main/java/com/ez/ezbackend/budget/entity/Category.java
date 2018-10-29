@@ -34,6 +34,7 @@ public class Category {
   @Column(name = "category_limit", precision = 10, scale = 2)
   private BigDecimal categoryLimit;
 
+  // TODO: need to cascade delete when parentCategory is deleted.
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_category_id")
   private Category parentCategory;

@@ -26,7 +26,7 @@ public class TransactionServiceTest extends DatabaseIntegrationTest {
   @Test
   public void test_getTransactionsForUser_success() {
     List<Transaction> transactions = transactionService.getTransactionsForUser(1L);
-    assertThat(transactions).hasSize(2);
+    assertThat(transactions).hasSize(25);
     transactions.forEach(transaction -> assertThat(transaction.getUser().getId()).isEqualTo(1L));
   }
 
