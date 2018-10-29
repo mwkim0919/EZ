@@ -4,9 +4,7 @@ import com.ez.ezbackend.budget.entity.Category;
 import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.budget.response.CategoryResponse;
 import com.ez.ezbackend.budget.service.CategoryService;
-import com.ez.ezbackend.shared.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,11 +40,10 @@ public class CategoryController {
   }
 
   @PostMapping(GET_OR_CREATE_CATEGORY_URI)
-  public ResponseEntity<CategoryResponse> create(@PathVariable("userId") long userId, @RequestBody CategoryRequest categoryRequest) {
-    Category created = categoryService.saveCategory(categoryRequest, userId);
-    CategoryResponse categoryResponse = CategoryResponse.convertFromCategory(created);
-    URI location = ControllerUtil.createUri(categoryResponse.getId(), "users/" + userId + "/categories/{id}");
-    return ResponseEntity.created(location).body(categoryResponse);
+  public ResponseEntity<List<CategoryResponse>> create(@PathVariable("userId") long userId, @RequestBody List<CategoryRequest> categoryRequests) {
+    List<Category> categories = categoryService.saveCategories(categoryRequests, userId);
+    List<CategoryResponse> categoryResponse = categories.stream().map(CategoryResponse::convertFromCategory).collect(Collectors.toList());
+    return ResponseEntity.ok(categoryResponse);
   }
 
   @PutMapping(UPDATE_OR_DELETE_CATEGORY_URI)
@@ -57,8 +54,8 @@ public class CategoryController {
   }
 
   @DeleteMapping(UPDATE_OR_DELETE_CATEGORY_URI)
-  public ResponseEntity delete(@PathVariable("userId") long userId, @PathVariable("categoryId") long categoryId) {
-    categoryService.deleteCategory(categoryId, userId);
+  public ResponseEntity delete(@PathVariable("userId") long userId, @PathVariable("categoryId") Set<Long> categoryIds) {
+    categoryService.deleteCategories(categoryIds, userId);
     return ResponseEntity.accepted().build();
   }
 }

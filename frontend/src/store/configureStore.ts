@@ -7,7 +7,7 @@ import rootReducer from '../reducers';
 import rootSaga from '../sagas';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 // import * as Immutable from 'immutable';
-// import { StoreState } from '../types';
+// import { AppState } from '../types';
 
 export const history = createBrowserHistory();
 
@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-// const initialState: StoreState = Immutable.Map({
+// const initialState: AppState = Immutable.Map({
 //   enthusiasm: Immutable.Map(),
 //   planner: {},
 //   todos: {},

@@ -5,9 +5,6 @@
 - https://vscodecandothat.com/
 - https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync&WT.mc_id=vscodecandothat-dotcom-team
 - https://code.visualstudio.com/blogs/2017/11/15/live-share
-
-- Add to tslint "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"]
-- Add type Optional<T> = T | undefined
 - type Dictionary<T> = { [key: string]: T | undefined };
 
 ## Roadmap

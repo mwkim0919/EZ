@@ -15,7 +15,7 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-console": false,
-    "no-any": false,
+    "no-any": true,
     "no-null-keyword": true,
     "jsx-boolean-value": false,
     "jsx-no-lambda": false,

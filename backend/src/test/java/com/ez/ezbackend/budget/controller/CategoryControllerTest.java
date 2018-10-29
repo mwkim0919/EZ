@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -69,27 +70,27 @@ public class CategoryControllerTest {
         .createDatetime(LocalDateTime.now())
         .build();
 
-    Category category = CategoryRequest.convertToCategory(
-        categoryRequest, new User(), null, 10L);
-    String json = JsonUtil.convertToJson(categoryRequest, CategoryRequest.class);
-    when(categoryService.saveCategory(any(CategoryRequest.class), any(long.class))).thenReturn(category);
+    List<Category> categories = Collections.singletonList(CategoryRequest.convertToCategory(
+        categoryRequest, new User(), null, 10L));
+    String json = JsonUtil.convertToJson(Collections.singletonList(categoryRequest), List.class);
+    when(categoryService.saveCategories(any(), any(long.class))).thenReturn(categories);
     mockMvc
         .perform(post("/api/users/1/categories")
             .content(json)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").value("10"))
-        .andExpect(jsonPath("$.name").value("Food"))
-        .andExpect(jsonPath("$.categoryLimit").value("100.00"))
-        .andExpect(jsonPath("$.parentCategory").doesNotExist())
-        .andExpect(jsonPath("$.createDatetime").exists());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("[0].id").value("10"))
+        .andExpect(jsonPath("[0].name").value("Food"))
+        .andExpect(jsonPath("[0].categoryLimit").value("100.00"))
+        .andExpect(jsonPath("[0].parentCategory").doesNotExist())
+        .andExpect(jsonPath("[0].createDatetime").exists());
   }
 
   @Test
   public void test_saveCategory_failure() throws Exception {
-    when(categoryService.saveCategory(any(CategoryRequest.class), any(long.class)))
+    when(categoryService.saveCategories(any(), any(long.class)))
         .thenThrow(new EzReadOnlyException("Id should be read-only."));
     mockMvc
         .perform(post("/api/users/1/categories"))
@@ -123,8 +124,8 @@ public class CategoryControllerTest {
   }
 
   @Test
-  public void test_deleteTransactionForUser_success() throws Exception {
-    doNothing().when(categoryService).deleteCategory(any(long.class), any(long.class));
-    mockMvc.perform(delete("/api/users/1/categories/1")).andExpect(status().isAccepted());
+  public void test_deleteCategoryForUser_success() throws Exception {
+    doNothing().when(categoryService).deleteCategories(any(), any(long.class));
+    mockMvc.perform(delete("/api/users/1/categories/1,2,3,4")).andExpect(status().isAccepted());
   }
 }

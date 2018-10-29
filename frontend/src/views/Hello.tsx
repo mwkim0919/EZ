@@ -1,10 +1,10 @@
 import Hello from '../components/Hello/Hello';
 import * as actions from '../actions';
-import { StoreState } from '../types';
+import { AppState } from '../types';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-export function mapStateToProps(state: StoreState) {
+export function mapStateToProps(state: AppState) {
   const {
     enthusiasm: { enthusiasmLevel, languageName },
   } = state;

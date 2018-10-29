@@ -6,9 +6,10 @@ export interface Enthusiasm {
 }
 
 // This is the type of our redux store
-export interface StoreState {
+export interface AppState {
   enthusiasm: Enthusiasm;
   planner: {};
   todos: TodoApp;
+  // TODO: Change this
   auth: any;
 }

@@ -2,8 +2,8 @@ package com.ez.ezbackend.budget.service;
 
 import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.budget.entity.Category;
-import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.budget.repository.CategoryRepository;
+import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
 import org.junit.Test;
@@ -11,7 +11,11 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,20 +66,20 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test
   @DirtiesContext
-  public void test_saveCategory() {
+  public void test_saveCategories() {
     CategoryRequest category = CategoryRequest.builder()
         .name("Food")
         .categoryLimit(new BigDecimal("10000"))
         .build();
-    Category saved = categoryService.saveCategory(category, 3L);
-    assertThat(saved.getId()).isEqualTo(7L);
-    assertThat(saved.getParentCategory()).isNull();
-    assertThat(saved.getCategoryLimit()).isEqualTo("10000");
+    Category savedCategory = categoryService.saveCategories(Collections.singletonList(category), 3L).get(0);
+    assertThat(savedCategory.getId()).isEqualTo(7L);
+    assertThat(savedCategory.getParentCategory()).isNull();
+    assertThat(savedCategory.getCategoryLimit()).isEqualTo("10000");
   }
 
   @Test(expected = EzNotFoundException.class)
-  public void test_saveCategory_invalid_userId() {
-    categoryService.saveCategory(new CategoryRequest(), 4L);
+  public void test_saveCategories_invalid_userId() {
+    categoryService.saveCategories(Collections.singletonList(new CategoryRequest()), 4L);
   }
 
   @Test
@@ -108,24 +112,34 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test
   @DirtiesContext
-  public void test_deleteCategory() {
-    categoryService.deleteCategory(3L, 3L);
+  public void test_deleteCategories() {
+    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L));
+    categoryService.deleteCategories(ids, 3L);
     List<Category> categoryList = categoryService.getAllCategoriesForUser(3L);
-    assertThat(categoryList).hasSize(2);
+    assertThat(categoryList).hasSize(1);
+  }
+
+  public void test_deleteCategories_empty_delete() {
+    categoryService.deleteCategories(Collections.emptySet(), 3L);
+    List<Category> categoryList = categoryService.getAllCategoriesForUser(3L);
+    assertThat(categoryList).hasSize(3);
   }
 
   @Test(expected = EzNotFoundException.class)
-  public void test_deleteCategory_invalid_categoryId() {
-    categoryService.deleteCategory(100L, 3L);
-  }
-
-  @Test(expected = EzNotFoundException.class)
-  public void test_deleteCategory_invalid_userId() {
-    categoryService.deleteCategory(1L, 100L);
+  public void test_deleteCategories_invalid_userId() {
+    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L));
+    categoryService.deleteCategories(ids, 100L);
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void test_deleteCategory_invalid_ownership() {
-    categoryService.deleteCategory(1L, 1L);
+  public void test_deleteCategories_no_categoryId() {
+    categoryService.deleteCategories(Collections.emptySet(), 100L);
   }
+
+  @Test(expected = EzIllegalRequestException.class)
+  public void test_deleteCategories_invalid_categoryIds() {
+    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L, 4L));
+    categoryService.deleteCategories(ids, 3L);
+  }
+
 }

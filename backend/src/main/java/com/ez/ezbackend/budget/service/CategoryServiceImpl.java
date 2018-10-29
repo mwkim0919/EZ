@@ -1,8 +1,8 @@
 package com.ez.ezbackend.budget.service;
 
 import com.ez.ezbackend.budget.entity.Category;
-import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.budget.repository.CategoryRepository;
+import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -42,10 +44,13 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category saveCategory(CategoryRequest categoryRequest, long userId) {
+  public List<Category> saveCategories(List<CategoryRequest> categoryRequests, long userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    return categoryRepository.saveAndFlush(CategoryRequest.convertToCategory(categoryRequest, user));
+    List<Category> categories = categoryRequests.stream()
+        .map(categoryRequest -> CategoryRequest.convertToCategory(categoryRequest, user))
+        .collect(Collectors.toList());
+    return categoryRepository.saveAll(categories);
   }
 
   @Override
@@ -62,14 +67,16 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public void deleteCategory(long categoryId, long userId) {
-    userRepository.findById(userId)
-        .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    Category category = categoryRepository.findById(categoryId)
-        .orElseThrow(() -> new EzNotFoundException("Category with ID: " + categoryId + " not found."));
-    if (category.getUser().getId() != userId) {
-      throw new EzIllegalRequestException("User " + userId + " does not own category with ID:" + categoryId);
+  public void deleteCategories(Set<Long> categoryIds, long userId) {
+    if (categoryIds.isEmpty()) {
+      throw new EzIllegalRequestException("There is no category to be delete.");
     }
-    categoryRepository.delete(category);
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
+    List<Category> categories = categoryRepository.findCategoriesByIdsAndUser(categoryIds, user);
+    if (categoryIds.size() != categories.size()) {
+      throw new EzIllegalRequestException("Some categories are not found or cannot be deleted.");
+    }
+    categoryRepository.deleteCategoriesByUser(categories, user);
   }
 }

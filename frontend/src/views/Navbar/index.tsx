@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { StoreState } from '../../types';
+import { AppState } from '../../types';
 import { Dispatch, bindActionCreators } from 'redux';
 import { logout } from 'src/actions/auth';
 
@@ -71,7 +71,7 @@ class Navbar extends React.Component<any> {
   }
 }
 
-const mapStateToProps = (state: StoreState) => {
+const mapStateToProps = (state: AppState) => {
   return {
     currentUser: state.auth.currentUser,
   };

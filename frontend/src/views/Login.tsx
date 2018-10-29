@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Formik, FormikProps, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
-import { StoreState } from '../types';
+import { AppState } from '../types';
 import { bindActionCreators, Dispatch } from 'redux';
 import { login } from '../actions/auth';
 import { Button } from '../components/Button';
@@ -122,7 +122,7 @@ class Login extends React.Component<any> {
   }
 }
 
-const mapStateToProps = (state: StoreState) => ({
+const mapStateToProps = (state: AppState) => ({
   auth: state.auth,
 });
 const mapDispatchToProps = (dispatch: Dispatch) => {

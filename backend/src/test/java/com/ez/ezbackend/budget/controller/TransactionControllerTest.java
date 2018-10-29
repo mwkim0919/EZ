@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -69,21 +70,23 @@ public class TransactionControllerTest {
         .withdraw(new BigDecimal("100.00"))
         .transactionDatetime(LocalDateTime.now())
         .build();
+    List<TransactionRequest> transactionRequests = Collections.singletonList(transactionRequest);
     Transaction transaction = TransactionRequest.convertToTransaction(transactionRequest, new User(), new Category(), 1L);
-    String json = JsonUtil.convertToJson(transactionRequest, TransactionRequest.class);
-    when(transactionService.saveTransactionForUser(any(TransactionRequest.class), any(long.class))).thenReturn(transaction);
+    List<Transaction> transactions = Collections.singletonList(transaction);
+    String json = JsonUtil.convertToJson(transactionRequests, List.class);
+    when(transactionService.saveTransactionsForUser(any(), any(long.class))).thenReturn(transactions);
     mockMvc
         .perform(post("/api/users/1/transactions")
             .content(json)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").value("1"))
-        .andExpect(jsonPath("$.description").value("test"))
-        .andExpect(jsonPath("$.withdraw").value("100.00"))
-        .andExpect(jsonPath("$.deposit").doesNotExist())
-        .andExpect(jsonPath("$.transactionDatetime").exists());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("[0].id").value("1"))
+        .andExpect(jsonPath("[0].description").value("test"))
+        .andExpect(jsonPath("[0].withdraw").value("100.00"))
+        .andExpect(jsonPath("[0].deposit").doesNotExist())
+        .andExpect(jsonPath("[0].transactionDatetime").exists());
   }
 
   @Test
@@ -93,8 +96,9 @@ public class TransactionControllerTest {
         .withdraw(new BigDecimal("100.00"))
         .transactionDatetime(LocalDateTime.now())
         .build();
-    String json = JsonUtil.convertToJson(transactionRequest, TransactionRequest.class);
-    when(transactionService.saveTransactionForUser(any(TransactionRequest.class), any(long.class)))
+    List<TransactionRequest> transactionRequests = Collections.singletonList(transactionRequest);
+    String json = JsonUtil.convertToJson(transactionRequests, List.class);
+    when(transactionService.saveTransactionsForUser(any(), any(long.class)))
         .thenThrow(new EzReadOnlyException("Id should be read-only."));
     mockMvc
         .perform(post("/api/users/1/transactions")
@@ -132,7 +136,7 @@ public class TransactionControllerTest {
 
   @Test
   public void test_deleteTransactionForUser_success() throws Exception {
-    doNothing().when(transactionService).deleteTransactionForUser(any(long.class), any(long.class));
-    mockMvc.perform(delete("/api/users/1/transactions/1")).andExpect(status().isAccepted());
+    doNothing().when(transactionService).deleteTransactionsForUser(any(), any(long.class));
+    mockMvc.perform(delete("/api/users/1/transactions/1,2,3,3")).andExpect(status().isAccepted());
   }
 }

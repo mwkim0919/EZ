@@ -5,7 +5,7 @@ import { Formik, FormikProps, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { signUp } from 'src/actions/auth';
 import { Button } from 'src/components/Button';
-import { StoreState } from '../types';
+import { AppState } from '../types';
 
 interface SignUpFormValues {
   email: string;
@@ -129,7 +129,7 @@ class SignUp extends React.Component<any> {
   }
 }
 
-const mapStateToProps = (state: StoreState) => ({ auth: state.auth });
+const mapStateToProps = (state: AppState) => ({ auth: state.auth });
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
     {

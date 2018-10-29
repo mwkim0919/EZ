@@ -1,17 +1,13 @@
 package com.ez.ezbackend.budget.repository;
 
 import com.ez.ezbackend.DatabaseIntegrationTest;
-import com.ez.ezbackend.budget.entity.Category;
 import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.repository.UserRepository;
 import org.junit.Test;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 

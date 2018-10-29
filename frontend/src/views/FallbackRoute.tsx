@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { StoreState } from '../types';
+import { AppState } from '../types';
 
 // This is the component that determines at render time what to do
 const Switch = (props: any) => {
@@ -13,7 +13,7 @@ const Switch = (props: any) => {
   }
 };
 
-const ConnectedSwitch = connect((state: StoreState) => ({
+const ConnectedSwitch = connect((state: AppState) => ({
   currentUser: state.auth.currentUser,
 }))(Switch);
 
@@ -22,7 +22,7 @@ const getFallbackComponent = (
   Component: React.ComponentClass,
   FallbackComponent: React.ComponentClass
 ) => {
-  return (props: { auth: any }) => (
+  return (props: any) => (
     <ConnectedSwitch
       {...props}
       FallbackComponent={FallbackComponent}

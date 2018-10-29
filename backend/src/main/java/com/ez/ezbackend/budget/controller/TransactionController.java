@@ -4,7 +4,6 @@ import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.budget.request.TransactionRequest;
 import com.ez.ezbackend.budget.response.TransactionResponse;
 import com.ez.ezbackend.budget.service.TransactionService;
-import com.ez.ezbackend.shared.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,13 +46,15 @@ public class TransactionController {
   }
 
   @PostMapping(CREATE_TRANSACTION_URI)
-  public ResponseEntity<TransactionResponse> saveTransactionForUser(
+  public ResponseEntity<List<TransactionResponse>> saveTransactionForUser(
       @PathVariable("userId") long userId,
-      @RequestBody TransactionRequest transactionRequest) {
-    Transaction createdTransaction = transactionService.saveTransactionForUser(transactionRequest, userId);
-    TransactionResponse transactionResponse = TransactionResponse.convertFromTransaction(createdTransaction);
-    URI location = ControllerUtil.createUri(transactionResponse.getId(), "users/" + userId + "/transactions/{id}");
-    return ResponseEntity.created(location).body(transactionResponse);
+      @RequestBody List<TransactionRequest> transactionRequests) {
+    List<Transaction> createdTransactions =
+        transactionService.saveTransactionsForUser(transactionRequests, userId);
+    List<TransactionResponse> transactionResponses = createdTransactions.stream()
+        .map(TransactionResponse::convertFromTransaction)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(transactionResponses);
   }
 
   @PutMapping(UPDATE_DELETE_TRANSACTION_URI)
@@ -69,8 +70,8 @@ public class TransactionController {
   @DeleteMapping(UPDATE_DELETE_TRANSACTION_URI)
   public ResponseEntity deleteTransactionForUser(
       @PathVariable("userId") long userId,
-      @PathVariable("transactionId") long transactionId) {
-    transactionService.deleteTransactionForUser(transactionId, userId);
+      @PathVariable("transactionId") Set<Long> transactionIds) {
+    transactionService.deleteTransactionsForUser(transactionIds, userId);
     return ResponseEntity.accepted().build();
   }
 }
