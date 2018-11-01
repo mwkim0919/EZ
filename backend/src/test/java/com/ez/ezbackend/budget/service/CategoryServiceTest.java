@@ -2,7 +2,9 @@ package com.ez.ezbackend.budget.service;
 
 import com.ez.ezbackend.DatabaseIntegrationTest;
 import com.ez.ezbackend.budget.entity.Category;
+import com.ez.ezbackend.budget.entity.Transaction;
 import com.ez.ezbackend.budget.repository.CategoryRepository;
+import com.ez.ezbackend.budget.repository.TransactionRepository;
 import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
@@ -25,6 +27,9 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Inject
   private CategoryRepository categoryRepository;
+
+  @Inject
+  private TransactionRepository transactionRepository;
 
   @Test
   public void test_getSubcategories() {
@@ -111,14 +116,35 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
     categoryService.updateCategory(new CategoryRequest(), 1L, 2L);
   }
 
-  // TODO: Make test cases for deleting categories that are associated to transactions.
   @Test
   @DirtiesContext
-  public void test_deleteCategories() {
+  public void test_deleteCategories_with_no_transaction() {
     Set<Long> ids = new HashSet<>(Collections.singletonList(8L));
     categoryService.deleteCategories(ids, 1L);
     List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
     assertThat(categoryList).hasSize(8);
+  }
+
+  @Test
+  @DirtiesContext
+  public void test_deleteCategories_with_transactions() {
+    Set<Long> ids = new HashSet<>(Collections.singletonList(1L));
+    categoryService.deleteCategories(ids, 1L);
+    List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
+    assertThat(categoryList).hasSize(8);
+    List<Transaction> transactions = transactionRepository.findByUserAndCategoryId(1L, 1L);
+    transactions.forEach(transaction -> assertThat(transaction.getCategory().getId()).isNotEqualTo(1L));
+  }
+
+  @Test
+  @DirtiesContext
+  public void test_deleteCategories_with_subcategories() {
+    Set<Long> ids = new HashSet<>(Collections.singletonList(2L));
+    categoryService.deleteCategories(ids, 1L);
+    List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
+    assertThat(categoryList).hasSize(6);
+    List<Transaction> transactions = transactionRepository.findByUserAndCategoryId(1L, 2L);
+    transactions.forEach(transaction -> assertThat(transaction.getCategory().getId()).isNotEqualTo(2L));
   }
 
   @Test(expected = EzNotFoundException.class)

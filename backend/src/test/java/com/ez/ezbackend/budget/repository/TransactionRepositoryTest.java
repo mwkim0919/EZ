@@ -23,7 +23,7 @@ public class TransactionRepositoryTest extends DatabaseIntegrationTest {
   @Transactional
   public void test_findByUserId() {
     List<Transaction> transactions = transactionRepository.findByUserId(1);
-    assertThat(transactions).hasSize(25);
+    assertThat(transactions).hasSize(26);
     transactions.forEach(transaction -> assertThat(transaction.getUser().getEmail()).isEqualTo("test@test.com"));
   }
 
@@ -32,8 +32,7 @@ public class TransactionRepositoryTest extends DatabaseIntegrationTest {
   public void test_findByUser() {
     Optional<User> user = userRepository.findById(1L);
     List<Transaction> transactions = transactionRepository.findByUser(user.get());
-    assertThat(transactions).hasSize(25);
+    assertThat(transactions).hasSize(26);
     transactions.forEach(transaction -> assertThat(transaction.getUser().getEmail()).isEqualTo("test@test.com"));
-    transactions.forEach(transaction -> assertThat(transaction.getCategory()).isNotNull());
   }
 }

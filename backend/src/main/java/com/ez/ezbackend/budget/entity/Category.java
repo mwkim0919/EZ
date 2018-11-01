@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,13 +36,14 @@ public class Category {
   @Column(name = "category_limit", precision = 10, scale = 2)
   private BigDecimal categoryLimit;
 
-  // TODO: need to cascade delete when parentCategory is deleted.
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_category_id")
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Category parentCategory;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private User user;
 
   @CreationTimestamp
