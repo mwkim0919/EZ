@@ -1,7 +1,6 @@
 package com.ez.ezbackend.budget.entity;
 
 import com.ez.ezbackend.shared.entity.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
