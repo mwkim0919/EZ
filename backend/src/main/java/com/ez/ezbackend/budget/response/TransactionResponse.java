@@ -41,8 +41,8 @@ public class TransactionResponse {
     Category category = transaction.getCategory();
     return TransactionResponse.builder()
         .id(transaction.getId())
-        .categoryId(category.getId())
-        .categoryName(category.getName())
+        .categoryId(category != null ? category.getId() : null)
+        .categoryName(category != null ? category.getName() : null)
         .description(transaction.getDescription())
         .withdraw(transaction.getWithdraw())
         .deposit(transaction.getDeposit())

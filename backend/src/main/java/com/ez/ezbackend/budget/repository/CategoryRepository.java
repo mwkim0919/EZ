@@ -22,5 +22,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
   @Modifying
   @Query("DELETE FROM Category c WHERE c IN :categories AND c.user = :user")
   void deleteCategoriesByUser(@Param("categories") List<Category> categories, @Param("user") User user);
-
 }

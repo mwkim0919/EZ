@@ -59,7 +59,6 @@ public class Transaction {
   private LocalDateTime createDatetime;
 
   @Column(name = "transaction_datetime", nullable = false)
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private LocalDateTime transactionDatetime;
 
   @Override

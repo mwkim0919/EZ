@@ -6,14 +6,14 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum DefaultCategory {
-  INCOME("INCOME"),
-  ENTERTAINMENT("ENTERTAINMENT"),
-  EDUCATION("EDUCATION"),
-  SHOPPING("SHOPPING"),
-  HOUSING("HOUSING"),
-  INVESTMENT("INVESTMENT"),
+  INCOME("Income"),
+  ENTERTAINMENT("Entertainment"),
+  EDUCATION("Education"),
+  SHOPPING("Shopping"),
+  HOUSING("Housing"),
+  INVESTMENT("Investment"),
   HEALTH_CARE("Health & Fitness"),
-  PERSONAL_CARE("PERSONAL_CARE"),
+  PERSONAL_CARE("Personal Care"),
   FOOD("Food & Dining"),
   TRANSPORTATION("Auto & Transport"),
   SAVING("Savings"),

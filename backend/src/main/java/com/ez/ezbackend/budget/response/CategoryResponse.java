@@ -22,18 +22,22 @@ public class CategoryResponse {
   private String name;
   @JsonSerialize(using = PriceJsonSerializer.class)
   private BigDecimal categoryLimit;
-  private Category parentCategory;
+  private CategoryResponse parentCategory;
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime createDatetime;
 
   public static CategoryResponse convertFromCategory(Category category) {
-    return CategoryResponse.builder()
-        .id(category.getId())
-        .name(category.getName())
-        .categoryLimit(category.getCategoryLimit())
-        .parentCategory(category.getParentCategory())
-        .createDatetime(category.getCreateDatetime())
-        .build();
+    if (category != null) {
+      return CategoryResponse.builder()
+          .id(category.getId())
+          .name(category.getName())
+          .categoryLimit(category.getCategoryLimit())
+          .parentCategory(convertFromCategory(category.getParentCategory()))
+          .createDatetime(category.getCreateDatetime())
+          .build();
+    } else {
+      return null;
+    }
   }
 }
