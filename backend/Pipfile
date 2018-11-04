@@ -8,6 +8,8 @@ pylava = "*"
 pylava-pylint = "*"
 mypy = "*"
 colorama = "*"
+"beautifulsoup4" = "*"
+tabulate = "*"
 
 [dev-packages]
 

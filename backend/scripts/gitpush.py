@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Create Google KMS Keyring and Key in Google Cloud."""
+"""Build and push the branch specified."""
 
 import argparse
 import subprocess

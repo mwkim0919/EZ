@@ -3,3 +3,5 @@ pycodestyle==2.3.1
 pydocstyle==2.1.1
 pylint==1.7.4
 colorama
+beautifulsoup4
+tabulate
