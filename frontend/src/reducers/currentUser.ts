@@ -7,37 +7,26 @@ import {
   SIGN_UP_ERROR,
   SIGN_UP_SUCCESS,
 } from '../constants';
+import { AnyAction } from 'redux';
+import { CurrentUser } from 'src/types';
 
-export interface User {
-  accessToken: string;
-}
+const initialState = {} as CurrentUser;
 
-export interface AuthState {
-  loading: boolean;
-  error: any;
-  currentUser: User | undefined;
-}
-
-const initialState: AuthState = {
-  loading: false,
-  error: undefined,
-  currentUser: undefined,
-};
-
-export default (state = initialState, action: any) => {
+// TODO: Refactor loading, error state
+export default (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case LOGIN_REQUEST:
       console.log('Login request ', action);
       return { ...state, loading: true };
     case LOGIN_SUCCESS:
       console.log('Login success ', action);
-      return { ...state, loading: false, currentUser: action.payload };
+      return { ...state, loading: false, ...action.payload };
     case LOGIN_ERROR:
       console.log('Login error ', action);
       return { ...state, loading: false, error: action.error.data.message };
     case LOGOUT:
       console.log('Logout ', action);
-      return { ...state, loading: false, currentUser: undefined };
+      return { loading: false };
     case SIGN_UP_REQUEST:
       console.log('Sign up Request');
       return { ...state, loading: true };

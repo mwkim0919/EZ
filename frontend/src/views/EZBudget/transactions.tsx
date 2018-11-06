@@ -9,10 +9,11 @@ const mapStateToProps = (state: AppState) => {
     transactions: state.transactions,
   };
 };
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return bindActionCreators({ fetchTransactions }, dispatch);
-};
+// const mapDispatchToProps = (dispatch: Dispatch) => {
+//   return bindActionCreators({ fetchTransactions }, dispatch);
+// };
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  // mapDispatchToProps
+  null
 )(TransactionList);

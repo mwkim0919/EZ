@@ -13,7 +13,7 @@ import getFallbackComponent from './views/FallbackRoute';
 
 // If user isn't signed in, we'll render the second component
 const EZDashboardFallback = getFallbackComponent(EZDashboard, Login);
-// const EZBudgetFallback = getFallbackComponent(EZBudget, Login);
+const EZBudgetFallback = getFallbackComponent(EZBudget, Login);
 const EZPlannerFallback = getFallbackComponent(EZPlanner, Login);
 const EZTodoFallback = getFallbackComponent(EZTodo, Login);
 
@@ -25,8 +25,8 @@ export default () => {
         {/* Use non-fallback route if you don't want to authenticate */}
         {/* <Route exact path="/" component={EZDashboard} /> */}
         <Route exact path="/" component={EZDashboardFallback} />
-        <Route path="/budget" component={EZBudget} />
-        {/* <Route path="/budget" component={EZBudgetFallback} /> */}
+        {/* <Route path="/budget" component={EZBudget} /> */}
+        <Route path="/budget" component={EZBudgetFallback} />
         {/* <Route path="/planner" component={EZPlanner} /> */}
         <Route path="/planner" component={EZPlannerFallback} />
         {/* <Route path="/todo" component={EZTodo} /> */}

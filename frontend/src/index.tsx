@@ -9,13 +9,11 @@ import { loadLocalStorageItem } from './helpers/localStorage';
 import { APP_STORAGE_KEY } from 'src/constants';
 import './index.css';
 import { parseJwt } from './helpers/parseJwt';
+import { AppState } from './types';
 
 const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
-// console.log('Parsed Token ', parseJwt(storedData.accessToken));
 const store = configureStore({
-  auth: {
-    currentUser: parseJwt(storedData.accessToken),
-  },
+  currentUser: storedData || {},
 });
 
 ReactDOM.render(

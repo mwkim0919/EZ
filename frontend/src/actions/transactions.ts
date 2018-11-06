@@ -1,23 +1,16 @@
-// import * as constants from '../constants';
 import { Dispatch } from 'redux';
 import { AppState } from 'src/types';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { loadLocalStorageItem } from 'src/helpers/localStorage';
+import { APP_STORAGE_KEY } from 'src/constants';
 
-// Todo action creators
-// export const fetchTransactions = () => ({
-//   type: constants.FETCH_TRANSACTIONS,
-//   payload: { completed: false }
-// });
-
-// /api/users/2/transactions
 export const fetchTransactions = () => {
   return (dispatch: Dispatch, getState: () => AppState) => {
     dispatch({ type: 'FETCH_TRANSACTIONS_REQUEST' });
-    const token =
-      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTQwNzcyNzQ4LCJleHAiOjE1NDA4NTkxNDh9.XwdnP5MTJZP_DWpxwkANGYYxcWivTHnfrzLEPZMozV8onmn2aF38NnZ9nDiE--T0YaRAyHcQ5JubV-I8TNMUSg';
+    const { accessToken, userId } = loadLocalStorageItem(APP_STORAGE_KEY);
     return axios
-      .get('/api/users/2/transactions', {
-        headers: { Authorization: 'Bearer ' + token },
+      .get(`/api/users/${userId}/transactions`, {
+        headers: { Authorization: 'Bearer ' + accessToken },
       })
       .then(
         (response: AxiosResponse) => {

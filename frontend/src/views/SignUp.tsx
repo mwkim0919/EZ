@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from 'redux';
 import { Formik, FormikProps, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { signUp } from 'src/actions/auth';
@@ -27,29 +26,10 @@ class SignUp extends React.Component<any> {
   // TODO: Display ajax error message...
   render() {
     // console.log('This props ', this.props);
-    const { loading, error } = this.props.auth;
-    // TODO: Create generic loading container
-    const Loading = () => {
-      return <div>Loading...</div>;
-    };
-    // TODO: Create generic error message container
-    // const Error = (props: any) => {
-    //   return (
-    //     <div>
-    //       <h6>Error</h6>
-    //       <div>Message: {props.children}</div>
-    //     </div>
-    //   );
-    // };
-
-    if (loading) {
-      return <Loading />;
-    }
 
     return (
       <div>
         <h1>Sign up form</h1>
-        {error && <div>Error: {error}</div>}
         <Formik
           initialValues={{
             email: '',
@@ -129,14 +109,11 @@ class SignUp extends React.Component<any> {
   }
 }
 
-const mapStateToProps = (state: AppState) => ({ auth: state.auth });
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return bindActionCreators(
-    {
-      signUp,
-    },
-    dispatch
-  );
+const mapStateToProps = (state: AppState) => ({
+  currentUser: state.currentUser,
+});
+const mapDispatchToProps = {
+  signUp,
 };
 export default connect(
   mapStateToProps,

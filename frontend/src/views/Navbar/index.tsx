@@ -32,7 +32,8 @@ class Navbar extends React.Component<any> {
               </Link>
             </li> */}
             <li className="nav-item dropdown">
-              <Link to="/budget"
+              <Link
+                to="/budget"
                 className="nav-link dropdown-toggle"
                 id="navbarDropdown"
                 role="button"
@@ -57,7 +58,7 @@ class Navbar extends React.Component<any> {
             </li>
           </ul>
           <div className="my-2 my-lg-0">
-            {this.props.currentUser && (
+            {this.props.currentUser.email && (
               <div onClick={this.props.logout}>
                 <button className="" color="red">
                   Logout
@@ -73,7 +74,7 @@ class Navbar extends React.Component<any> {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    currentUser: state.auth.currentUser,
+    currentUser: state.currentUser,
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: any) => {

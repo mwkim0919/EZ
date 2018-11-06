@@ -26,10 +26,10 @@ export function* authenticate(email: string, password: string) {
       email,
       password,
     });
-    yield put({ type: LOGIN_SUCCESS, payload: data });
 
     // Saves to token to localStorage
     yield call(saveLocalStorageItem, APP_STORAGE_KEY, data);
+    yield put({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {
     // https://github.com/axios/axios/issues/960
     console.log('SAGA: SignIn Error ', error.response);

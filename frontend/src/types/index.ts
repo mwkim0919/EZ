@@ -5,12 +5,15 @@ export interface Enthusiasm {
   enthusiasmLevel: number;
 }
 
+export interface CurrentUser {
+  email: string;
+}
+
 // This is the type of our redux store
 export interface AppState {
   enthusiasm: Enthusiasm;
   planner: {};
   todos: TodoApp;
   transactions: any;
-  // TODO: Change this
-  auth: any;
+  currentUser: CurrentUser;
 }
