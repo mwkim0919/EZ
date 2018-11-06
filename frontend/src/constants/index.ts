@@ -1,11 +1,15 @@
 // APPLICATION DATA
 export const APP_STORAGE_KEY = 'EZ_APP';
 
-// ENDPOINT
+// API
 const AUTH_API_PATH = '/api/auth';
 
 export const LOGIN_URL = AUTH_API_PATH + '/signin';
 export const SIGN_UP_URL = AUTH_API_PATH + '/signup';
+
+export const REQUEST = 'REQUEST';
+export const SUCCESS = 'SUCCESS';
+export const FAILURE = 'FAILURE';
 
 // EXAMPLE
 export const INCREMENT_ENTHUSIASM = 'INCREMENT_ENTHUSIASM';
@@ -26,10 +30,6 @@ export type DELETE_TODO = typeof DELETE_TODO;
 
 export const TOGGLE_TODO = 'TOGGLE_TODO';
 export type TOGGLE_TODO = typeof TOGGLE_TODO;
-
-// TRANSACTION
-export const FETCH_TRANSACTIONS = 'FETCH_TRANSACTIONS';
-export type FETCH_TRANSACTIONS = typeof FETCH_TRANSACTIONS;
 
 // AUTHENTICATION
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';

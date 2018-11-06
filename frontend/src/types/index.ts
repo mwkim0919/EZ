@@ -1,5 +1,13 @@
 import { TodoApp } from './todos';
+import { Transaction, Category } from './budget';
 
+// Application specific state
+export interface EZBudgetState {
+  transactions: Transaction[];
+  categories: Category[];
+}
+
+// Store types
 export interface Enthusiasm {
   languageName: string;
   enthusiasmLevel: number;
@@ -14,6 +22,13 @@ export interface AppState {
   enthusiasm: Enthusiasm;
   planner: {};
   todos: TodoApp;
-  transactions: any;
   currentUser: CurrentUser;
+  budget: EZBudgetState;
+}
+
+// API
+export interface RequestType {
+  REQUEST: string;
+  SUCCESS: string;
+  FAILURE: string;
 }

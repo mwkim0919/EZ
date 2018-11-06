@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AppState } from '../../types';
+import { AppState, CurrentUser } from '../../types';
 import { Dispatch, bindActionCreators } from 'redux';
 import { logout } from 'src/actions/auth';
 
-class Navbar extends React.Component<any> {
+interface NavbarProps {
+  currentUser: CurrentUser;
+  logout: () => void;
+}
+
+class Navbar extends React.Component<NavbarProps> {
   render() {
     return (
       <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-light">
@@ -77,7 +82,7 @@ const mapStateToProps = (state: AppState) => {
     currentUser: state.currentUser,
   };
 };
-const mapDispatchToProps = (dispatch: Dispatch, ownProps: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
     {
       logout,

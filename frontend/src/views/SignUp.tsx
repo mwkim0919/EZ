@@ -2,9 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Formik, FormikProps, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
-import { signUp } from 'src/actions/auth';
+import { signUp, AuthenticationInput } from 'src/actions/auth';
 import { Button } from 'src/components/Button';
 import { AppState } from '../types';
+
+interface Props {
+  signUp: (input: AuthenticationInput) => void;
+}
 
 interface SignUpFormValues {
   email: string;
@@ -22,7 +26,7 @@ const signUpValidationSchema = Yup.object().shape({
     .required(),
 });
 
-class SignUp extends React.Component<any> {
+class SignUp extends React.Component<Props> {
   // TODO: Display ajax error message...
   render() {
     // console.log('This props ', this.props);

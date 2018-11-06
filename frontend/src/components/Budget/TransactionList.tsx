@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import TransactionItem from './TransactionItem';
 import TransactionBarChart from './TransactionBarChart';
 import TransactionPieChart from './TransactionPieChart';
-import { Transaction } from 'src/types/transaction';
+import { Transaction } from 'src/types/budget';
 
 interface Props {
   fetchTransactions: () => void;
@@ -75,15 +75,14 @@ export default class TransactionList extends React.Component<Props> {
             </tr>
           </thead>
           <tbody>
-            {R.map(
-              (transaction: any) => (
+            {transactions.map((transaction: Transaction) => {
+              return (
                 <TransactionItem
                   key={transaction.id}
                   transaction={transaction}
                 />
-              ),
-              R.values(transactions)
-            )}
+              );
+            })}
           </tbody>
         </table>
       </div>

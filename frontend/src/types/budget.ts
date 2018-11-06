@@ -5,8 +5,9 @@ export interface Transaction {
   description: string;
   withdraw: string | null;
   deposit: string | null;
-  createDatetime: Date;
-  transactionDatetime: Date;
+  // TODO: Fix this
+  createDatetime: Date | string;
+  transactionDatetime: Date | string;
 }
 
 export interface TransactionRequest {
@@ -14,5 +15,13 @@ export interface TransactionRequest {
   description: string;
   withdraw: number;
   deposit: number;
-  transactionDatetime: Date;
+  transactionDatetime: Date | string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  categoryLimit: number;
+  parentCategory?: Category;
+  createDatetime: Date | string;
 }

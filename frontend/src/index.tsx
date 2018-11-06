@@ -8,8 +8,6 @@ import configureStore from './store/configureStore';
 import { loadLocalStorageItem } from './helpers/localStorage';
 import { APP_STORAGE_KEY } from 'src/constants';
 import './index.css';
-import { parseJwt } from './helpers/parseJwt';
-import { AppState } from './types';
 
 const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
 const store = configureStore({

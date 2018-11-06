@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
 import EZDashboard from './views/Dashboard';
 import EZBudget from './views/EZBudget';
 import EZPlanner from './views/EZPlanner';
 import EZTodo from './views/EZTodo';
-
 import Navbar from './views/Navbar';
 import Login from './views/Login';
 import SignUp from './views/SignUp';

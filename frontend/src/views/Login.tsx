@@ -5,7 +5,6 @@ import { Formik, FormikProps, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
 import { AppState, CurrentUser } from '../types';
-import { bindActionCreators, Dispatch } from 'redux';
 import { login } from '../actions/auth';
 import { Button } from '../components/Button';
 import { push, ConnectedRouterProps } from 'connected-react-router';
@@ -112,7 +111,7 @@ class Login extends React.Component<Props> {
           }}
         />
         <Button
-          onClick={(e: any) => {
+          onClick={(e: React.SyntheticEvent) => {
             e.preventDefault();
             this.props.push('/signup');
           }}

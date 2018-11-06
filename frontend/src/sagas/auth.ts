@@ -26,9 +26,11 @@ export function* authenticate(email: string, password: string) {
       email,
       password,
     });
-
     // Saves to token to localStorage
     yield call(saveLocalStorageItem, APP_STORAGE_KEY, data);
+
+    // TODO: Set axios header
+
     yield put({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {
     // https://github.com/axios/axios/issues/960

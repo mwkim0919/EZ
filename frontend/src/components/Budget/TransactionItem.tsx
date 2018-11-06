@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { Transaction } from 'src/types/budget';
 
 interface Props {
-  transaction: any;
+  transaction: Transaction;
 }
 
 export default class TransactionItem extends React.Component<Props> {
@@ -21,7 +22,7 @@ export default class TransactionItem extends React.Component<Props> {
 
     return (
       <tr>
-        <td>{transactionDatetime.split("T")[0]}</td>
+        <td>{(transactionDatetime as string).split('T')[0]}</td>
         <td>{description}</td>
         <td>{categoryName}</td>
         <td>{withdraw}</td>

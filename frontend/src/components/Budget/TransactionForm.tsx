@@ -1,10 +1,21 @@
 import * as React from 'react';
-import { Formik, Form, Field, FieldArray, FormikProps } from 'formik';
+import {
+  Formik,
+  Form,
+  Field,
+  FieldArray,
+  FormikProps,
+  FieldArrayRenderProps,
+  FormikValues,
+} from 'formik';
 import * as Yup from 'yup';
-import { Transaction, TransactionRequest } from 'src/types/transaction';
+import { Transaction, TransactionRequest, Category } from 'src/types/budget';
+import { connect } from 'react-redux';
+import { AppState } from 'src/types';
 
 interface Props {
   transactions: Transaction[];
+  categories: Category[];
 }
 
 const transactionsValidationSchema = Yup.object().shape({
@@ -33,47 +44,57 @@ const initialTransactionFormValues: TransactionRequest[] = [
   generateTransactionRequest(),
 ];
 
-export default class TransactionForm extends React.Component<Props> {
+interface TransactionFormFormikValues {
+  transactions: Transaction[];
+}
+
+class TransactionForm extends React.Component<Props> {
   render() {
+    const { categories } = this.props;
+
     return (
       <div>
         <hr />
-        <form>
-          <Formik
-            initialValues={{ transactions: initialTransactionFormValues }}
-            isInitialValid={true}
-            validationSchema={transactionsValidationSchema}
-            onSubmit={(values: any) =>
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-              }, 500)
-            }
-            render={(formikProps: FormikProps<any>) => {
-              const { values, setValues, isValid } = formikProps;
-              console.log('FormikProps ', formikProps);
-              const { transactions } = values;
-              console.log('Transactioins ', transactions);
-              return (
-                <Form>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-lg btn-block"
-                    onClick={() => {
-                      setValues({
-                        transactions: [
-                          generateTransactionRequest(),
-                          ...transactions,
-                        ],
-                      });
-                    }}
-                  >
-                    Add more
-                  </button>
-                  <FieldArray
-                    name="transactions"
-                    render={arrayHelpers => (
-                      <div>
-                        {transactions.map((friend: any, index: any) => (
+        <Formik
+          initialValues={{ transactions: initialTransactionFormValues }}
+          isInitialValid={true}
+          validationSchema={transactionsValidationSchema}
+          onSubmit={(values: FormikValues) =>
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+            }, 500)
+          }
+          render={(formikProps: FormikProps<FormikValues>) => {
+            const { values, setValues, setFieldValue, isValid } = formikProps;
+            console.log('FormikProps ', formikProps);
+            const { transactions } = values;
+            console.log('Transactioins ', transactions);
+            return (
+              <Form>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-block"
+                  onClick={() => {
+                    setFieldValue('transactions', [
+                      generateTransactionRequest(),
+                      ...transactions,
+                    ]);
+                    // setValues({
+                    //   transactions: [
+                    //     generateTransactionRequest(),
+                    //     ...transactions,
+                    //   ],
+                    // });
+                  }}
+                >
+                  <i className="material-icons">add</i>
+                </button>
+                <FieldArray
+                  name="transactions"
+                  render={(arrayHelpers: FieldArrayRenderProps) => (
+                    <div>
+                      {transactions.map(
+                        (transaction: TransactionRequest, index: number) => (
                           <div key={index}>
                             <div>
                               <div className="form-group">
@@ -85,34 +106,49 @@ export default class TransactionForm extends React.Component<Props> {
                                     </label>
                                     <Field
                                       className="form-control"
-                                      name={`transactions.${index}.transactionDate`}
+                                      type="date"
+                                      name={`transactions.${index}.transactionDatetime`}
                                     />
                                   </div>
 
                                   {/* Type */}
                                   <div className="col">
                                     <label htmlFor="transactionType">
-                                      Type
+                                      Transaction type
                                     </label>
-                                    {/* <select
-                                        className="form-control"
-                                        id="transactionType"
-                                      >
-                                        <option>Deposit</option>
-                                        <option>Withdrawal</option>
-                                      </select> */}
+
+                                    <label>Withdraw</label>
+                                    <Field
+                                      type="radio"
+                                      name="type"
+                                      value="withdraw"
+                                    />
+                                    <label>Deposit</label>
+                                    <Field
+                                      type="radio"
+                                      name="type"
+                                      value="deposit"
+                                    />
                                   </div>
 
                                   {/* Category */}
                                   <div className="col">
                                     <label htmlFor="category">Category</label>
-                                    <select
+                                    <Field
                                       className="form-control"
-                                      id="category"
+                                      component="select"
+                                      name="category"
                                     >
-                                      <option>Food</option>
-                                      <option>Transportation</option>
-                                    </select>
+                                      {categories.map(
+                                        (category: Category, i: number) => {
+                                          return (
+                                            <option key={i}>
+                                              {category.name}
+                                            </option>
+                                          );
+                                        }
+                                      )}
+                                    </Field>
                                   </div>
                                 </div>
                               </div>
@@ -128,6 +164,7 @@ export default class TransactionForm extends React.Component<Props> {
                                       name={`transactions.${index}.description`}
                                     />
                                   </div>
+
                                   <div className="col">
                                     <label htmlFor="amount">Withdraw</label>
                                     <Field
@@ -154,25 +191,32 @@ export default class TransactionForm extends React.Component<Props> {
                               -
                             </button>
                           </div>
-                        ))}
-                        <div>
-                          <button
-                            type="submit"
-                            disabled={!isValid}
-                            className="btn btn-primary btn-lg btn-block"
-                          >
-                            Submit
-                          </button>
-                        </div>
+                        )
+                      )}
+                      <div>
+                        <button
+                          type="submit"
+                          disabled={!isValid}
+                          className="btn btn-primary btn-lg btn-block"
+                        >
+                          Submit
+                        </button>
                       </div>
-                    )}
-                  />
-                </Form>
-              );
-            }}
-          />
-        </form>
+                    </div>
+                  )}
+                />
+              </Form>
+            );
+          }}
+        />
       </div>
     );
   }
 }
+const mapStateToProps = (state: AppState) => {
+  return {
+    transactions: state.budget.transactions,
+    categories: state.budget.categories,
+  };
+};
+export default connect(mapStateToProps)(TransactionForm);

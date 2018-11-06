@@ -1,7 +1,6 @@
-import { RouterProps } from 'react-router';
 import { LOGIN_REQUEST, LOGOUT, SIGN_UP_REQUEST } from '../constants';
 
-interface AuthenticationInput {
+export interface AuthenticationInput {
   email: string;
   password: string;
 }
@@ -13,7 +12,7 @@ export const login = ({ email, password }: AuthenticationInput) => ({
   password,
 });
 
-export const logout = (history: RouterProps) => ({
+export const logout = () => ({
   type: LOGOUT,
 });
 

@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Home from './home';
-import Transactions from './transactions';
-import TransactionForm from './transactionForm';
+import BudgetDashboardContainer from './BudgetDashboardContainer';
+import TransactionSectionContainer from './TransactionSectionContainer';
+import TransactionForm from '../../components/Budget/TransactionForm';
 import { connect } from 'react-redux';
-import { fetchTransactions } from 'src/actions/transactions';
+import { init as initBudget } from 'src/actions/budget';
 import { AppState } from 'src/types';
-import { Transaction } from 'src/types/transaction';
+import { Transaction } from 'src/types/budget';
 
 interface Props {
   transactions: Transaction[];
-  fetchTransactions: () => void;
+  initBudget: () => void;
 }
 
 class EZBudget extends React.Component<Props> {
   componentDidMount() {
-    this.props.fetchTransactions();
+    // TODO: Show loading when downloading data
+    this.props.initBudget();
   }
 
   render() {
@@ -24,8 +25,12 @@ class EZBudget extends React.Component<Props> {
     }
     return (
       <Switch>
-        <Route exact path="/budget" component={Home} />
-        <Route exact path="/budget/transactions" component={Transactions} />
+        <Route exact path="/budget" component={BudgetDashboardContainer} />
+        <Route
+          exact
+          path="/budget/transactions"
+          component={TransactionSectionContainer}
+        />
         <Route
           exact
           path="/budget/transactions/form"
@@ -38,11 +43,11 @@ class EZBudget extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    transactions: state.transactions,
+    transactions: state.budget.transactions,
   };
 };
 const mapDispatchToProps = {
-  fetchTransactions,
+  initBudget,
 };
 export default connect(
   mapStateToProps,
