@@ -2,20 +2,21 @@ matrix:
   include:
     - language: java
       jdk: openjdk8
-      env: TOXENV=py37
-        - python: 3.7
-      dist: xenial
+      dist: trusty
+      sudo: true
       addons:
         apt:
+          sources:
+            - deadsnakes
           packages:
+            - python3.7-dev
             - python3-pip
+      env:
+        - python: 3.7
       before_script:
         - cd backend
-        - python3 --version
-        - python3.7 -m pip install --upgrade pip
-        - pip3 --version
-        - pip3 install --user pipenv
-        - pipenv install
+        - pip3 install --user --upgrade pip setuptools
+        - pip3 install --user -r requirements.txt
       script:
         - ./build
 
