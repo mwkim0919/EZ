@@ -1,0 +1,29 @@
+matrix:
+  include:
+    - language: java
+      jdk: openjdk8
+      dist: trusty
+      sudo: true
+      addons:
+        apt:
+          sources:
+            - deadsnakes
+          packages:
+            - python3.7-dev
+            - python3-pip
+      env:
+        - python: 3.7
+      before_script:
+        - cd backend
+        - pip3 install --user --upgrade pip setuptools
+        - pip3 install --user -r requirements.txt
+      script:
+        - ./build
+
+    - language: node_js
+      node_js: "8"
+      before_script:
+        - cd frontend
+        - yarn install
+      script:
+        - yarn test
