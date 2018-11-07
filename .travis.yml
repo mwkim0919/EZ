@@ -6,11 +6,12 @@ matrix:
         - python: "3.7"
       before_script:
         - cd backend
-        - pip install -r requirements.txt
+        - pip3 install -r requirements.txt
       script:
         - ./build
 
     - language: node_js
+      node_js: "8"
       before_script:
         - cd frontend
         - yarn install
