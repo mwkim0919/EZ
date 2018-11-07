@@ -1,0 +1,12 @@
+matrix:
+  include:
+    - language: java
+      jdk: openjdk8
+      before_script:
+        - cd backend
+      script:
+        - ./build
+
+    - language: node_js
+      before_script:
+        - cd frontend
