@@ -3,7 +3,9 @@ matrix:
     - language: java
       jdk: openjdk8
       env:
-        - python: "3.7"
+        - python: 
+          - "3.6"
+          - "3.7"
       before_script:
         - cd backend
         - pip3 install -r requirements.txt
