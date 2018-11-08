@@ -4,14 +4,10 @@ const loadingReducer = (state = {}, action: AnyAction) => {
   const { type } = action;
   const matches = /(.*)_(REQUEST|SUCCESS|FAILURE)/.exec(type);
 
-  console.log('Request ', action.type);
-
   // not a *_REQUEST / *_SUCCESS /  *_FAILURE actions, so we ignore them
   if (!matches) {
     return state;
   }
-
-  console.log('Request Match ', action.type);
 
   const [, requestName, requestState] = matches;
   return {

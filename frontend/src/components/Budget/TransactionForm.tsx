@@ -23,6 +23,7 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import { saveTransactions } from 'src/actions/budget';
 import { createLoadingSelector } from 'src/selectors';
+import { ValueType } from 'react-select/lib/types';
 
 interface Props {
   categories: Category[];
@@ -71,8 +72,8 @@ class TransactionForm extends React.Component<Props & APIProps> {
         } = value;
         return {
           categoryId,
-          withdraw: type === 'withdraw' ? amount : 0,
-          deposit: type === 'deposit' ? amount : 0,
+          withdraw: type === 'withdraw' ? amount : null,
+          deposit: type === 'deposit' ? amount : null,
           description,
           transactionDatetime,
         };
@@ -182,9 +183,12 @@ class TransactionForm extends React.Component<Props & APIProps> {
                                     isSearchable={true}
                                     name="color"
                                     options={categories}
-                                    onChange={(option: any) => {
-                                      const { value, label } = option;
-                                      console.log('Option => ', option);
+                                    onChange={(
+                                      option: ValueType<CategoryOption>
+                                    ) => {
+                                      const {
+                                        value,
+                                      } = option as CategoryOption;
                                       arrayHelpers.replace(index, {
                                         ...transaction,
                                         categoryId: value.id,

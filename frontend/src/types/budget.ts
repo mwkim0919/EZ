@@ -13,8 +13,8 @@ export interface Transaction {
 export interface TransactionRequest {
   categoryId: number;
   description: string;
-  withdraw: number;
-  deposit: number;
+  withdraw: number | null;
+  deposit: number | null;
   transactionDatetime: Date;
 }
 

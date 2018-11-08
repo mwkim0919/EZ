@@ -13,6 +13,7 @@ export const createLoadingSelector = (actions: string[]) => (
     return R.view(R.lensPath(['ui', 'loading', action]), state);
   }, actions);
 };
+
 export const createErrorMessageSelector = (actions: string[]) => (
   state: AppState
 ): string => {
