@@ -6,16 +6,24 @@ export interface Transaction {
   withdraw: string | null;
   deposit: string | null;
   // TODO: Fix this
-  createDatetime: Date | string;
+  createDatetime?: Date | string;
   transactionDatetime: Date | string;
 }
 
 export interface TransactionRequest {
-  categoryId: number | null;
+  categoryId: number;
   description: string;
   withdraw: number;
   deposit: number;
-  transactionDatetime: Date | string;
+  transactionDatetime: Date;
+}
+
+export interface TransactionFormItem {
+  categoryId: number;
+  type: 'deposit' | 'withdraw';
+  amount: number;
+  description: string;
+  transactionDatetime: Date;
 }
 
 export interface Category {

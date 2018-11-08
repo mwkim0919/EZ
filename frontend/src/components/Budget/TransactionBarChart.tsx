@@ -8,7 +8,6 @@ interface Props {
 
 export default class TransactionBarChart extends React.Component<Props> {
   render() {
-    console.log('Todo actions ', this.props);
     // const { transactions } = this.props;
     const data = {
       labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],

@@ -49,7 +49,6 @@ export default class TodoItem extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('Todo actions ', this.props);
     const { todo } = this.props;
     const { id, description, completed } = todo;
 

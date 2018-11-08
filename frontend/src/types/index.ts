@@ -7,6 +7,12 @@ export interface EZBudgetState {
   categories: Category[];
 }
 
+// API Props
+export interface APIProps {
+  loading: boolean;
+  error: string;
+}
+
 // Store types
 export interface Enthusiasm {
   languageName: string;

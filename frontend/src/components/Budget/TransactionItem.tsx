@@ -7,7 +7,6 @@ interface Props {
 
 export default class TransactionItem extends React.Component<Props> {
   render() {
-    console.log('Todo actions ', this.props);
     const { transaction } = this.props;
     const {
       // id,
