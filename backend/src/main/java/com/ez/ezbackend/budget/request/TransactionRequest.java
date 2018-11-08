@@ -8,6 +8,7 @@ import com.ez.ezbackend.shared.serializer.PriceJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.google.common.base.Strings;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,6 +61,9 @@ public class TransactionRequest {
   }
 
   private static void validateTransactionRequest(TransactionRequest transactionRequest) {
+    if (Strings.isNullOrEmpty(transactionRequest.getDescription())) {
+      throw new EzIllegalRequestException("Transaction must have a description.");
+    }
     if (transactionRequest.getDeposit() == null && transactionRequest.getWithdraw() == null) {
       throw new EzIllegalRequestException("There should be either deposit or withdraw.");
     }

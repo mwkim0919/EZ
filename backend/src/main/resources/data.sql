@@ -43,3 +43,13 @@ VALUES
 (24, 'Pasta', 24.56, null, now(), now(), 1, 2),
 (25, 'The Keg', 123.45, null, now(), now(), 1, 2),
 (26, 'test', 123.45, null, now(), now(), 1, null);
+
+INSERT INTO schedule
+(id, user_id, category_id, description, deposit, withdraw, start_date, recurring_pattern, last_processed_date, next_recurring_date, create_datetime)
+VALUES
+(1, 1, 6, 'EZ Pay', 2500.00, null, '2018-01-01', 'BI_WEEKLY', null, '2018-01-15', now()),
+(2, 1, 9, 'Mobile', null, 50.50, '2018-05-06', 'MONTHLY', '2018-10-06', '2018-11-06', now()),
+(3, 1, 9, 'BC hydro', null, 80.12, '2017-01-15', 'BI_MONTHLY', '2018-09-15', '2018-11-15', now()),
+(4, 1, null, 'Tax', null, 500.00, '2017-05-01', 'YEARLY', '2018-05-01', '2019-05-01', now()),
+(5, 1, 2, 'Pizza', null, 20.00, '2015-05-06', 'WEEKLY', '2018-10-06', '2018-11-06', now()),
+(6, 1, 9, 'MSP', null, 37.50, '2018-05-26', 'MONTHLY', '2018-09-26', '2018-10-26', now());
