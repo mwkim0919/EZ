@@ -24,7 +24,7 @@ public class CategoryRequest {
   @JsonSerialize(using = PriceJsonSerializer.class)
   private BigDecimal categoryLimit;
   private Long parentCategoryId;
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime createDatetime;
 
