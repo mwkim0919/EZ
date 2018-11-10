@@ -2,6 +2,7 @@ import { createBrowserHistory } from 'history';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from '../reducers';
 import rootSaga from '../sagas';
@@ -14,7 +15,12 @@ export const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();
 
 // Add middlewares / enhancers here
-const middlewares = [routerMiddleware(history), sagaMiddleware, createLogger()];
+const middlewares = [
+  routerMiddleware(history),
+  thunk,
+  sagaMiddleware,
+  createLogger(),
+];
 
 // tslint:disable-next-line
 const enhancers: any[] = [];

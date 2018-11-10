@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
+import { Transaction } from 'src/types/budget';
 
 interface Props {
-  transactions: any;
+  transactions: Transaction[];
 }
 
 export default class TransactionLineChart extends React.Component<Props> {
@@ -43,15 +44,17 @@ export default class TransactionLineChart extends React.Component<Props> {
           maintainAspectRatio: false,
           // responsive: true,
           legend: {
-            position: "right"
+            position: 'right',
           },
           scales: {
-            yAxes: [{
+            yAxes: [
+              {
                 ticks: {
-                    beginAtZero:true
-                }
-            }]
-          }
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
         }}
       />
     );
