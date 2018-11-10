@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Pie } from 'react-chartjs-2';
+import { Transaction } from 'src/types/budget';
 
 interface Props {
-  transactions: any;
+  transactions: Transaction[];
 }
 
 export default class TransactionPieChart extends React.Component<Props> {
@@ -42,8 +43,8 @@ export default class TransactionPieChart extends React.Component<Props> {
         options={{
           maintainAspectRatio: false,
           legend: {
-            position: "right"
-          }
+            position: 'right',
+          },
         }}
       />
     );

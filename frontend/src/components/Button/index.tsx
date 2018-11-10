@@ -8,8 +8,10 @@ interface ButtonProps {
   color?: string;
 
   type?: string;
+  // tslint:disable-next-line
   onClick?: any;
 
+  // tslint:disable-next-line
   children: any;
 }
 

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { Formik, FormikProps, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
-import { AppState } from '../types';
-import { bindActionCreators, Dispatch } from 'redux';
+import { AppState, CurrentUser } from '../types';
 import { login } from '../actions/auth';
 import { Button } from '../components/Button';
+import { push, ConnectedRouterProps } from 'connected-react-router';
 
 interface LoginFormValues {
   email: string;
@@ -21,15 +21,18 @@ const loginValidationSchema = Yup.object().shape({
   password: Yup.string(),
 });
 
-// TODO: Use proper state / props...
-class Login extends React.Component<any> {
+interface Props {
+  currentUser: CurrentUser;
+  login: ({ email, password }: LoginFormValues) => void;
+  push: (url: string) => void;
+}
+
+class Login extends React.Component<Props> {
   render() {
-    const {
-      auth: { currentUser, loading, error },
-    } = this.props;
+    const { currentUser } = this.props;
 
     // User is already signed in, redirect to Dashboard
-    if (currentUser) {
+    if (currentUser.email) {
       return <Redirect to="/" />;
     }
     // TODO: Create generic loading container
@@ -46,14 +49,13 @@ class Login extends React.Component<any> {
     //   );
     // };
 
-    if (loading) {
-      return <Loading />;
-    }
+    // if (loading) {
+    //   return <Loading />;
+    // }
 
     return (
       <div>
         <h1>Login Form</h1>
-        {error && <div>Error: {error}</div>}
         <Formik
           initialValues={{
             email: '',
@@ -109,9 +111,9 @@ class Login extends React.Component<any> {
           }}
         />
         <Button
-          onClick={(e: any) => {
+          onClick={(e: React.SyntheticEvent) => {
             e.preventDefault();
-            this.props.history.push('/signup');
+            this.props.push('/signup');
           }}
           color="green"
         >
@@ -123,10 +125,11 @@ class Login extends React.Component<any> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  auth: state.auth,
+  currentUser: state.currentUser,
 });
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return bindActionCreators({ login }, dispatch);
+const mapDispatchToProps = {
+  login,
+  push,
 };
 export default connect(
   mapStateToProps,

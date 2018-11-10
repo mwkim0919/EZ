@@ -1,23 +1,13 @@
-import * as constants from '../constants';
+import { REQUEST, SUCCESS, FAILURE } from '../constants';
+import { RequestType } from 'src/types';
 
-export interface IncrementEnthusiasm {
-  type: constants.INCREMENT_ENTHUSIASM;
-}
-
-export interface DecrementEnthusiasm {
-  type: constants.DECREMENT_ENTHUSIASM;
-}
-
-export type EnthusiasmAction = IncrementEnthusiasm | DecrementEnthusiasm;
-
-export function incrementEnthusiasm(): IncrementEnthusiasm {
-  return {
-    type: constants.INCREMENT_ENTHUSIASM,
-  };
-}
-
-export function decrementEnthusiasm(): DecrementEnthusiasm {
-  return {
-    type: constants.DECREMENT_ENTHUSIASM,
-  };
-}
+// Creates a request type object
+export const createRequestTypes = (base: string): RequestType => {
+  return [REQUEST, SUCCESS, FAILURE].reduce(
+    (acc, type) => {
+      acc[type] = `${base}_${type}`;
+      return acc;
+    },
+    {} as RequestType
+  );
+};

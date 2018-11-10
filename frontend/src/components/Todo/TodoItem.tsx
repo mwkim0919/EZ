@@ -21,6 +21,7 @@ export default class TodoItem extends React.Component<Props, State> {
   };
 
   // textNode : React.Ref<any>;
+  // tslint:disable-next-line
   input: any = undefined;
 
   handleDoubleClick = () => {
@@ -48,7 +49,6 @@ export default class TodoItem extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('Todo actions ', this.props);
     const { todo } = this.props;
     const { id, description, completed } = todo;
 

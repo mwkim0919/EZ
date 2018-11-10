@@ -10,6 +10,7 @@ const sagas = R.values({ ...exampleSagas, authSagas });
 // single entry point to start all sagas at once
 export default function* rootSaga() {
   yield all(
+    // tslint:disable-next-line
     R.map((saga: any) => {
       return saga();
     }, sagas)

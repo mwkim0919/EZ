@@ -10,13 +10,8 @@ import { APP_STORAGE_KEY } from 'src/constants';
 import './index.css';
 
 const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
-console.log('Stored Data ', storedData);
-
-// TODO: What should we do if token is expired?
 const store = configureStore({
-  auth: {
-    currentUser: storedData,
-  },
+  currentUser: storedData || {},
 });
 
 ReactDOM.render(
