@@ -29,7 +29,7 @@ public class TransactionRequest {
   @JsonSerialize(using = PriceJsonSerializer.class)
   private BigDecimal deposit;
   private LocalDateTime createDatetime;
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime transactionDatetime;
 
