@@ -48,7 +48,7 @@ public class Transaction {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
-      name = "category_id", nullable = true,
+      name = "category_id",
       // Not sure if this is the best approach.
       foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (category_id) REFERENCES Category ON DELETE SET NULL"))
   private Category category;

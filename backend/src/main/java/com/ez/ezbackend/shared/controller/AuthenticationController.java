@@ -1,9 +1,9 @@
 package com.ez.ezbackend.shared.controller;
 
 import com.ez.ezbackend.shared.entity.User;
+import com.ez.ezbackend.shared.request.UserRequest;
 import com.ez.ezbackend.shared.response.JwtAuthenticationResponse;
 import com.ez.ezbackend.shared.response.SignUpResponse;
-import com.ez.ezbackend.shared.request.UserRequest;
 import com.ez.ezbackend.shared.security.JwtTokenProvider;
 import com.ez.ezbackend.shared.service.UserService;
 import com.ez.ezbackend.shared.util.ControllerUtil;

@@ -3,8 +3,9 @@
 """Build and push the branch specified."""
 
 import argparse
-import subprocess
 import colorama
+import subprocess
+
 colorama.init(autoreset=True)
 
 

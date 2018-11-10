@@ -2,8 +2,8 @@ package com.ez.ezbackend.shared.controller;
 
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.enums.UserRole;
-import com.ez.ezbackend.shared.response.JwtAuthenticationResponse;
 import com.ez.ezbackend.shared.request.UserRequest;
+import com.ez.ezbackend.shared.response.JwtAuthenticationResponse;
 import com.ez.ezbackend.shared.security.JwtTokenProvider;
 import com.ez.ezbackend.shared.service.UserService;
 import com.ez.ezbackend.shared.util.JsonUtil;
@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.inject.Inject;
-
 import java.util.Date;
 
 import static org.mockito.ArgumentMatchers.any;

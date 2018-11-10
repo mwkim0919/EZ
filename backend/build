@@ -2,5 +2,4 @@
 
 mvn clean install
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-python3 -u "$DIR/scripts/pom_xml_parser.py" "$DIR/pom.xml"
-python3 -u "$DIR/scripts/jacoco_coverage.py" "$DIR/target/jacoco-ut/index.html"
+python3 -u "$DIR/scripts/jacoco_coverage.py" "$DIR/pom.xml" "$DIR/target/jacoco-ut/index.html"

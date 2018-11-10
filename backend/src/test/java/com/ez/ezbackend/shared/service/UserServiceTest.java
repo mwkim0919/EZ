@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
