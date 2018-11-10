@@ -2,9 +2,9 @@
 
 """Read pom.xml file and parse."""
 
-import xml.etree.ElementTree as ET
 import argparse
 import colorama
+import xml.etree.ElementTree as ET
 
 MAVEN_APACHE_URL = './/{http://maven.apache.org/POM/4.0.0}'
 

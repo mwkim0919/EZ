@@ -6,15 +6,14 @@ import com.ez.ezbackend.budget.request.TransactionRequest;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
 import com.ez.ezbackend.shared.exception.EzNotAuthorizedException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
+import com.google.common.collect.ImmutableSet;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -119,19 +118,19 @@ public class TransactionServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_deleteTransactionsForUser_success() {
-    transactionService.deleteTransactionsForUser(new HashSet<>(Arrays.asList(1L)), 1);
+    transactionService.deleteTransactionsForUser(ImmutableSet.of(1L), 1);
     List<Transaction> transactions = transactionService.getTransactionsForUser(1);
     transactions.forEach(transaction -> assertThat(transaction.getId()).isNotEqualTo(1));
   }
 
   @Test(expected = EzNotFoundException.class)
   public void test_deleteTransactionsForUser_with_invalid_userId() {
-    transactionService.deleteTransactionsForUser(new HashSet<>(Arrays.asList(1L)), -1);
+    transactionService.deleteTransactionsForUser(ImmutableSet.of(1L), -1);
   }
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_deleteTransactionsForUser_with_invalid_transactionId() {
-    transactionService.deleteTransactionsForUser(new HashSet<>(Arrays.asList(-1L)), 1);
+    transactionService.deleteTransactionsForUser(ImmutableSet.of(-1L), 1);
   }
 
   @Test(expected = EzIllegalRequestException.class)

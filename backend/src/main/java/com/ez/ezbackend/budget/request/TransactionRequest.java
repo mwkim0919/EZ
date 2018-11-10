@@ -74,7 +74,7 @@ public class TransactionRequest {
       throw new EzIllegalRequestException("Deposit should be greater than 0.");
     }
     if (transactionRequest.getWithdraw() != null && transactionRequest.getWithdraw().compareTo(BigDecimal.ZERO) < 0) {
-      throw new EzIllegalRequestException("Deposit should be greater than 0.");
+      throw new EzIllegalRequestException("Withdraw should be greater than 0.");
     }
   }
 }

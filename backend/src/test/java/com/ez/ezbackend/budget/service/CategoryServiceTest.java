@@ -8,14 +8,13 @@ import com.ez.ezbackend.budget.repository.TransactionRepository;
 import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
 import com.ez.ezbackend.shared.exception.EzNotFoundException;
+import com.google.common.collect.ImmutableSet;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -119,7 +118,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_deleteCategories_with_no_transaction() {
-    Set<Long> ids = new HashSet<>(Collections.singletonList(8L));
+    Set<Long> ids = ImmutableSet.of(8L);
     categoryService.deleteCategories(ids, 1L);
     List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
     assertThat(categoryList).hasSize(8);
@@ -128,7 +127,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_deleteCategories_with_transactions() {
-    Set<Long> ids = new HashSet<>(Collections.singletonList(1L));
+    Set<Long> ids = ImmutableSet.of(1L);
     categoryService.deleteCategories(ids, 1L);
     List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
     assertThat(categoryList).hasSize(8);
@@ -139,7 +138,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_deleteCategories_with_subcategories() {
-    Set<Long> ids = new HashSet<>(Collections.singletonList(2L));
+    Set<Long> ids = ImmutableSet.of(2L);
     categoryService.deleteCategories(ids, 1L);
     List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
     assertThat(categoryList).hasSize(6);
@@ -149,7 +148,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzNotFoundException.class)
   public void test_deleteCategories_invalid_userId() {
-    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L));
+    Set<Long> ids = ImmutableSet.of(2L, 3L);
     categoryService.deleteCategories(ids, 100L);
   }
 
@@ -160,7 +159,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
 
   @Test(expected = EzIllegalRequestException.class)
   public void test_deleteCategories_invalid_categoryIds() {
-    Set<Long> ids = new HashSet<>(Arrays.asList(2L, 3L, 14L));
+    Set<Long> ids = ImmutableSet.of(2L, 3L, 14L);
     categoryService.deleteCategories(ids, 1L);
   }
 }

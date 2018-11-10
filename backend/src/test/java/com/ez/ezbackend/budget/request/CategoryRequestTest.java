@@ -1,9 +1,8 @@
 package com.ez.ezbackend.budget.request;
+
 import com.ez.ezbackend.budget.entity.Category;
-import com.ez.ezbackend.budget.request.CategoryRequest;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
-import com.ez.ezbackend.shared.exception.EzReadOnlyException;
 import org.junit.Test;
 
 import java.math.BigDecimal;

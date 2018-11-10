@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
 
 @Getter
 @Builder
@@ -52,11 +50,12 @@ public class ScheduleRequest {
         .withdraw(scheduleRequest.getWithdraw())
         .startDate(scheduleRequest.getStartDate())
         .recurringPattern(scheduleRequest.getRecurringPattern())
+        .nextRecurringDate(scheduleRequest.getStartDate())
         .build();
   }
 
   private static void validateSchedule(ScheduleRequest scheduleRequest) {
-    if (Strings.isNullOrEmpty(scheduleRequest.description)) {
+    if (Strings.isNullOrEmpty(scheduleRequest.getDescription())) {
       throw new EzIllegalRequestException("Schedule must have a description.");
     }
     if (scheduleRequest.getDeposit() == null && scheduleRequest.getWithdraw() == null) {
@@ -65,14 +64,13 @@ public class ScheduleRequest {
     if (scheduleRequest.getDeposit() != null && scheduleRequest.getWithdraw() != null) {
       throw new EzIllegalRequestException("There can't be both deposit and withdraw. Please choose one.");
     }
-    if (scheduleRequest.getDeposit() != null && scheduleRequest.getDeposit().compareTo(BigDecimal.ZERO) < 0) {
+    if (scheduleRequest.getDeposit() != null && scheduleRequest.getDeposit().compareTo(BigDecimal.ZERO) <= 0) {
       throw new EzIllegalRequestException("Deposit should be greater than 0.");
     }
-    if (scheduleRequest.getWithdraw() != null && scheduleRequest.getWithdraw().compareTo(BigDecimal.ZERO) < 0) {
-      throw new EzIllegalRequestException("Deposit should be greater than 0.");
+    if (scheduleRequest.getWithdraw() != null && scheduleRequest.getWithdraw().compareTo(BigDecimal.ZERO) <= 0) {
+      throw new EzIllegalRequestException("Withdraw should be greater than 0.");
     }
-    if (scheduleRequest.getRecurringPattern() != null &&
-        !new HashSet<>(Arrays.asList(RecurringPattern.values())).contains(scheduleRequest.getRecurringPattern())) {
+    if (scheduleRequest.getRecurringPattern() == null) {
       throw new EzIllegalRequestException("RecurringPattern must be one of yearly, bimonthly, monthly, biweekly, and weekly.");
     }
   }
