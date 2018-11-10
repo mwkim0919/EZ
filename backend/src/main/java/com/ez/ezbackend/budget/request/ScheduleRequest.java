@@ -26,10 +26,6 @@ public class ScheduleRequest {
   private LocalDate startDate;
   private RecurringPattern recurringPattern;
 
-  public static Schedule convertToSchedule(ScheduleRequest scheduleRequest) {
-    return convertToSchedule(scheduleRequest, null, null, null);
-  }
-
   public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user) {
     return convertToSchedule(scheduleRequest, user, null, null);
   }

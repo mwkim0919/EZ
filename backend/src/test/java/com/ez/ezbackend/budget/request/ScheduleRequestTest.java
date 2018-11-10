@@ -40,7 +40,7 @@ public class ScheduleRequestTest {
         .withdraw(BigDecimal.ONE)
         .recurringPattern(RecurringPattern.YEARLY)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -51,7 +51,7 @@ public class ScheduleRequestTest {
         .deposit(BigDecimal.ONE)
         .recurringPattern(RecurringPattern.YEARLY)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -60,7 +60,7 @@ public class ScheduleRequestTest {
         .description("test")
         .recurringPattern(RecurringPattern.YEARLY)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -70,7 +70,7 @@ public class ScheduleRequestTest {
         .deposit(BigDecimal.ZERO)
         .recurringPattern(RecurringPattern.YEARLY)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -80,7 +80,7 @@ public class ScheduleRequestTest {
         .deposit(BigDecimal.valueOf(-1L))
         .recurringPattern(RecurringPattern.YEARLY)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -90,7 +90,7 @@ public class ScheduleRequestTest {
         .withdraw(BigDecimal.ZERO)
         .recurringPattern(RecurringPattern.YEARLY)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -100,7 +100,7 @@ public class ScheduleRequestTest {
         .withdraw(BigDecimal.valueOf(-1L))
         .recurringPattern(RecurringPattern.YEARLY)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -109,7 +109,7 @@ public class ScheduleRequestTest {
         .description("test")
         .withdraw(BigDecimal.ONE)
         .build();
-    ScheduleRequest.convertToSchedule(scheduleRequest);
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
   private void testConvertToScheduleWith(User user, Category category, Long updatingScheduleId) {
@@ -122,13 +122,11 @@ public class ScheduleRequestTest {
         .startDate(LocalDate.now())
         .build();
     Schedule schedule = null;
-    if (user == null && category == null && updatingScheduleId == null) {
-      schedule = ScheduleRequest.convertToSchedule(scheduleRequest);
-    } else if (user != null && category == null && updatingScheduleId == null) {
+    if (category == null && updatingScheduleId == null) {
       schedule = ScheduleRequest.convertToSchedule(scheduleRequest, user);
-    } else if (user != null && category != null && updatingScheduleId == null) {
+    } else if (category != null && updatingScheduleId == null) {
       schedule = ScheduleRequest.convertToSchedule(scheduleRequest, user, category);
-    } else if (user != null && category != null && updatingScheduleId != null) {
+    } else if (category != null && updatingScheduleId != null) {
       schedule = ScheduleRequest.convertToSchedule(scheduleRequest, user, category, updatingScheduleId);
     }
     if (updatingScheduleId == null) {

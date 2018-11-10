@@ -1,6 +1,7 @@
 package com.ez.ezbackend.budget.request;
 
 import com.ez.ezbackend.budget.entity.Transaction;
+import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class TransactionRequestTest {
         .deposit(new BigDecimal("100.00"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    Transaction transaction = TransactionRequest.convertToTransaction(transactionRequest);
+    Transaction transaction = TransactionRequest.convertToTransaction(transactionRequest, new User());
     assertThat(transaction.getId()).isNull();
     assertThat(transaction.getDescription()).isEqualTo("description");
     assertThat(transaction.getDeposit()).isEqualTo("100.00");
@@ -32,7 +33,7 @@ public class TransactionRequestTest {
         .deposit(BigDecimal.ONE)
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    TransactionRequest.convertToTransaction(transactionRequest);
+    TransactionRequest.convertToTransaction(transactionRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -41,7 +42,7 @@ public class TransactionRequestTest {
         .description("description")
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    TransactionRequest.convertToTransaction(transactionRequest);
+    TransactionRequest.convertToTransaction(transactionRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -52,7 +53,7 @@ public class TransactionRequestTest {
         .withdraw(new BigDecimal("111.11"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    TransactionRequest.convertToTransaction(transactionRequest);
+    TransactionRequest.convertToTransaction(transactionRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -62,7 +63,7 @@ public class TransactionRequestTest {
         .deposit(BigDecimal.ZERO)
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    TransactionRequest.convertToTransaction(transactionRequest);
+    TransactionRequest.convertToTransaction(transactionRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -72,7 +73,7 @@ public class TransactionRequestTest {
         .withdraw(BigDecimal.ZERO)
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    TransactionRequest.convertToTransaction(transactionRequest);
+    TransactionRequest.convertToTransaction(transactionRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -82,7 +83,7 @@ public class TransactionRequestTest {
         .deposit(new BigDecimal("-1.00"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    TransactionRequest.convertToTransaction(transactionRequest);
+    TransactionRequest.convertToTransaction(transactionRequest, new User());
   }
 
   @Test(expected = EzIllegalRequestException.class)
@@ -92,6 +93,6 @@ public class TransactionRequestTest {
         .withdraw(new BigDecimal("-1.00"))
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
-    TransactionRequest.convertToTransaction(transactionRequest);
+    TransactionRequest.convertToTransaction(transactionRequest, new User());
   }
 }
