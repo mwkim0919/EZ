@@ -15,27 +15,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ScheduleRequestTest {
 
   @Test
-  public void testConvertToSchedule_withScheduleRequest() {
+  public void testConvertToSchedule_with_scheduleRequest() {
     testConvertToScheduleWith(null, null, null);
   }
 
   @Test
-  public void testConvertToSchedule_withScheduleRequestAndUser() {
+  public void testConvertToSchedule_with_scheduleRequest_and_user() {
     testConvertToScheduleWith(new User(), null, null);
   }
 
   @Test
-  public void testConvertToSchedule_withScheduleRequestAndUserAndCategory() {
+  public void testConvertToSchedule_with_scheduleRequest_and_user_and_category() {
     testConvertToScheduleWith(new User(), new Category(), null);
   }
 
   @Test
-  public void testConvertToSchedule_withScheduleRequestAndUserAndCategoryAndUpdatingScheduleId() {
+  public void testConvertToSchedule_with_scheduleRequest_and_user_and_category_and_updatingScheduleId() {
     testConvertToScheduleWith(new User(), new Category(), 1L);
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withNoDescription() {
+  public void testConvertToSchedule_with_no_description() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .withdraw(BigDecimal.ONE)
         .recurringPattern(RecurringPattern.YEARLY)
@@ -44,7 +44,7 @@ public class ScheduleRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withBothDepositAndWithdraw() {
+  public void testConvertToSchedule_with_both_deposit_and_withdraw() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .withdraw(BigDecimal.ONE)
@@ -55,7 +55,7 @@ public class ScheduleRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withNoDepositAndWithdraw() {
+  public void testConvertToSchedule_with_no_deposit_and_withdraw() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .recurringPattern(RecurringPattern.YEARLY)
@@ -64,7 +64,7 @@ public class ScheduleRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withZeroDeposit() {
+  public void testConvertToSchedule_with_zero_deposit() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .deposit(BigDecimal.ZERO)
@@ -74,7 +74,7 @@ public class ScheduleRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withNegativeDeposit() {
+  public void testConvertToSchedule_with_negative_deposit() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .deposit(BigDecimal.valueOf(-1L))
@@ -84,7 +84,7 @@ public class ScheduleRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withZeroWithdraw() {
+  public void testConvertToSchedule_with_zero_withdraw() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .withdraw(BigDecimal.ZERO)
@@ -94,7 +94,7 @@ public class ScheduleRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withNegativeWithdraw() {
+  public void testConvertToSchedule_with_negative_withdraw() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .withdraw(BigDecimal.valueOf(-1L))
@@ -104,7 +104,7 @@ public class ScheduleRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
-  public void testConvertToSchedule_withNoRecurringPattern() {
+  public void testConvertToSchedule_with_no_recurringPattern() {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .withdraw(BigDecimal.ONE)

@@ -18,13 +18,6 @@ COVERAGE_INDEX_MAP = {
     "class": [11, 12]
 }
 
-COVERAGE_MAP = {
-    "complexity": [],
-    "line": [],
-    "method": [],
-    "class": []
-}
-
 
 def run(pom_file: str, jacoco_file: str) -> None:
     """Run the logic of this script."""
@@ -38,7 +31,7 @@ def run(pom_file: str, jacoco_file: str) -> None:
     class_coverage_info = fetch_coverage_info(parser, "class")
     coverage_info_array = [complexity_coverage_info, line_coverage_info,
                            method_coverage_info, class_coverage_info]
-    map_coverage_info(coverage_info_array)
+    coverage_map = map_coverage_info(coverage_info_array)
 
     tabulate_print = tabulate(coverage_info_array,
                               headers=["Coverage Type", "Missed", "Total", "Percentage"])
@@ -46,7 +39,9 @@ def run(pom_file: str, jacoco_file: str) -> None:
 
     coverage_type, min_coverage = pom_xml_parser.run(pom_file)
 
-    coverage_greater_than_min, actual_coverage = is_coverage_greater_than_min(coverage_type, float(min_coverage))
+    coverage_greater_than_min, actual_coverage = is_coverage_greater_than_min(
+        coverage_map, coverage_type, float(min_coverage))
+
     if not coverage_greater_than_min:
         raise AssertionError(colorama.Fore.RED + "Current coverage is " + str(actual_coverage) +
                              " which is less than " + min_coverage)
@@ -65,7 +60,7 @@ def fetch_coverage_info(parser: callable, coverage_type: str) -> list:
     return [coverage_type, str(missed), str(total), str(coverage)]
 
 
-def is_coverage_greater_than_min(coverage_type: str, expected_coverage: float) -> (bool, float):
+def is_coverage_greater_than_min(coverage_map: dict, coverage_type: str, expected_coverage: float) -> (bool, float):
     """
     Checks if actual coverage is greater than expected coverage.
     :returns: coverage_greater_than_min and actual_coverage
@@ -73,23 +68,28 @@ def is_coverage_greater_than_min(coverage_type: str, expected_coverage: float) -
     coverage_type = coverage_type.lower()
     actual_coverage = 0
     if coverage_type == "complexity":
-        actual_coverage = float(COVERAGE_MAP["complexity"][3])
+        actual_coverage = float(coverage_map["complexity"][3])
     elif coverage_type == "line":
-        actual_coverage = float(COVERAGE_MAP["line"][3])
+        actual_coverage = float(coverage_map["line"][3])
     elif coverage_type == "method":
-        actual_coverage = float(COVERAGE_MAP["method"][3])
+        actual_coverage = float(coverage_map["method"][3])
     elif coverage_type == "class":
-        actual_coverage = float(COVERAGE_MAP["class"][3])
+        actual_coverage = float(coverage_map["class"][3])
 
     return actual_coverage >= expected_coverage, actual_coverage
 
 
-def map_coverage_info(coverage_info_array: list) -> None:
-    """Maps coverage info to COVERAGE_MAP variable."""
-    COVERAGE_MAP["complexity"] = coverage_info_array[0]
-    COVERAGE_MAP["line"] = coverage_info_array[1]
-    COVERAGE_MAP["method"] = coverage_info_array[2]
-    COVERAGE_MAP["class"] = coverage_info_array[3]
+def map_coverage_info(coverage_info_array: list) -> dict:
+    """
+    Maps coverage info.
+    :return: dict with coverage info being mapped
+    """
+    return {
+        "complexity": coverage_info_array[0],
+        "line": coverage_info_array[1],
+        "method": coverage_info_array[2],
+        "class": coverage_info_array[3]
+    }
 
 
 def main():

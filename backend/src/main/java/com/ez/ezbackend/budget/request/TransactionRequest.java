@@ -70,10 +70,10 @@ public class TransactionRequest {
     if (transactionRequest.getDeposit() != null && transactionRequest.getWithdraw() != null) {
       throw new EzIllegalRequestException("There can't be both deposit and withdraw. Please choose one.");
     }
-    if (transactionRequest.getDeposit() != null && transactionRequest.getDeposit().compareTo(BigDecimal.ZERO) < 0) {
+    if (transactionRequest.getDeposit() != null && transactionRequest.getDeposit().compareTo(BigDecimal.ZERO) <= 0) {
       throw new EzIllegalRequestException("Deposit should be greater than 0.");
     }
-    if (transactionRequest.getWithdraw() != null && transactionRequest.getWithdraw().compareTo(BigDecimal.ZERO) < 0) {
+    if (transactionRequest.getWithdraw() != null && transactionRequest.getWithdraw().compareTo(BigDecimal.ZERO) <= 0) {
       throw new EzIllegalRequestException("Withdraw should be greater than 0.");
     }
   }

@@ -74,31 +74,30 @@ public class Schedule {
   private LocalDateTime createDateTime;
 
   public static Transaction convertToTransaction(Schedule schedule) {
-    Transaction.TransactionBuilder transaction = Transaction.builder();
-    transaction.description(schedule.getDescription());
-    transaction.transactionDatetime(LocalDateTime.of(schedule.getNextRecurringDate(), LocalTime.of(0, 0)));
-    transaction.category(schedule.getCategory());
-    transaction.user(schedule.getUser());
-    transaction.deposit(schedule.getDeposit());
-    transaction.withdraw(schedule.getWithdraw());
-    return transaction.build();
+    return Transaction.builder()
+        .description(schedule.getDescription())
+        .transactionDatetime(LocalDateTime.of(schedule.getNextRecurringDate(), LocalTime.of(0, 0)))
+        .category(schedule.getCategory())
+        .user(schedule.getUser())
+        .deposit(schedule.getDeposit())
+        .withdraw(schedule.getWithdraw())
+        .build();
   }
 
   public static Schedule getNextSchedule(Schedule schedule) {
-    Schedule.ScheduleBuilder nextSchedule = Schedule.builder();
-    nextSchedule.id(schedule.getId());
-    nextSchedule.user(schedule.getUser());
-    nextSchedule.category(schedule.getCategory());
-    nextSchedule.description(schedule.getDescription());
-    nextSchedule.deposit(schedule.getDeposit());
-    nextSchedule.withdraw(schedule.getWithdraw());
-    nextSchedule.startDate(schedule.getStartDate());
-    RecurringPattern recurringPattern = schedule.getRecurringPattern();
-    nextSchedule.recurringPattern(recurringPattern);
-    nextSchedule.lastProcessedDate(schedule.getNextRecurringDate());
-    nextSchedule.nextRecurringDate(calculateNextRecurringDate(schedule, recurringPattern));
-    nextSchedule.createDateTime(schedule.getCreateDateTime());
-    return nextSchedule.build();
+    return Schedule.builder()
+        .id(schedule.getId())
+        .user(schedule.getUser())
+        .category(schedule.getCategory())
+        .description(schedule.getDescription())
+        .deposit(schedule.getDeposit())
+        .withdraw(schedule.getWithdraw())
+        .startDate(schedule.getStartDate())
+        .recurringPattern(schedule.getRecurringPattern())
+        .lastProcessedDate(schedule.getNextRecurringDate())
+        .nextRecurringDate(calculateNextRecurringDate(schedule, schedule.getRecurringPattern()))
+        .createDateTime(schedule.getCreateDateTime())
+        .build();
   }
 
   private static LocalDate calculateNextRecurringDate(Schedule schedule, RecurringPattern recurringPattern) {

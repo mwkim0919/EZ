@@ -27,6 +27,15 @@ public class TransactionRequestTest {
   }
 
   @Test(expected = EzIllegalRequestException.class)
+  public void test_convertToTransaction_with_no_description() {
+    TransactionRequest transactionRequest = TransactionRequest.builder()
+        .deposit(BigDecimal.ONE)
+        .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
+        .build();
+    TransactionRequest.convertToTransaction(transactionRequest);
+  }
+
+  @Test(expected = EzIllegalRequestException.class)
   public void test_convertToTransaction_with_no_deposit_and_withdraw() {
     TransactionRequest transactionRequest = TransactionRequest.builder()
         .description("description")
@@ -41,6 +50,26 @@ public class TransactionRequestTest {
         .description("description")
         .deposit(new BigDecimal("123.00"))
         .withdraw(new BigDecimal("111.11"))
+        .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
+        .build();
+    TransactionRequest.convertToTransaction(transactionRequest);
+  }
+
+  @Test(expected = EzIllegalRequestException.class)
+  public void test_convertToTransaction_with_zero_deposit() {
+    TransactionRequest transactionRequest = TransactionRequest.builder()
+        .description("description")
+        .deposit(BigDecimal.ZERO)
+        .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
+        .build();
+    TransactionRequest.convertToTransaction(transactionRequest);
+  }
+
+  @Test(expected = EzIllegalRequestException.class)
+  public void test_convertToTransaction_with_zero_withdraw() {
+    TransactionRequest transactionRequest = TransactionRequest.builder()
+        .description("description")
+        .withdraw(BigDecimal.ZERO)
         .transactionDatetime(LocalDateTime.of(2018, 1, 1, 0, 0, 0))
         .build();
     TransactionRequest.convertToTransaction(transactionRequest);
