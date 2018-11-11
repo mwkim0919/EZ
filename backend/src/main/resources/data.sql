@@ -13,7 +13,8 @@ VALUES
 (6, null, now(), 'INCOME', null, 1),
 (7, 200.00, now(), 'EDUCATION', null, 1),
 (8, 1200.00, now(), 'HOUSING', null, 1),
-(9, 350.00, now(), 'UTILITY', null, 1);
+(9, 350.00, now(), 'UTILITY', null, 1),
+(10, 20.00, now(), 'Starbucks', 4, 1);
 
 INSERT INTO transaction(id, description, withdraw, deposit, transaction_datetime, create_datetime, user_id, category_id)
 VALUES 
