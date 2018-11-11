@@ -4,14 +4,17 @@ import * as R from 'ramda';
 import TransactionItem from './TransactionItem';
 import TransactionBarChart from './TransactionBarChart';
 import TransactionPieChart from './TransactionPieChart';
-import { Transaction } from 'src/types/budget';
+import { Transaction, DeleteTransactions } from 'src/types/budget';
+import { connect } from 'react-redux';
+import { deleteTransactions } from 'src/actions/budget';
 
 interface Props {
   fetchTransactions: () => void;
+  deleteTransactions: DeleteTransactions;
   transactions: Transaction[];
 }
 
-export default class TransactionList extends React.Component<Props> {
+class TransactionList extends React.Component<Props> {
   render() {
     const { transactions } = this.props;
     return (
@@ -39,6 +42,7 @@ export default class TransactionList extends React.Component<Props> {
               <th scope="col">Category</th>
               <th scope="col">Withdraw</th>
               <th scope="col">Deposit</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -46,6 +50,7 @@ export default class TransactionList extends React.Component<Props> {
               return (
                 <TransactionItem
                   key={transaction.id}
+                  deleteTransactions={this.props.deleteTransactions}
                   transaction={transaction}
                 />
               );
@@ -56,3 +61,12 @@ export default class TransactionList extends React.Component<Props> {
     );
   }
 }
+
+const mapDispatchToProps = {
+  deleteTransactions,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(TransactionList);

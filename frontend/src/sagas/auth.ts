@@ -29,7 +29,8 @@ export function* authenticate(email: string, password: string) {
     // Saves to token to localStorage
     yield call(saveLocalStorageItem, APP_STORAGE_KEY, data);
 
-    // TODO: Set axios header
+    // Set axios header
+    axios.defaults.headers.common.Authorization = 'Bearer ' + data.accessToken;
 
     yield put({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {

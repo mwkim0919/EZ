@@ -21,6 +21,8 @@ export interface Enthusiasm {
 
 export interface CurrentUser {
   email: string;
+  userId: number;
+  accessToken: string;
 }
 
 // This is the type of our redux store

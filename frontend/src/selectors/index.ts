@@ -20,11 +20,12 @@ export const createErrorMessageSelector = (actions: string[]) => (
   // returns the first error messages for actions
   // * We assume when any request fails on a page that
   //   requires multiple API calls, we shows the first error
-  return R.compose(
-    R.nthArg(1),
-    R.filter(R.complement(R.isNil)),
-    R.map((action: string) => {
-      return R.view(R.lensPath(['ui', 'error', action]), state);
-    })
-  )(actions);
+  return (
+    R.compose(
+      R.filter(R.complement(R.isEmpty)),
+      R.map((action: string) => {
+        return R.view(R.lensPath(['ui', 'error', action]), state);
+      })
+    )(actions)[0] || ''
+  );
 };
