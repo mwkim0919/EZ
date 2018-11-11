@@ -58,6 +58,7 @@ export const fetchCategories = () => {
           });
         },
         (err: AxiosError) => {
+          console.log('Error Response ', err);
           dispatch({ type: FETCH_CATEGORIES[FAILURE], payload: err });
         }
       );
