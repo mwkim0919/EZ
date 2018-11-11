@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { FETCH_CATEGORIES, FETCH_TRANSACTIONS } from 'src/constants/budget';
 import { SUCCESS } from 'src/constants';
 
-const transactions = (state = [], action: AnyAction) => {
+export const transactions = (state = [], action: AnyAction) => {
   switch (action.type) {
     case FETCH_TRANSACTIONS[SUCCESS]:
       return action.payload;
@@ -12,7 +12,7 @@ const transactions = (state = [], action: AnyAction) => {
   }
 };
 
-const categories = (state = [], action: AnyAction) => {
+export const categories = (state = [], action: AnyAction) => {
   switch (action.type) {
     case FETCH_CATEGORIES[SUCCESS]:
       return action.payload;
