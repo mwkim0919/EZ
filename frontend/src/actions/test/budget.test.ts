@@ -1,6 +1,5 @@
 import * as budget from 'src/actions/budget';
 import axios from 'axios';
-import * as nock from 'nock';
 import * as sinon from 'sinon';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
@@ -50,7 +49,7 @@ describe('action', () => {
         transactionDatetime: '2018-11-10T17:09:19.000Z',
       },
     ];
-    const resolved = new Promise((res) => res({ data: response }));
+    const resolved = Promise.resolve({ data: response })
     sandbox.stub(axios, 'get').returns(resolved);
     // nock('http://localhost').get(/\/api\/users\/\d+\/transactions/).reply(200, response);
     const expectedActions = [
@@ -60,7 +59,7 @@ describe('action', () => {
         payload: response,
       },
     ];
-    const store = mockStore({ budget: { transactions: [], categories: [] } });
+    const store = mockStore();
     // @ts-ignore
     return store.dispatch(budget.fetchTransactions()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
@@ -75,8 +74,8 @@ describe('action', () => {
       "stacktraces": []
     };
     // TODO: Investigate if we can control http error code (e.g: can we make this error to be 400 error?)
-    const resolved = new Promise((_, err) => err(response));
-    sandbox.stub(axios, 'get').returns(resolved);
+    const rejected = Promise.reject(response);
+    sandbox.stub(axios, 'get').returns(rejected);
     // nock('http://localhost').get(/\/users\/\d+\/transactions/).reply(401, response);
     const expectedActions = [
       { type: FETCH_TRANSACTIONS[REQUEST] },
@@ -85,7 +84,7 @@ describe('action', () => {
         payload: response,
       },
     ];
-    const store = mockStore({ budget: { transactions: [], categories: [] } });
+    const store = mockStore();
     // @ts-ignore
     return store.dispatch(budget.fetchTransactions()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);

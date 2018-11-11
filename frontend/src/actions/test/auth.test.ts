@@ -14,18 +14,14 @@ describe('actions', () => {
     };
     expect(auth.login(authenticationInput)).toEqual(expectedAction);
   });
-});
 
-describe('actions', () => {
   it('should create an action to logout', () => {
     const expectedAction = {
       type: LOGOUT,
     };
     expect(auth.logout()).toEqual(expectedAction);
   });
-});
 
-describe('actions', () => {
   it('should create an action to signUp', () => {
     const authenticationInput = {
       email: 'test@test.com',
@@ -38,4 +34,5 @@ describe('actions', () => {
     };
     expect(auth.signUp(expectedAction)).toEqual(expectedAction);
   });
+
 });

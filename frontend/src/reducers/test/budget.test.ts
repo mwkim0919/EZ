@@ -5,7 +5,7 @@ import { SUCCESS } from 'src/constants';
 describe('budget reducer', () => {
   it('should return the initial state', () => {
     const action = {
-      type: FETCH_CATEGORIES[SUCCESS],
+      type: "",
       payload: { a: 'test' },
     };
     expect(budget.transactions([], action)).toEqual([]);
@@ -21,7 +21,7 @@ describe('budget reducer', () => {
 
   it('should return the initial state', () => {
     const action = {
-      type: FETCH_TRANSACTIONS[SUCCESS],
+      type: "",
       payload: { a: 'test' },
     };
     expect(budget.categories([], action)).toEqual([]);
