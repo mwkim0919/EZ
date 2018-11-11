@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.AccessControlException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -28,6 +30,22 @@ public class EzExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(AuthenticationException.class)
   public final ResponseEntity<ExceptionResponse> handleAuthenticationException(
       AuthenticationException ex, HttpServletRequest request) {
+    log.error("UnAuthorized", ex);
+    ExceptionResponse response = createExceptionResponse(ex, request);
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(AccessControlException.class)
+  public final ResponseEntity<ExceptionResponse> handleAccessControlException(
+      AccessControlException ex, HttpServletRequest request) {
+    log.error("UnAuthorized", ex);
+    ExceptionResponse response = createExceptionResponse(ex, request);
+    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public final ResponseEntity<ExceptionResponse> handleAccessDeniedException(
+      AccessDeniedException ex, HttpServletRequest request) {
     log.error("UnAuthorized", ex);
     ExceptionResponse response = createExceptionResponse(ex, request);
     return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
