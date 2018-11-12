@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { Category } from 'src/types/budget';
 
 interface Props {
-  category: Category;
+  categorySet: string[]
+  categoryLimit: number;
+  amount: number;
 }
 
 export default class CategoryItem extends React.Component<Props> {
+  resolveCategoryName(categorySet: string[]) {
+    return categorySet.reverse().join(" / ");
+  }
   render() {
-    const { category } = this.props;
-    const {
-      // id,
-      name,
-      categoryLimit,
-      parentCategory,
-      // createDateTime,
-    } = category;
+    const { categorySet, categoryLimit, amount } = this.props;
+    const name = this.resolveCategoryName(categorySet);
     return (
       <div className="media text-muted pt-3">
         <img
@@ -26,7 +24,8 @@ export default class CategoryItem extends React.Component<Props> {
         />
         <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
           <strong className="d-block text-gray-dark">{name}</strong>
-          Limit is {categoryLimit} {parentCategory == null ? "" : "and Parent is " + {parentCategory}}
+          Limit is {categoryLimit}{''}
+          you spent {amount.toFixed(2)}
         </p>
       </div>
     );
