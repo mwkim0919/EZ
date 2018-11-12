@@ -5,6 +5,10 @@ import com.ez.ezbackend.budget.entity.Schedule;
 import com.ez.ezbackend.budget.enums.RecurringPattern;
 import com.ez.ezbackend.shared.entity.User;
 import com.ez.ezbackend.shared.exception.EzIllegalRequestException;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.google.common.base.Strings;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +27,9 @@ public class ScheduleRequest {
   private String description;
   private BigDecimal deposit;
   private BigDecimal withdraw;
+
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  @JsonSerialize(using = LocalDateSerializer.class)
   private LocalDate startDate;
   private RecurringPattern recurringPattern;
 

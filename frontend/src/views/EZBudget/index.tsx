@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { init as initBudget } from 'src/actions/budget';
 import { AppState } from 'src/types';
 import { Transaction, Category } from 'src/types/budget';
+import ScheduleSection from 'src/components/Budget/ScheduleSection';
 
 interface Props {
   transactions: Transaction[];
@@ -39,6 +40,7 @@ class EZBudget extends React.Component<Props> {
           component={TransactionForm}
         />
         <Route exact path="/budget/categories" component={CategorySectionContainer} />
+        <Route path="/budget/schedules" component={ScheduleSection} />
       </Switch>
     );
   }

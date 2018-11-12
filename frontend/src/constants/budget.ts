@@ -5,3 +5,4 @@ export const DELETE_TRASACTIONS = createRequestTypes('DELETE_TRANSACTIONS');
 export const UPDATE_TRANSACTIONS = createRequestTypes('UPDATE_TRANSACTIONS');
 export const FETCH_TRANSACTIONS = createRequestTypes('FETCH_TRANSACTIONS');
 export const FETCH_CATEGORIES = createRequestTypes('FETCH_CATEGORIES');
+export const FETCH_SCHEDULES = createRequestTypes('FETCH_SCHEDULES');

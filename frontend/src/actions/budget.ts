@@ -5,6 +5,7 @@ import { loadLocalStorageItem } from 'src/helpers/localStorage';
 import { APP_STORAGE_KEY, REQUEST, FAILURE, SUCCESS } from 'src/constants';
 import {
   FETCH_TRANSACTIONS,
+  FETCH_SCHEDULES,
   FETCH_CATEGORIES,
   SAVE_TRANSACTIONS,
   DELETE_TRASACTIONS,
@@ -22,6 +23,7 @@ export const init = () => {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(fetchTransactions());
     await dispatch(fetchCategories());
+    await dispatch(fetchSchedules());
   };
 };
 
@@ -63,6 +65,13 @@ export const fetchCategories = () => {
         dispatch({ type: FETCH_CATEGORIES[FAILURE], payload: err });
       }
     );
+  };
+};
+
+export const fetchSchedules = () => {
+  return (dispatch: Dispatch) => {
+    dispatch({ type: FETCH_SCHEDULES[REQUEST] });
+    // return axios.get(`/api/users/${}`)
   };
 };
 

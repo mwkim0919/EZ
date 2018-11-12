@@ -54,3 +54,23 @@ export interface CategoryOption {
   value: Category;
   label: string;
 }
+
+export type RecurringPattern =
+  | 'yearly'
+  | 'bi-monthly'
+  | 'monthly'
+  | 'bi-weekly'
+  | 'weekly';
+
+export interface Schedule {
+  id: number;
+  categoryId: number;
+  categoryName: string;
+  withdraw: number | null;
+  deposit: number | null;
+  startDate: Date;
+  lastProcessed: Date;
+  nextRecurringDate: Date;
+  createDatetime: Date;
+  recurringPattern: RecurringPattern;
+}

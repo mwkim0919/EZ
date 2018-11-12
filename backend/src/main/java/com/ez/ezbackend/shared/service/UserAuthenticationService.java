@@ -30,7 +30,7 @@ public class UserAuthenticationService implements UserDetailsService {
         .id(user.getId())
         .email(user.getEmail())
         .password(user.getPassword())
-        .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getText())))
+        .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getValue())))
         .build();
   }
 
@@ -41,7 +41,7 @@ public class UserAuthenticationService implements UserDetailsService {
         .id(user.getId())
         .email(user.getEmail())
         .password(user.getPassword())
-        .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getText())))
+        .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getValue())))
         .build();
   }
 }

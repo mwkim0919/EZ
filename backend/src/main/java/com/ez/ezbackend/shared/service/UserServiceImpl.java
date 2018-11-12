@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     List<Category> categories = new ArrayList<>();
     for (DefaultCategory categoryType : DefaultCategory.values()) {
       Category category = Category.builder()
-          .name(categoryType.getText())
+          .name(categoryType.getValue())
           .user(user)
           .build();
       categories.add(category);

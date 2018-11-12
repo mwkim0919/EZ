@@ -5,15 +5,15 @@ VALUES
 
 INSERT INTO category(id, category_limit, create_datetime, name, parent_category_id, user_id)
 VALUES 
-(1, 200.00, now(), 'TRANSPORTATION', null, 1),
-(2, 400.00, now(), 'FOOD', null, 1),
-(3, 130.00, now(), 'ENTERTAINMENT', null, 1),
+(1, 200.00, now(), 'Transportation', null, 1),
+(2, 400.00, now(), 'Food', null, 1),
+(3, 130.00, now(), 'Entertainment', null, 1),
 (4, 100.00, now(), 'Coffee', 2, 1),
 (5, 50.00, now(), 'Pizza', 2, 1),
-(6, null, now(), 'INCOME', null, 1),
-(7, 200.00, now(), 'EDUCATION', null, 1),
-(8, 1200.00, now(), 'HOUSING', null, 1),
-(9, 350.00, now(), 'UTILITY', null, 1),
+(6, null, now(), 'Income', null, 1),
+(7, 200.00, now(), 'Education', null, 1),
+(8, 1200.00, now(), 'Housing', null, 1),
+(9, 350.00, now(), 'Utility', null, 1),
 (10, 20.00, now(), 'Starbucks', 4, 1);
 
 INSERT INTO transaction(id, description, withdraw, deposit, transaction_datetime, create_datetime, user_id, category_id)

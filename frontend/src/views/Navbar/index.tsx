@@ -52,6 +52,9 @@ class Navbar extends React.Component<NavbarProps> {
                 <Link to="/budget" className="dropdown-item">
                   Home
                 </Link>
+                <Link to="/budget/schedules" className="dropdown-item">
+                  Schedules
+                </Link>
                 <div className="dropdown-divider" />
                 <Link to="/budget/transactions" className="dropdown-item">
                   Transaction

@@ -97,7 +97,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
         .build();
     category = categoryService.updateCategory(categoryRequest, 1L, 1L);
     assertThat(category.getCategoryLimit()).isEqualTo("5500.00");
-    assertThat(category.getName()).isEqualTo("TRANSPORTATION");
+    assertThat(category.getName()).isEqualTo("Transportation");
   }
 
   @Test(expected = EzNotFoundException.class)

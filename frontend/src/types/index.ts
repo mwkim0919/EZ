@@ -1,10 +1,11 @@
 import { TodoApp } from './todos';
-import { Transaction, Category } from './budget';
+import { Transaction, Category, Schedule } from './budget';
 
 // Application specific state
 export interface EZBudgetState {
   transactions: Transaction[];
   categories: Category[];
+  schedules: Schedule[];
 }
 
 // API Props
