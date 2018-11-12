@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import axios from 'axios';
 import { history } from './store/configureStore';
 import Routes from './hot-routes';
 import configureStore from './store/configureStore';
@@ -13,6 +14,11 @@ const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
 const store = configureStore({
   currentUser: storedData || {},
 });
+
+if (storedData) {
+  axios.defaults.headers.common.Authorization =
+    'Bearer ' + storedData.accessToken;
+}
 
 ReactDOM.render(
   <Provider store={store}>

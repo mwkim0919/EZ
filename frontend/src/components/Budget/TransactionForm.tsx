@@ -16,6 +16,8 @@ import {
   TransactionRequest,
   Category,
   TransactionFormItem,
+  CategoryOption,
+  SaveTransactions,
 } from 'src/types/budget';
 import { AppState, APIProps } from 'src/types';
 import * as R from 'ramda';
@@ -24,10 +26,12 @@ import 'react-day-picker/lib/style.css';
 import { saveTransactions } from 'src/actions/budget';
 import { createLoadingSelector } from 'src/selectors';
 import { ValueType } from 'react-select/lib/types';
+import { push, RouterAction } from 'connected-react-router';
 
 interface Props {
   categories: Category[];
-  saveTransactions: (transactions: TransactionRequest[]) => void;
+  saveTransactions: Function;
+  push: typeof push;
 }
 
 const transactionsValidationSchema = Yup.object().shape({
@@ -54,11 +58,6 @@ const generateTransaction = (categoryId: number): TransactionFormItem => ({
   transactionDatetime: new Date(),
 });
 
-interface CategoryOption {
-  value: Category;
-  label: string;
-}
-
 class TransactionForm extends React.Component<Props & APIProps> {
   handleSubmit = (values: FormikValues) => {
     const transactions = values.transactions.map(
@@ -79,17 +78,18 @@ class TransactionForm extends React.Component<Props & APIProps> {
         };
       }
     );
-    this.props.saveTransactions(transactions);
+    this.props.saveTransactions(transactions).then(() => {
+      this.props.push('/budget/transactions');
+    });
   };
 
   render() {
+    if (this.props.loading) {
+      return ' Loading ... ';
+    }
     // TODO: This check should be done somewhere else
     if (this.props.categories.length === 0) {
       return 'throw';
-    }
-
-    if (this.props.loading) {
-      return ' Loading ... ';
     }
 
     const categories: CategoryOption[] = R.map(([categoryId, category]) => {
@@ -268,7 +268,10 @@ const mapStateToProps = (state: AppState) => {
     categories: state.budget.categories,
   };
 };
+// const mapDispatchToProps: { saveTransactions: SaveTransactions} = {
+//   saveTransactions, push
+// }
 export default connect(
   mapStateToProps,
-  { saveTransactions }
+  { saveTransactions, push }
 )(TransactionForm);

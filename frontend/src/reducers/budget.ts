@@ -1,10 +1,35 @@
 import { combineReducers } from 'redux';
 import { AnyAction } from 'redux';
-import { FETCH_CATEGORIES, FETCH_TRANSACTIONS } from 'src/constants/budget';
+import {
+  FETCH_CATEGORIES,
+  FETCH_TRANSACTIONS,
+  DELETE_TRASACTIONS,
+  SAVE_TRANSACTIONS,
+  UPDATE_TRANSACTIONS,
+} from 'src/constants/budget';
 import { SUCCESS } from 'src/constants';
+import { Transaction } from 'src/types/budget';
 
 export const transactions = (state = [], action: AnyAction) => {
   switch (action.type) {
+    case SAVE_TRANSACTIONS[SUCCESS]:
+      return [...action.payload, ...state];
+    case DELETE_TRASACTIONS[SUCCESS]: {
+      const { payload } = action;
+      const nextState = state.filter(
+        (transaction: Transaction) => !payload.includes(transaction.id)
+      );
+      return nextState;
+    }
+    case UPDATE_TRANSACTIONS[SUCCESS]: {
+      const { payload } = action;
+      return state.map((transaction: Transaction) => {
+        if (payload.id === transaction.id) {
+          return payload;
+        }
+        return transaction;
+      });
+    }
     case FETCH_TRANSACTIONS[SUCCESS]:
       return action.payload;
     default:
