@@ -16,6 +16,7 @@ import {
   TransactionRequest,
   Category,
   TransactionFormItem,
+  CategoryOption,
   SaveTransactions,
 } from 'src/types/budget';
 import { AppState, APIProps } from 'src/types';
@@ -56,11 +57,6 @@ const generateTransaction = (categoryId: number): TransactionFormItem => ({
   amount: 0,
   transactionDatetime: new Date(),
 });
-
-interface CategoryOption {
-  value: Category;
-  label: string;
-}
 
 class TransactionForm extends React.Component<Props & APIProps> {
   handleSubmit = (values: FormikValues) => {

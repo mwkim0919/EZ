@@ -30,6 +30,7 @@ export function* authenticate(email: string, password: string) {
     yield call(saveLocalStorageItem, APP_STORAGE_KEY, data);
 
     // Set axios header
+    // TODO:: we need to set it as null when user sign out
     axios.defaults.headers.common.Authorization = 'Bearer ' + data.accessToken;
 
     yield put({ type: LOGIN_SUCCESS, payload: data });

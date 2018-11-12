@@ -5,6 +5,11 @@ export type DeleteTransactions = (
   ids: number[]
 ) => (dispatch: Dispatch, getState: () => AppState) => Promise<void>;
 
+export type UpdateTransactions = (
+  id: number,
+  transaction: TransactionRequest
+) => (dispatch: Dispatch, getState: () => AppState) => Promise<void>;
+
 export type SaveTransactions = (
   transactions: TransactionRequest[]
 ) => Promise<void>;
@@ -43,4 +48,9 @@ export interface Category {
   categoryLimit: number;
   parentCategory?: Category;
   createDatetime: Date | string;
+}
+
+export interface CategoryOption {
+  value: Category;
+  label: string;
 }

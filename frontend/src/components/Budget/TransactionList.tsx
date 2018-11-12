@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import TransactionItem from './TransactionItem';
 import TransactionBarChart from './TransactionBarChart';
 import TransactionPieChart from './TransactionPieChart';
-import { Transaction, DeleteTransactions } from 'src/types/budget';
+import { Transaction, DeleteTransactions, Category } from 'src/types/budget';
 import { connect } from 'react-redux';
 import { deleteTransactions } from 'src/actions/budget';
 

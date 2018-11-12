@@ -8,11 +8,13 @@ import {
   FETCH_CATEGORIES,
   SAVE_TRANSACTIONS,
   DELETE_TRASACTIONS,
+  UPDATE_TRANSACTIONS,
 } from 'src/constants/budget';
 import {
   TransactionRequest,
   Transaction,
   DeleteTransactions,
+  UpdateTransactions,
 } from 'src/types/budget';
 
 export const init = () => {
@@ -110,5 +112,32 @@ export const deleteTransactions: DeleteTransactions = (
         dispatch({ type: DELETE_TRASACTIONS[FAILURE], payload: err });
       }
     );
+  };
+};
+
+export const updateTransactions: UpdateTransactions = (
+  id: number,
+  transaction: TransactionRequest
+) => {
+  return (dispatch: Dispatch, getState: () => AppState) => {
+    const {
+      currentUser: { userId },
+    } = getState();
+    dispatch({
+      type: UPDATE_TRANSACTIONS[REQUEST],
+    });
+    return axios
+      .put(`/api/users/${userId}/transactions/${id}`, transaction)
+      .then(
+        (response: AxiosResponse) => {
+          dispatch({
+            type: UPDATE_TRANSACTIONS[SUCCESS],
+            payload: response.data,
+          });
+        },
+        (err: AxiosError) => {
+          dispatch({ type: UPDATE_TRANSACTIONS[FAILURE], payload: err });
+        }
+      );
   };
 };
