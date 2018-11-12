@@ -74,14 +74,22 @@ class TransactionItem extends React.Component<Props, State> {
   };
 
   handleSubmit = (values: FormikValues) => {
-    const transaction = {} as TransactionRequest;
-    transaction.categoryId = values.categoryId;
-    transaction.description = values.description;
-    transaction.withdraw =
-      values.transactionType === 'withdraw' ? values.amount : null;
-    transaction.deposit =
-      values.transactionType === 'deposit' ? values.amount : null;
-    transaction.transactionDatetime = values.transactionDatetime;
+    const {
+      categoryId,
+      description,
+      withdraw,
+      deposit,
+      transactionDatetime,
+      amount,
+    } = values;
+    const transaction: TransactionRequest = {
+      categoryId,
+      description,
+      withdraw: values.transactionType === 'withdraw' ? values.amount : null,
+      deposit: values.transactionType === 'deposit' ? values.amount : null,
+      transactionDatetime,
+    };
+    console.log(transaction);
     this.props.updateTransactions(values.id, transaction);
     this.setState(prevState => {
       return { isEditing: !prevState.isEditing };
@@ -118,7 +126,7 @@ class TransactionItem extends React.Component<Props, State> {
               initialValues={{
                 ...transaction,
                 transactionType: withdraw ? 'withdraw' : 'deposit',
-                amount: 0,
+                amount: withdraw || deposit,
               }}
               isInitialValid={true}
               validationSchema={transactionSchema}
@@ -181,13 +189,7 @@ class TransactionItem extends React.Component<Props, State> {
                         />
                       </div>
                       <div className="col">
-                        <Field
-                          type="text"
-                          name="amount"
-                          value={
-                            values.withdraw ? values.withdraw : values.deposit
-                          }
-                        />
+                        <Field type="text" name="amount" />
                       </div>
                       <div className="col">
                         <button type="submit" className="btn btn-primary">
