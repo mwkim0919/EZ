@@ -60,7 +60,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
   @Test
   public void test_getAllCategoriesForUser() {
     List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
-    assertThat(categoryList).hasSize(9);
+    assertThat(categoryList).hasSize(10);
   }
 
   @Test(expected = EzNotFoundException.class)
@@ -121,7 +121,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
     Set<Long> ids = ImmutableSet.of(8L);
     categoryService.deleteCategories(ids, 1L);
     List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
-    assertThat(categoryList).hasSize(8);
+    assertThat(categoryList).hasSize(9);
   }
 
   @Test
@@ -130,7 +130,7 @@ public class CategoryServiceTest extends DatabaseIntegrationTest {
     Set<Long> ids = ImmutableSet.of(1L);
     categoryService.deleteCategories(ids, 1L);
     List<Category> categoryList = categoryService.getAllCategoriesForUser(1L);
-    assertThat(categoryList).hasSize(8);
+    assertThat(categoryList).hasSize(9);
     List<Transaction> transactions = transactionRepository.findByUserAndCategoryId(1L, 1L);
     transactions.forEach(transaction -> assertThat(transaction.getCategory().getId()).isNotEqualTo(1L));
   }
