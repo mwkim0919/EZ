@@ -2,6 +2,9 @@ matrix:
   include:
     - language: java
       jdk: openjdk8
+      cache:
+        directories:
+          - $HOME/.m2
       dist: trusty
       sudo: true
       addons:
@@ -22,8 +25,10 @@ matrix:
 
     - language: node_js
       node_js: "8"
+      cache: yarn
       before_script:
         - cd frontend
         - yarn install
       script:
         - yarn test
+        - yarn build
