@@ -13,13 +13,14 @@ export const storeAllSubCategoryNames = (
 };
 
 export const generateCategoryMaps = (categories: Category[]): object => {
+  const others = 'Others';
   return categories.reduce((acc: object, category: Category) => {
     acc[category.name] = {
       nameSets: storeAllSubCategoryNames(category, [category.name]).reverse(),
       limit: category.categoryLimit,
     };
-    acc['Others'] = {
-      nameSets: ['Others'],
+    acc[others] = {
+      nameSets: [others],
       limit: 0,
     };
     return acc;
@@ -43,22 +44,23 @@ export const resolveCategoryAndAmount = (
   amountByCategory: object
 ): object => {
   const result = {};
+  const nameSets = 'nameSets';
+  const limit = 'limit';
   for (const categoryMap of Object.keys(categoryMaps).map(
     key => categoryMaps[key]
   )) {
-    // @ts-ignore
-    const amounts = R.props(categoryMap['nameSets'], amountByCategory);
+    const amounts = R.props(categoryMap[nameSets], amountByCategory);
     const amountToAdd =
       amounts[amounts.length - 1] === undefined
         ? 0
         : Number(amounts[amounts.length - 1]);
     let displayedCategoryName = '';
-    for (const categoryName of categoryMap['nameSets']) {
+    for (const categoryName of categoryMap[nameSets]) {
       displayedCategoryName += categoryName;
       if (result[displayedCategoryName] === undefined) {
         result[displayedCategoryName] = {
           expense: amountToAdd,
-          limit: categoryMap['limit'],
+          limit: categoryMap[limit],
         };
       } else {
         result[displayedCategoryName].expense += amountToAdd;
