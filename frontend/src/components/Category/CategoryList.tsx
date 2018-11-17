@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Transaction, Category } from 'src/types/budget';
 import {
-  storeAllSubCategoryNames,
+  storeAllParentCategoryNames,
   generateCategoryMaps,
   getTransactionMonths,
   resolveCategoryAndAmount,
@@ -24,8 +24,7 @@ export default class CategoryList extends React.Component<Props, State> {
     date: '',
   };
 
-  // @ts-ignore
-  selectDate(e) {
+  selectDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
     this.setState({ date: e.target.value });
   }
@@ -51,9 +50,9 @@ export default class CategoryList extends React.Component<Props, State> {
         <select
           className="form-control"
           id="date"
-          onChange={e => this.selectDate(e)}
+          onChange={this.selectDate}
         >
-          {Array.from(months).map((date: string) => {
+          {months.map((date: string) => {
             return <option key={date}>{date}</option>;
           })}
         </select>

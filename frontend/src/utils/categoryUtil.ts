@@ -1,40 +1,47 @@
 import { Category, Transaction } from 'src/types/budget';
 import * as R from 'ramda';
 
-export const storeAllSubCategoryNames = (
+interface CategoryMap {
+  [categoryName: string]: {
+    nameSets: string[];
+    limit: number | string | null;
+  };
+}
+export const storeAllParentCategoryNames = (
   category: Category,
   resultArray: string[]
 ): string[] => {
   if (category.parentCategory != null) {
     resultArray.push(category.parentCategory.name);
-    storeAllSubCategoryNames(category.parentCategory, resultArray);
+    storeAllParentCategoryNames(category.parentCategory, resultArray);
   }
   return resultArray;
 };
 
-export const generateCategoryMaps = (categories: Category[]): object => {
+export const generateCategoryMaps = (categories: Category[]): CategoryMap => {
   const others = 'Others';
-  return categories.reduce((acc: object, category: Category) => {
-    acc[category.name] = {
-      nameSets: storeAllSubCategoryNames(category, [category.name]).reverse(),
-      limit: category.categoryLimit,
-    };
-    acc[others] = {
-      nameSets: [others],
-      limit: 0,
-    };
-    return acc;
-  }, {});
+  return categories.reduce(
+    (acc: CategoryMap, category: Category) => {
+      acc[category.name] = {
+        nameSets: storeAllParentCategoryNames(category, [category.name]).reverse(),
+        limit: category.categoryLimit,
+      };
+      return acc;
+    },
+    {
+      Others: {
+        nameSets: [others],
+        limit: 0,
+      },
+    }
+  );
 };
 
 export const groupAmountByCategory = (transactions: Transaction[]): object => {
   return transactions.reduce((acc: object, transaction: Transaction) => {
     const key = transaction.categoryName || 'Others';
-    if (acc[key]) {
-      acc[key] += Number(transaction.withdraw);
-    } else {
-      acc[key] = Number(transaction.withdraw);
-    }
+    const withdraw = Number(transaction.withdraw);
+    acc[key] = acc[key] ? acc[key] + withdraw : withdraw;
     return acc;
   }, {});
 };

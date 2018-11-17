@@ -46,7 +46,7 @@ export interface Category {
   id: number;
   name: string;
   categoryLimit: number | string | null;
-  parentCategory?: Category | null;
+  parentCategory: Category | null;
   createDatetime: Date | string;
 }
 
