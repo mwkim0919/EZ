@@ -45,8 +45,8 @@ export interface TransactionFormItem {
 export interface Category {
   id: number;
   name: string;
-  categoryLimit: number;
-  parentCategory?: Category;
+  categoryLimit: number | string | null;
+  parentCategory: Category | null;
   createDatetime: Date | string;
 }
 

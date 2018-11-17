@@ -52,13 +52,14 @@ class Navbar extends React.Component<NavbarProps> {
                 <Link to="/budget" className="dropdown-item">
                   Home
                 </Link>
+                <div className="dropdown-divider" />
                 <Link to="/budget/transactions" className="dropdown-item">
-                  Transactions
+                  Transaction
                 </Link>
                 <div className="dropdown-divider" />
-                <a className="dropdown-item" href="#">
-                  Something else here
-                </a>
+                <Link to="/budget/categories" className="dropdown-item">
+                  Category
+                </Link>
               </div>
             </li>
           </ul>

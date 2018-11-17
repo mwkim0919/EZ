@@ -10,7 +10,7 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('action', () => {
-  let sandbox: any;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
