@@ -65,7 +65,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // Retrieve all categories for this user
     List<Category> categories = categoryRepository.findByUser(user);
-    Map<Long, Category> categoriesMap = categories.stream().collect(Collectors.toMap(Category::getId, Function.identity()));
+    Map<Long, Category> categoriesMap = categories.stream()
+        .collect(Collectors.toMap(Category::getId, Function.identity()));
 
     List<Schedule> schedules = scheduleRequests.stream()
         .map(scheduleRequest ->
