@@ -44,7 +44,7 @@ const TransactionList = (props: Props) => {
 
   return (
     <div>
-      <div>
+      {/* <div>
         <TransactionBarChart transactions={transactions} />
       </div>
       <div>
@@ -52,7 +52,7 @@ const TransactionList = (props: Props) => {
       </div>
       <div>
         <TransactionLineChart transactions={transactions} />
-      </div>
+      </div> */}
     </div>
   );
 };

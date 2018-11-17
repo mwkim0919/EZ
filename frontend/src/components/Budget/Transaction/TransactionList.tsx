@@ -12,19 +12,82 @@ interface Props {
   fetchTransactions: () => void;
   deleteTransactions: DeleteTransactions;
   transactions: Transaction[];
+  categories: Category[];
 }
 
 class TransactionList extends React.Component<Props> {
   render() {
-    const { transactions } = this.props;
+    const { transactions, categories } = this.props;
     return (
       <div>
-        <div className="row">
-          <div className="col-sm">
+        <ul className="nav nav-tabs" id="myTab" role="tablist">
+          <li className="nav-item">
+            <a
+              className="nav-link active"
+              id="bar-tab"
+              data-toggle="tab"
+              href="#bar"
+              role="tab"
+              aria-controls="bar"
+              aria-selected="true"
+            >
+              Bar
+            </a>
+          </li>
+          <li className="nav-item">
+            <a
+              className="nav-link"
+              id="pie-tab"
+              data-toggle="tab"
+              href="#pie"
+              role="tab"
+              aria-controls="pie"
+              aria-selected="false"
+            >
+              Pie
+            </a>
+          </li>
+          <li className="nav-item">
+            <a
+              className="nav-link"
+              id="contact-tab"
+              data-toggle="tab"
+              href="#contact"
+              role="tab"
+              aria-controls="contact"
+              aria-selected="false"
+            >
+              Contact
+            </a>
+          </li>
+        </ul>
+        <div className="tab-content" id="myTabContent">
+          <div
+            className="tab-pane fade show active"
+            id="bar"
+            role="tabpanel"
+            aria-labelledby="bar-tab"
+            style={{height: 350}}
+          >
             <TransactionBarChart transactions={transactions} />
           </div>
-          <div className="col-sm">
-            <TransactionPieChart transactions={transactions} />
+          <div
+            className="tab-pane fade"
+            id="pie"
+            role="tabpanel"
+            aria-labelledby="pie-tab"
+            style={{height: 350}}
+          >
+            <TransactionPieChart transactions={transactions} categories={categories} />
+          </div>
+          <div
+            className="tab-pane fade"
+            id="contact"
+            role="tabpanel"
+            aria-labelledby="contact-tab"
+            style={{height: 350}}
+          >
+            shit
           </div>
         </div>
         <hr />

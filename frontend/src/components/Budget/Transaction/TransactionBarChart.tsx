@@ -49,8 +49,7 @@ export default class TransactionBarChart extends React.Component<Props> {
     return (
       <Bar
         data={data}
-        // width={100}
-        // height={50}
+        // height={350}
         options={{
           maintainAspectRatio: false,
           // responsive: true,

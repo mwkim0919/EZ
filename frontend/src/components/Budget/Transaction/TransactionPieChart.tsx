@@ -1,16 +1,30 @@
 import * as React from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Transaction } from 'src/types/budget';
+import { Transaction, Category } from 'src/types/budget';
+import {
+  storeAllParentCategoryNames,
+  generateCategoryMaps,
+  getTransactionMonths,
+  resolveCategoryAndAmount,
+  groupAmountByCategory,
+} from 'src/utils/budgetUtil';
 
 interface Props {
   transactions: Transaction[];
+  categories: Category[];
 }
 
 export default class TransactionPieChart extends React.Component<Props> {
   render() {
-    // const { transactions } = this.props;
+    const { transactions, categories } = this.props;
+    const categoryMaps = generateCategoryMaps(categories);
+    const categoryAmountMap = resolveCategoryAndAmount(
+      categoryMaps,
+      groupAmountByCategory(transactions)
+    );
+    console.log(categoryMaps, categoryAmountMap);
     const data = {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: Object.keys(categoryAmountMap),
       datasets: [
         {
           label: '# of Votes',
@@ -39,9 +53,10 @@ export default class TransactionPieChart extends React.Component<Props> {
       <Pie
         data={data}
         // width={100}
-        // height={50}
+        // height={350}
         options={{
           maintainAspectRatio: false,
+          // responsive: true,
           legend: {
             position: 'right',
           },
