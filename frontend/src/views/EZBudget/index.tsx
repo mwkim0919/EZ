@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import BudgetDashboardContainer from './BudgetDashboardContainer';
 import TransactionSectionContainer from './TransactionSectionContainer';
 import CategorySectionContainer from 'src/views/EZBudget/CategorySectionContainer';
-import TransactionForm from '../../components/Budget/TransactionForm';
+import TransactionForm from '../../components/Budget/Transaction/TransactionForm';
 import { connect } from 'react-redux';
 import { init as initBudget } from 'src/actions/budget';
 import { AppState } from 'src/types';

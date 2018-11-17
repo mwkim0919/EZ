@@ -3,8 +3,8 @@ import {
   getTransactionMonths,
   resolveCategoryAndAmount,
   groupAmountByCategory,
-} from 'src/utils/categoryUtil';
-import { transactions, categories } from 'src/utils/test/categoryUtilTestData';
+} from 'src/utils/budgetUtil';
+import { transactions, categories } from 'src/utils/test/budgetUtilTestData';
 
 describe('test categoryUtil', () => {
   const [

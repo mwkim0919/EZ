@@ -1,4 +1,4 @@
-import CategoryList from 'src/components/Category/CategoryList';
+import CategoryList from 'src/components/Budget/Category/CategoryList';
 import { connect } from 'react-redux';
 import { AppState } from 'src/types';
 

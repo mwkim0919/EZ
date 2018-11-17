@@ -1,12 +1,23 @@
 import { Category, Transaction } from 'src/types/budget';
 import * as R from 'ramda';
+import { transactions } from './test/budgetUtilTestData';
 
-interface CategoryMap {
+export interface CategoryMap {
   [categoryName: string]: {
     nameSets: string[];
     limit: number | string | null;
   };
 }
+
+export interface MonthlyDepositWithdraw {
+  [month: string]: DepositWithdraw
+};
+
+export interface DepositWithdraw {
+  deposit: number,
+  withdraw: number
+};
+
 export const storeAllParentCategoryNames = (
   category: Category,
   resultArray: string[]
@@ -90,3 +101,23 @@ export const getTransactionMonths = (transactions: Transaction[]): string[] => {
     });
   return Array.from(dateSet);
 };
+
+export const sumDepositAndWithdraw = (transactions: Transaction[], months: string[]): MonthlyDepositWithdraw => {
+  const result = {}
+  for (const month of months) {
+    result[month] = transactions.reduce(
+      (acc: DepositWithdraw, transaction: Transaction) => {
+        if (transaction.transactionDatetime.toString().substring(0, 7) === month) {
+          acc.deposit += Number(transaction.deposit) || 0
+          acc.withdraw += Number(transaction.withdraw) || 0
+        }
+        return acc
+      },
+      {
+        deposit: 0,
+        withdraw: 0
+      }
+    );
+  }
+  return result;
+}

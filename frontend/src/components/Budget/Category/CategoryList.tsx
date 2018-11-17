@@ -6,8 +6,8 @@ import {
   getTransactionMonths,
   resolveCategoryAndAmount,
   groupAmountByCategory,
-} from 'src/utils/categoryUtil';
-import CategoryItem from 'src/components/Category/CategoryItem';
+} from 'src/utils/budgetUtil';
+import CategoryItem from 'src/components/Budget/Category/CategoryItem';
 
 interface Props {
   fetchCategories: () => void;
