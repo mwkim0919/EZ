@@ -3,6 +3,7 @@ import {
   getTransactionMonths,
   resolveCategoryAndAmount,
   groupAmountByCategory,
+  generateCategoryMaps,
 } from 'src/utils/budgetUtil';
 import { transactions, categories } from 'src/utils/test/budgetUtilTestData';
 
@@ -30,6 +31,11 @@ describe('test categoryUtil', () => {
     'EDUCATION',
     'HOUSING',
   ];
+
+  it('generateCategoryMaps', () => {
+    const test = generateCategoryMaps(categories, transactions);
+    console.log(test);
+  })
 
   it('should get a set of months', () => {
     const transactionMonths = getTransactionMonths(transactions);
@@ -77,7 +83,6 @@ describe('test categoryUtil', () => {
       amountByCategory
     );
     console.log(categoryAmountMap);
-
     expect(Object.keys(categoryAmountMap)).toHaveLength(11);
     expect(categoryAmountMap[others]).toHaveProperty(['expense'], 123.45);
     expect(categoryAmountMap[others]).toHaveProperty(['limit'], 0);

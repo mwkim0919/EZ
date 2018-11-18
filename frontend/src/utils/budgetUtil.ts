@@ -2,10 +2,8 @@ import { Category, Transaction } from 'src/types/budget';
 import * as R from 'ramda';
 
 export interface CategoryMap {
-  [categoryName: string]: {
-    nameSets: string[];
-    limit: number | string | null;
-  };
+  nameSet: string[];
+  limit: number | string | null;
 }
 
 export interface MonthlyDepositWithdraw {
@@ -15,6 +13,29 @@ export interface MonthlyDepositWithdraw {
 export interface DepositWithdraw {
   deposit: number;
   withdraw: number;
+}
+
+function initializeCategoryMaps(categories: Category[]): object {
+  const result = {
+    Others: {
+      expense: 0,
+      limit: 0
+    }
+  };
+  for (const category of categories) {
+    let categoryTemp = category;
+    const keyArray = [categoryTemp.name];
+    while (categoryTemp.parentCategory) {
+      keyArray.push(categoryTemp.parentCategory.name);
+      categoryTemp = categoryTemp.parentCategory;
+    }
+    const key = keyArray.reverse().join(' / ');
+    result[key] = {
+      expense: 0,
+      limit: category.categoryLimit ? Number(category.categoryLimit) : 0,
+    };
+  }
+  return result;
 }
 
 export const storeAllParentCategoryNames = (
@@ -27,6 +48,47 @@ export const storeAllParentCategoryNames = (
   }
   return resultArray;
 };
+
+export const generateCategoryMaps = (
+  categories: Category[],
+  transactions: Transaction[]
+) => {
+  const result = initializeCategoryMaps(categories);
+  for (const transaction of transactions) {
+    const categoryNames = getCategoryNames(transaction.categoryId, categories);
+    const amount = transaction.withdraw ? Number(transaction.withdraw) : 0;
+    let key = '';
+    for (const categoryName of categoryNames) {
+      key += categoryName;
+      console.log(key);
+      result[key].expense += amount;
+      key += ' / ';
+    }
+  }
+  return result;
+};
+
+function getCategoryNames(
+  categoryId: number | null,
+  categories: Category[]
+): string[] {
+  if (categoryId === null) {
+    return ['Others']
+  }
+  let selectedCategory = categories.filter(
+    category => category.id === categoryId
+  )[0];
+  return putRelatedCategoryNamesInArray()
+
+  function putRelatedCategoryNamesInArray(): string[] {
+    const keyArray = [selectedCategory.name];
+    while (selectedCategory.parentCategory) {
+      keyArray.push(selectedCategory.parentCategory.name);
+      selectedCategory = selectedCategory.parentCategory;
+    }
+    return keyArray.reverse();
+  }
+}
 
 export const generateFullCategoryMaps = (
   categories: Category[]
