@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Transaction, Category } from 'src/types/budget';
 import {
   storeAllParentCategoryNames,
-  generateCategoryMaps,
+  generateFullCategoryMaps,
   getTransactionMonths,
   resolveCategoryAndAmount,
   groupAmountByCategory,
@@ -31,7 +31,7 @@ export default class CategoryList extends React.Component<Props, State> {
 
   render() {
     const { categories, transactions } = this.props;
-    const categoryMaps = generateCategoryMaps(categories);
+    const categoryMaps = generateFullCategoryMaps(categories);
     const months = getTransactionMonths(transactions);
     const selectedMonth = this.state.date || months[0];
     const selectedTransactions = transactions.filter(

@@ -4,7 +4,7 @@ import { Bar } from 'react-chartjs-2';
 import { Transaction } from 'src/types/budget';
 import { 
   storeAllParentCategoryNames,
-  generateCategoryMaps,
+  generateFullCategoryMaps,
   getTransactionMonths,
   resolveCategoryAndAmount,
   groupAmountByCategory,

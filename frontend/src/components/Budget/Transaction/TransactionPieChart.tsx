@@ -3,11 +3,13 @@ import { Pie } from 'react-chartjs-2';
 import { Transaction, Category } from 'src/types/budget';
 import {
   storeAllParentCategoryNames,
-  generateCategoryMaps,
+  generateFullCategoryMaps,
   getTransactionMonths,
   resolveCategoryAndAmount,
   groupAmountByCategory,
+  generateParentCategoryWithdrawMaps,
 } from 'src/utils/budgetUtil';
+import { getRandomColors } from 'src/utils/chartUtil'
 
 interface Props {
   transactions: Transaction[];
@@ -17,35 +19,20 @@ interface Props {
 export default class TransactionPieChart extends React.Component<Props> {
   render() {
     const { transactions, categories } = this.props;
-    const categoryMaps = generateCategoryMaps(categories);
-    const categoryAmountMap = resolveCategoryAndAmount(
-      categoryMaps,
-      groupAmountByCategory(transactions)
+    const categoryWithdrawMap = generateParentCategoryWithdrawMaps(
+      transactions,
+      categories
     );
-    console.log(categoryMaps, categoryAmountMap);
+
     const data = {
-      labels: Object.keys(categoryAmountMap),
+      labels: Object.keys(categoryWithdrawMap),
       datasets: [
         {
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
-          borderWidth: 1,
+          label: 'Withdraw by category',
+          data: Object.keys(categoryWithdrawMap).map(
+            key => categoryWithdrawMap[key]
+          ),
+          backgroundColor: getRandomColors(Object.keys(categoryWithdrawMap)),
         },
       ],
     };

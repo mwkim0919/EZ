@@ -1,5 +1,5 @@
 import {
-  generateCategoryMaps,
+  generateFullCategoryMaps,
   getTransactionMonths,
   resolveCategoryAndAmount,
   groupAmountByCategory,
@@ -37,7 +37,7 @@ describe('test categoryUtil', () => {
   });
 
   it('should get a category map', () => {
-    const categoryMaps = generateCategoryMaps(categories);
+    const categoryMaps = generateFullCategoryMaps(categories);
 
     expect(Object.keys(categoryMaps)).toHaveLength(11);
 
@@ -70,7 +70,7 @@ describe('test categoryUtil', () => {
   });
 
   it('should resolve Category and Amount', () => {
-    const categoryMaps = generateCategoryMaps(categories);
+    const categoryMaps = generateFullCategoryMaps(categories);
     const amountByCategory = groupAmountByCategory(transactions);
     const categoryAmountMap = resolveCategoryAndAmount(
       categoryMaps,
