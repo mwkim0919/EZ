@@ -1,3 +1,4 @@
+// tslint:disable-next-line
 export const getRandomColors = (data: any[]): string[] => {
   const colors: string[] = [];
 
