@@ -2,11 +2,6 @@ import * as React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Transaction, Category } from 'src/types/budget';
 import {
-  storeAllParentCategoryNames,
-  generateFullCategoryMaps,
-  getTransactionMonths,
-  resolveCategoryAndAmount,
-  groupAmountByCategory,
   generateParentCategoryWithdrawMaps,
 } from 'src/utils/budgetUtil';
 import { getRandomColors } from 'src/utils/chartUtil'
@@ -39,11 +34,8 @@ export default class TransactionPieChart extends React.Component<Props> {
     return (
       <Pie
         data={data}
-        // width={100}
-        // height={350}
         options={{
           maintainAspectRatio: false,
-          // responsive: true,
           legend: {
             position: 'right',
           },

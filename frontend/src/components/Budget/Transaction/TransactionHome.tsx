@@ -1,60 +1,35 @@
 import * as React from 'react';
-import TransactionBarChart from './TransactionBarChart';
-import TransactionPieChart from './TransactionPieChart';
-import TransactionLineChart from './TransactionLineChart';
-import { Transaction } from 'src/types/budget';
+import TransactionBarChart from 'src/components/Budget/Transaction/TransactionBarChart';
+import TransactionPieChart from 'src/components/Budget/Transaction/TransactionPieChart';
+import TransactionLineChart from 'src/components/Budget/Transaction/TransactionLineChart';
+import { Transaction, Category } from 'src/types/budget';
 
 interface Props {
   transactions: Transaction[];
+  categories: Category[];
 }
 
-const TransactionList = (props: Props) => {
-  const transactions = [
-    {
-      id: 7,
-      categoryId: 1,
-      categoryName: 'user2 category01',
-      description: 'test deposit',
-      withdraw: '0',
-      deposit: '100.00',
-      createDatetime: '2018-10-27T23:35:59',
-      transactionDatetime: '2018-10-28T06:31:49',
-    },
-    {
-      id: 8,
-      categoryId: 2,
-      categoryName: 'user2 category02',
-      description: 'test deposit02',
-      withdraw: '0',
-      deposit: '100.00',
-      createDatetime: '2018-10-27T23:36:09',
-      transactionDatetime: '2018-10-28T06:31:49',
-    },
-    {
-      id: 9,
-      categoryId: 3,
-      categoryName: 'user2 category02',
-      description: 'test withdraw',
-      withdraw: '55.55',
-      deposit: '0',
-      createDatetime: '2018-10-27T23:36:09',
-      transactionDatetime: '2018-10-28T06:31:49',
-    },
-  ];
-
-  return (
-    <div>
-      {/* <div>
-        <TransactionBarChart transactions={transactions} />
-      </div>
+class TransactionHome extends React.Component<Props> {
+  render() {
+    // const { transactions, categories } = this.props;
+    // console.log(transactions, categories);
+    return (
       <div>
-        <TransactionPieChart transactions={transactions} />
+        {/* <div>
+          <TransactionBarChart transactions={transactions} />
+        </div>
+        <div>
+          <TransactionPieChart
+            transactions={transactions}
+            categories={categories}
+          />
+        </div>
+        <div>
+          <TransactionLineChart transactions={transactions} />
+        </div> */}
       </div>
-      <div>
-        <TransactionLineChart transactions={transactions} />
-      </div> */}
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default TransactionList;
+export default TransactionHome;

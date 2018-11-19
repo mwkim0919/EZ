@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { Transaction, Category } from 'src/types/budget';
 import {
-  storeAllParentCategoryNames,
-  generateFullCategoryMaps,
   getTransactionMonths,
-  resolveCategoryAndAmount,
-  groupAmountByCategory,
+  generateCategoryMaps,
 } from 'src/utils/budgetUtil';
 import CategoryItem from 'src/components/Budget/Category/CategoryItem';
 
@@ -31,7 +28,6 @@ export default class CategoryList extends React.Component<Props, State> {
 
   render() {
     const { categories, transactions } = this.props;
-    const categoryMaps = generateFullCategoryMaps(categories);
     const months = getTransactionMonths(transactions);
     const selectedMonth = this.state.date || months[0];
     const selectedTransactions = transactions.filter(
@@ -39,14 +35,10 @@ export default class CategoryList extends React.Component<Props, State> {
         String(transaction.transactionDatetime).substring(0, 7) ===
         selectedMonth
     );
-    const categoryAmountMap = resolveCategoryAndAmount(
-      categoryMaps,
-      groupAmountByCategory(selectedTransactions)
-    );
-    console.log(categoryAmountMap);
+    const categoryAmountMap = generateCategoryMaps(categories, selectedTransactions);
     return (
       <div>
-        <label htmlFor="exampleFormControlSelect1">Date</label>
+        <label htmlFor="date">Date</label>
         <select
           className="form-control"
           id="date"

@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import * as R from 'ramda';
-import TransactionItem from './TransactionItem';
-import TransactionBarChart from './TransactionBarChart';
-import TransactionPieChart from './TransactionPieChart';
+import TransactionItem from 'src/components/Budget/Transaction/TransactionItem';
+import TransactionBarChart from 'src/components/Budget/Transaction/TransactionBarChart';
+import TransactionPieChart from 'src/components/Budget/Transaction/TransactionPieChart';
+import TransactionLineChart from 'src/components/Budget/Transaction/TransactionLineChart';
 import { Transaction, DeleteTransactions, Category } from 'src/types/budget';
 import { connect } from 'react-redux';
 import { deleteTransactions } from 'src/actions/budget';
 
 interface Props {
-  fetchTransactions: () => void;
   deleteTransactions: DeleteTransactions;
   transactions: Transaction[];
   categories: Category[];
@@ -50,14 +49,14 @@ class TransactionList extends React.Component<Props> {
           <li className="nav-item">
             <a
               className="nav-link"
-              id="contact-tab"
+              id="line-tab"
               data-toggle="tab"
-              href="#contact"
+              href="#line"
               role="tab"
-              aria-controls="contact"
+              aria-controls="line"
               aria-selected="false"
             >
-              Contact
+              Line
             </a>
           </li>
         </ul>
@@ -82,12 +81,12 @@ class TransactionList extends React.Component<Props> {
           </div>
           <div
             className="tab-pane fade"
-            id="contact"
+            id="line"
             role="tabpanel"
-            aria-labelledby="contact-tab"
+            aria-labelledby="line-tab"
             style={{height: 350}}
           >
-            shit
+            <TransactionLineChart transactions={transactions} />
           </div>
         </div>
         <hr />

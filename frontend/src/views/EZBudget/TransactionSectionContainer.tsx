@@ -1,4 +1,4 @@
-import TransactionList from '../../components/Budget/Transaction/TransactionList';
+import TransactionList from 'src/components/Budget/Transaction/TransactionList';
 import { connect } from 'react-redux';
 import { AppState } from 'src/types';
 

@@ -1,10 +1,4 @@
 import { Category, Transaction } from 'src/types/budget';
-import * as R from 'ramda';
-
-export interface CategoryMap {
-  nameSet: string[];
-  limit: number | string | null;
-}
 
 export interface MonthlyDepositWithdraw {
   [month: string]: DepositWithdraw;
@@ -15,39 +9,18 @@ export interface DepositWithdraw {
   withdraw: number;
 }
 
-function initializeCategoryMaps(categories: Category[]): object {
-  const result = {
-    Others: {
-      expense: 0,
-      limit: 0
-    }
-  };
-  for (const category of categories) {
-    let categoryTemp = category;
-    const keyArray = [categoryTemp.name];
-    while (categoryTemp.parentCategory) {
-      keyArray.push(categoryTemp.parentCategory.name);
-      categoryTemp = categoryTemp.parentCategory;
-    }
-    const key = keyArray.reverse().join(' / ');
-    result[key] = {
-      expense: 0,
-      limit: category.categoryLimit ? Number(category.categoryLimit) : 0,
-    };
-  }
-  return result;
+export interface CategoryMap {
+  expense: number;
+  limit: number;
 }
 
-export const storeAllParentCategoryNames = (
-  category: Category,
-  resultArray: string[]
-): string[] => {
-  if (category.parentCategory != null) {
-    resultArray.push(category.parentCategory.name);
-    storeAllParentCategoryNames(category.parentCategory, resultArray);
-  }
-  return resultArray;
-};
+export interface CategoryMaps {
+  [categoryKey: string]: CategoryMap;
+}
+
+export interface CategoryWithdrawMap {
+  [categoryName: string]: number;
+}
 
 export const generateCategoryMaps = (
   categories: Category[],
@@ -60,7 +33,6 @@ export const generateCategoryMaps = (
     let key = '';
     for (const categoryName of categoryNames) {
       key += categoryName;
-      console.log(key);
       result[key].expense += amount;
       key += ' / ';
     }
@@ -68,104 +40,23 @@ export const generateCategoryMaps = (
   return result;
 };
 
-function getCategoryNames(
-  categoryId: number | null,
-  categories: Category[]
-): string[] {
-  if (categoryId === null) {
-    return ['Others']
-  }
-  let selectedCategory = categories.filter(
-    category => category.id === categoryId
-  )[0];
-  return putRelatedCategoryNamesInArray()
-
-  function putRelatedCategoryNamesInArray(): string[] {
-    const keyArray = [selectedCategory.name];
-    while (selectedCategory.parentCategory) {
-      keyArray.push(selectedCategory.parentCategory.name);
-      selectedCategory = selectedCategory.parentCategory;
-    }
-    return keyArray.reverse();
-  }
-}
-
-export const generateFullCategoryMaps = (
-  categories: Category[]
-): CategoryMap => {
-  const others = 'Others';
-  return categories.reduce(
-    (acc: CategoryMap, category: Category) => {
-      acc[category.name] = {
-        nameSets: storeAllParentCategoryNames(category, [
-          category.name,
-        ]).reverse(),
-        limit: category.categoryLimit,
-      };
-      return acc;
-    },
-    {
-      Others: {
-        nameSets: [others],
-        limit: 0,
-      },
-    }
-  );
-};
-
 export const generateParentCategoryWithdrawMaps = (
   transactions: Transaction[],
   categories: Category[]
-): object => {
-  return transactions.reduce((acc: object, transaction: Transaction) => {
-    const amount = transaction.withdraw ? Number(transaction.withdraw) : 0;
-    const categoryName = transaction.categoryId
-      ? getParentCategoryNameById(transaction.categoryId, categories)
-      : 'Others';
-    acc[categoryName] = acc[categoryName] ? acc[categoryName] + amount : amount;
-    return acc;
-  }, {});
-};
-
-export const groupAmountByCategory = (transactions: Transaction[]): object => {
-  return transactions.reduce((acc: object, transaction: Transaction) => {
-    const key = transaction.categoryName || 'Others';
-    const withdraw = Number(transaction.withdraw);
-    acc[key] = acc[key] ? acc[key] + withdraw : withdraw;
-    return acc;
-  }, {});
-};
-
-export const resolveCategoryAndAmount = (
-  categoryMaps: object,
-  amountByCategory: object
-): object => {
-  const result = {};
-  const nameSets = 'nameSets';
-  const limit = 'limit';
-  for (const categoryMap of Object.keys(categoryMaps).map(
-    key => categoryMaps[key]
-  )) {
-    const amounts = R.props(categoryMap[nameSets], amountByCategory);
-    const amountToAdd =
-      amounts[amounts.length - 1] === undefined
-        ? 0
-        : Number(amounts[amounts.length - 1]);
-    let displayedCategoryName = '';
-    for (const categoryName of categoryMap[nameSets]) {
-      displayedCategoryName += categoryName;
-      if (result[displayedCategoryName] === undefined) {
-        result[displayedCategoryName] = {
-          expense: amountToAdd,
-          limit: categoryMap[limit],
-        };
-      } else {
-        result[displayedCategoryName].expense += amountToAdd;
-      }
-      displayedCategoryName += ' / ';
-    }
-  }
-  return result;
+): CategoryWithdrawMap => {
+  return transactions.reduce(
+    (acc: CategoryWithdrawMap, transaction: Transaction) => {
+      const amount = transaction.withdraw ? Number(transaction.withdraw) : 0;
+      const categoryName = transaction.categoryId
+        ? getParentCategoryNameById(transaction.categoryId, categories)
+        : 'Others';
+      acc[categoryName] = acc[categoryName]
+        ? acc[categoryName] + amount
+        : amount;
+      return acc;
+    },
+    {}
+  );
 };
 
 export const getTransactionMonths = (transactions: Transaction[]): string[] => {
@@ -205,6 +96,51 @@ export const sumDepositAndWithdraw = (
   }
   return result;
 };
+
+function initializeCategoryMaps(categories: Category[]): CategoryMaps {
+  const result = {
+    Others: {
+      expense: 0,
+      limit: 0,
+    },
+  };
+  for (const category of categories) {
+    let categoryTemp = category;
+    const keyArray = [categoryTemp.name];
+    while (categoryTemp.parentCategory) {
+      keyArray.push(categoryTemp.parentCategory.name);
+      categoryTemp = categoryTemp.parentCategory;
+    }
+    const key = keyArray.reverse().join(' / ');
+    result[key] = {
+      expense: 0,
+      limit: category.categoryLimit ? Number(category.categoryLimit) : 0,
+    };
+  }
+  return result;
+}
+
+function getCategoryNames(
+  categoryId: number | null,
+  categories: Category[]
+): string[] {
+  if (categoryId === null) {
+    return ['Others'];
+  }
+  let selectedCategory = categories.filter(
+    category => category.id === categoryId
+  )[0];
+  return putRelatedCategoryNamesInArray();
+
+  function putRelatedCategoryNamesInArray(): string[] {
+    const keyArray = [selectedCategory.name];
+    while (selectedCategory.parentCategory) {
+      keyArray.push(selectedCategory.parentCategory.name);
+      selectedCategory = selectedCategory.parentCategory;
+    }
+    return keyArray.reverse();
+  }
+}
 
 function getParentCategoryNameById(id: number, categories: Category[]): string {
   for (const category of categories) {
