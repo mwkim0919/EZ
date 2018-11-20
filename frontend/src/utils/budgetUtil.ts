@@ -9,17 +9,21 @@ export interface DepositWithdraw {
   withdraw: number;
 }
 
-export interface CategoryMap {
+export interface ExpenseLimit {
   expense: number;
   limit: number;
 }
 
-export interface CategoryMaps {
-  [categoryKey: string]: CategoryMap;
+export interface CategoryExpenseLimit {
+  [categoryKey: string]: ExpenseLimit;
 }
 
 export interface CategoryWithdrawMap {
   [categoryName: string]: number;
+}
+
+interface CategoryMap {
+  [id: string]: Category;
 }
 
 export const generateCategoryMaps = (
@@ -27,8 +31,11 @@ export const generateCategoryMaps = (
   transactions: Transaction[]
 ) => {
   const result = initializeCategoryMaps(categories);
+  const categoryMap = mapCategories(categories);
   for (const transaction of transactions) {
-    const categoryNames = getCategoryNames(transaction.categoryId, categories);
+    const categoryNames = transaction.categoryId
+      ? putRelatedCategoryNamesInArray(categoryMap[transaction.categoryId])
+      : ['Others'];
     const amount = transaction.withdraw ? Number(transaction.withdraw) : 0;
     let key = '';
     for (const categoryName of categoryNames) {
@@ -44,11 +51,12 @@ export const generateParentCategoryWithdrawMaps = (
   transactions: Transaction[],
   categories: Category[]
 ): CategoryWithdrawMap => {
+  const categoryMap = mapCategories(categories);
   return transactions.reduce(
     (acc: CategoryWithdrawMap, transaction: Transaction) => {
       const amount = transaction.withdraw ? Number(transaction.withdraw) : 0;
       const categoryName = transaction.categoryId
-        ? getParentCategoryNameById(transaction.categoryId, categories)
+        ? getParentCategoryName(categoryMap[transaction.categoryId])
         : 'Others';
       acc[categoryName] = acc[categoryName]
         ? acc[categoryName] + amount
@@ -97,21 +105,32 @@ export const sumMonthlyDepositAndWithdraw = (
   return result;
 };
 
-export const sumDepositAndWithdraw = (transactions: Transaction[]): DepositWithdraw => {
+export const sumDepositAndWithdraw = (
+  transactions: Transaction[]
+): DepositWithdraw => {
   return transactions.reduce(
     (acc: DepositWithdraw, transaction: Transaction) => {
-      acc.deposit += transaction.deposit == null ? 0 : Number(transaction.deposit);
-      acc.withdraw += transaction.withdraw == null ? 0 : Number(transaction.withdraw);
+      acc.deposit +=
+        transaction.deposit == null ? 0 : Number(transaction.deposit);
+      acc.withdraw +=
+        transaction.withdraw == null ? 0 : Number(transaction.withdraw);
       return acc;
     },
     {
       deposit: 0,
-      withdraw: 0
+      withdraw: 0,
     }
   );
+};
+
+function mapCategories(categories: Category[]): CategoryMap {
+  return categories.reduce((acc: CategoryMap, category: Category) => {
+    acc[category.id] = category;
+    return acc;
+  }, {});
 }
 
-function initializeCategoryMaps(categories: Category[]): CategoryMaps {
+function initializeCategoryMaps(categories: Category[]): CategoryExpenseLimit {
   const result = {
     Others: {
       expense: 0,
@@ -129,19 +148,6 @@ function initializeCategoryMaps(categories: Category[]): CategoryMaps {
   return result;
 }
 
-function getCategoryNames(
-  categoryId: number | null,
-  categories: Category[]
-): string[] {
-  if (categoryId === null) {
-    return ['Others'];
-  }
-  const selectedCategory = categories.filter(
-    category => category.id === categoryId
-  )[0];
-  return putRelatedCategoryNamesInArray(selectedCategory);
-}
-
 function putRelatedCategoryNamesInArray(category: Category): string[] {
   const keyArray = [category.name];
   while (category.parentCategory) {
@@ -149,15 +155,6 @@ function putRelatedCategoryNamesInArray(category: Category): string[] {
     category = category.parentCategory;
   }
   return keyArray.reverse();
-}
-
-function getParentCategoryNameById(id: number, categories: Category[]): string {
-  for (const category of categories) {
-    if (category.id === id) {
-      return getParentCategoryName(category);
-    }
-  }
-  return 'Others';
 }
 
 function getParentCategoryName(category: Category): string {
