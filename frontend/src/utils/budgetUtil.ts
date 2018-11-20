@@ -72,7 +72,7 @@ export const getTransactionMonths = (transactions: Transaction[]): string[] => {
   return Array.from(dateSet);
 };
 
-export const sumDepositAndWithdraw = (
+export const sumMonthlyDepositAndWithdraw = (
   transactions: Transaction[],
   months: string[]
 ): MonthlyDepositWithdraw => {
@@ -96,6 +96,20 @@ export const sumDepositAndWithdraw = (
   }
   return result;
 };
+
+export const sumDepositAndWithdraw = (transactions: Transaction[]): DepositWithdraw => {
+  return transactions.reduce(
+    (acc: DepositWithdraw, transaction: Transaction) => {
+      acc.deposit += transaction.deposit == null ? 0 : Number(transaction.deposit);
+      acc.withdraw += transaction.withdraw == null ? 0 : Number(transaction.withdraw);
+      return acc;
+    },
+    {
+      deposit: 0,
+      withdraw: 0
+    }
+  );
+}
 
 function initializeCategoryMaps(categories: Category[]): CategoryMaps {
   const result = {

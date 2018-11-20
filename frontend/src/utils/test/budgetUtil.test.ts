@@ -2,6 +2,7 @@ import {
   getTransactionMonths,
   generateCategoryMaps,
   generateParentCategoryWithdrawMaps,
+  sumMonthlyDepositAndWithdraw,
   sumDepositAndWithdraw,
 } from 'src/utils/budgetUtil';
 import { transactions, categories } from 'src/utils/test/budgetUtilTestData';
@@ -101,35 +102,43 @@ describe('test categoryUtil', () => {
     expect(parentCategoryWithdrawMaps).toHaveProperty([income], 0);
   });
 
-  it('should test sumDepositAndWithdraw', () => {
+  it('should test sumMonthlyDepositAndWithdraw', () => {
     const transactionMonths = getTransactionMonths(transactions);
-    const depositWithdrawMaps = sumDepositAndWithdraw(transactions, transactionMonths);
+    const depositWithdrawMaps = sumMonthlyDepositAndWithdraw(transactions, transactionMonths);
     
     expect(Object.keys(depositWithdrawMaps)).toHaveLength(11);
-    expect(depositWithdrawMaps['2018-11']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-10']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-09']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-08']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-07']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-06']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-05']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-04']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-03']).toHaveProperty(['deposit'], 0);
-    expect(depositWithdrawMaps['2018-02']).toHaveProperty(['deposit'], 8642.24);
-    expect(depositWithdrawMaps['2018-01']).toHaveProperty(['deposit'], 8642.24);
+    expect(depositWithdrawMaps['2018-11'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-10'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-09'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-08'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-07'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-06'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-05'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-04'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-03'].deposit.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-02'].deposit.toFixed(2)).toEqual('8642.24');
+    expect(depositWithdrawMaps['2018-01'].deposit.toFixed(2)).toEqual('8642.24');
 
-    // expect(depositWithdrawMaps['2018-11']).toHaveProperty(['withdraw'], 325.35);
-    expect(depositWithdrawMaps['2018-10']).toHaveProperty(['withdraw'], 14.66);
-    expect(depositWithdrawMaps['2018-09']).toHaveProperty(['withdraw'], 148.50);
-    expect(depositWithdrawMaps['2018-08']).toHaveProperty(['withdraw'], 148.50);
-    expect(depositWithdrawMaps['2018-07']).toHaveProperty(['withdraw'], 148.50);
-    expect(depositWithdrawMaps['2018-06']).toHaveProperty(['withdraw'], 148.50);
-    expect(depositWithdrawMaps['2018-05']).toHaveProperty(['withdraw'], 148.50);
-    expect(depositWithdrawMaps['2018-04']).toHaveProperty(['withdraw'], 98);
-    // expect(depositWithdrawMaps['2018-03']).toHaveProperty(['withdraw'], 34.38);
-    expect(depositWithdrawMaps['2018-02']).toHaveProperty(['withdraw'], 0);
-    expect(depositWithdrawMaps['2018-01']).toHaveProperty(['withdraw'], 78.54);
+    expect(depositWithdrawMaps['2018-11'].withdraw.toFixed(2)).toEqual('325.35');
+    expect(depositWithdrawMaps['2018-10'].withdraw.toFixed(2)).toEqual('14.66');
+    expect(depositWithdrawMaps['2018-09'].withdraw.toFixed(2)).toEqual('148.50');
+    expect(depositWithdrawMaps['2018-08'].withdraw.toFixed(2)).toEqual('148.50');
+    expect(depositWithdrawMaps['2018-07'].withdraw.toFixed(2)).toEqual('148.50');
+    expect(depositWithdrawMaps['2018-06'].withdraw.toFixed(2)).toEqual('148.50');
+    expect(depositWithdrawMaps['2018-05'].withdraw.toFixed(2)).toEqual('148.50');
+    expect(depositWithdrawMaps['2018-04'].withdraw.toFixed(2)).toEqual('98.00');
+    expect(depositWithdrawMaps['2018-03'].withdraw.toFixed(2)).toEqual('34.37');
+    expect(depositWithdrawMaps['2018-02'].withdraw.toFixed(2)).toEqual('0.00');
+    expect(depositWithdrawMaps['2018-01'].withdraw.toFixed(2)).toEqual('78.54');
 
+  });
+
+  it('should test sumDepositAndWithdraw', () => {
+    const depositWithdraw = sumDepositAndWithdraw(transactions);
+    
+    expect(Object.keys(depositWithdraw)).toHaveLength(2);
+    expect(depositWithdraw.deposit.toFixed(2)).toEqual("17284.48");
+    expect(depositWithdraw.withdraw.toFixed(2)).toEqual("1293.42");
   });
 
 });

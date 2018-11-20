@@ -1,10 +1,9 @@
 import * as React from 'react';
-import * as R from 'ramda';
 import { Bar } from 'react-chartjs-2';
 import { Transaction } from 'src/types/budget';
 import { 
   getTransactionMonths,
-  sumDepositAndWithdraw,
+  sumMonthlyDepositAndWithdraw,
   DepositWithdraw,
 } from 'src/utils/budgetUtil';
 
@@ -16,7 +15,7 @@ export default class TransactionBarChart extends React.Component<Props> {
   render() {
     const { transactions } = this.props;
     const months = getTransactionMonths(transactions).reverse();
-    const depositWithdrawMap = sumDepositAndWithdraw(transactions, months);
+    const depositWithdrawMap = sumMonthlyDepositAndWithdraw(transactions, months);
     // @ts-ignore
     const deposits = Object.values(depositWithdrawMap).map(
       (depositWithdraw: DepositWithdraw) => depositWithdraw.deposit

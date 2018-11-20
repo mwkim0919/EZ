@@ -3,8 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { Transaction } from 'src/types/budget';
 import {
   getTransactionMonths,
-  sumDepositAndWithdraw,
-  DepositWithdraw,
+  sumMonthlyDepositAndWithdraw,
 } from 'src/utils/budgetUtil';
 
 interface Props {
@@ -15,7 +14,7 @@ export default class TransactionLineChart extends React.Component<Props> {
   render() {
     const { transactions } = this.props;
     const months = getTransactionMonths(transactions).reverse();
-    const depositWithdrawMap = sumDepositAndWithdraw(transactions, months);
+    const depositWithdrawMap = sumMonthlyDepositAndWithdraw(transactions, months);
     const data = {
       labels: months,
       datasets: [
