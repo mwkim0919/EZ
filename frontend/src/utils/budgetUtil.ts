@@ -119,13 +119,8 @@ function initializeCategoryMaps(categories: Category[]): CategoryMaps {
     },
   };
   for (const category of categories) {
-    let categoryTemp = category;
-    const keyArray = [categoryTemp.name];
-    while (categoryTemp.parentCategory) {
-      keyArray.push(categoryTemp.parentCategory.name);
-      categoryTemp = categoryTemp.parentCategory;
-    }
-    const key = keyArray.reverse().join(' / ');
+    const keyArray = putRelatedCategoryNamesInArray(category);
+    const key = keyArray.join(' / ');
     result[key] = {
       expense: 0,
       limit: category.categoryLimit ? Number(category.categoryLimit) : 0,
@@ -141,19 +136,19 @@ function getCategoryNames(
   if (categoryId === null) {
     return ['Others'];
   }
-  let selectedCategory = categories.filter(
+  const selectedCategory = categories.filter(
     category => category.id === categoryId
   )[0];
-  return putRelatedCategoryNamesInArray();
+  return putRelatedCategoryNamesInArray(selectedCategory);
+}
 
-  function putRelatedCategoryNamesInArray(): string[] {
-    const keyArray = [selectedCategory.name];
-    while (selectedCategory.parentCategory) {
-      keyArray.push(selectedCategory.parentCategory.name);
-      selectedCategory = selectedCategory.parentCategory;
-    }
-    return keyArray.reverse();
+function putRelatedCategoryNamesInArray(category: Category): string[] {
+  const keyArray = [category.name];
+  while (category.parentCategory) {
+    keyArray.push(category.parentCategory.name);
+    category = category.parentCategory;
   }
+  return keyArray.reverse();
 }
 
 function getParentCategoryNameById(id: number, categories: Category[]): string {
