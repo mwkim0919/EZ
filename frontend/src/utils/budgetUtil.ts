@@ -32,8 +32,9 @@ export const generateCategoryMaps = (
 ) => {
   const result = initializeCategoryMaps(categories);
   const categoryMap = mapCategories(categories);
+  console.log(categoryMap);
   for (const transaction of transactions) {
-    const categoryNames = transaction.categoryId
+    const categoryNames = transaction.categoryId != null
       ? putRelatedCategoryNamesInArray(categoryMap[transaction.categoryId])
       : ['Others'];
     const amount = transaction.withdraw ? Number(transaction.withdraw) : 0;
@@ -149,6 +150,9 @@ function initializeCategoryMaps(categories: Category[]): CategoryExpenseLimit {
 }
 
 function putRelatedCategoryNamesInArray(category: Category): string[] {
+  if (category == null) {
+    return ['Others'];
+  }
   const keyArray = [category.name];
   while (category.parentCategory) {
     keyArray.push(category.parentCategory.name);
