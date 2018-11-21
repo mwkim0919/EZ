@@ -1,4 +1,4 @@
-import CategoryList from 'src/components/Budget/Category/CategoryList';
+import TransactionList from 'src/components/Budget/Transaction/TransactionList';
 import { connect } from 'react-redux';
 import { AppState } from 'src/types';
 
@@ -8,4 +8,4 @@ const mapStateToProps = (state: AppState) => {
     categories: state.budget.categories,
   };
 };
-export default connect(mapStateToProps)(CategoryList);
+export default connect(mapStateToProps)(TransactionList);

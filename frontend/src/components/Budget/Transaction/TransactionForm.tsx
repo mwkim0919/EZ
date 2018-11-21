@@ -30,7 +30,7 @@ import { push, RouterAction } from 'connected-react-router';
 
 interface Props {
   categories: Category[];
-  // tslint:disable
+  // tslint:disable-next-line
   saveTransactions: Function;
   push: typeof push;
 }

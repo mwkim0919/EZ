@@ -33,7 +33,6 @@ export const fetchTransactions = () => {
     dispatch({ type: FETCH_TRANSACTIONS[REQUEST] });
     return axios.get(`/api/users/${userId}/transactions`).then(
       (response: AxiosResponse) => {
-        console.log('Fetch Response ', response);
         dispatch({
           type: FETCH_TRANSACTIONS[SUCCESS],
           payload: response.data,
@@ -75,7 +74,6 @@ export const saveTransactions = (transactions: TransactionRequest[]) => {
     dispatch({ type: SAVE_TRANSACTIONS[REQUEST] });
     return axios.post(`/api/users/${userId}/transactions`, transactions).then(
       (response: AxiosResponse) => {
-        console.log('SaveTransaction Response ', response);
         dispatch({
           type: SAVE_TRANSACTIONS[SUCCESS],
           payload: response.data,

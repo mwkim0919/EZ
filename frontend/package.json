@@ -64,6 +64,8 @@
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "husky": "^1.0.0-rc.15",
+    "lint-staged": "^8.0.5",
+    "prettier": "^1.15.2",
     "react-docgen-typescript": "^1.9.1",
     "react-hot-loader": "^4.3.11",
     "react-styleguidist": "^7.3.8",
@@ -75,8 +77,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn run test"
+      "pre-commit": "lint-staged && yarn run test"
     }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
     "moduleNameMapper": {

@@ -21,7 +21,6 @@ import { push } from 'connected-react-router';
 
 export function* authenticate(email: string, password: string) {
   try {
-    console.log('Authenticate');
     const { data } = yield call(axios.post, LOGIN_URL, {
       email,
       password,
@@ -36,7 +35,6 @@ export function* authenticate(email: string, password: string) {
     yield put({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {
     // https://github.com/axios/axios/issues/960
-    console.log('SAGA: SignIn Error ', error.response);
     yield put({ type: LOGIN_ERROR, error: error.response });
   } finally {
     if (yield cancelled()) {
@@ -47,7 +45,6 @@ export function* authenticate(email: string, password: string) {
 }
 
 export const loginFlow = function*() {
-  // console.log("Start login flow")
   while (true) {
     // Waits for login request
     const { email, password } = yield take(LOGIN_REQUEST);
@@ -62,7 +59,6 @@ export const loginFlow = function*() {
 };
 
 export const logoutFlow = function*() {
-  // console.log("Start logout flow");
   while (true) {
     yield take(LOGOUT);
     yield call(clearLocalStorageItem, APP_STORAGE_KEY);
@@ -75,7 +71,6 @@ export const register = function*(email: string, password: string) {
       email,
       password,
     });
-    console.log('Data ', data);
     yield put({ type: SIGN_UP_SUCCESS, payload: data });
 
     // Redirect user to /signin
@@ -86,7 +81,6 @@ export const register = function*(email: string, password: string) {
 };
 
 export const signUpFlow = function*() {
-  // console.log('Start Sign up flow');
   while (true) {
     const { email, password } = yield take(SIGN_UP_REQUEST);
     yield call(register, email, password);

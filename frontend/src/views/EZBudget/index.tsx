@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import BudgetDashboardContainer from './BudgetDashboardContainer';
-import TransactionSectionContainer from './TransactionSectionContainer';
+import TransactionHomeContainer from 'src/views/EZBudget/TransactionHomeContainer';
+import TransactionSectionContainer from 'src/views/EZBudget/TransactionListContainer';
 import CategorySectionContainer from 'src/views/EZBudget/CategorySectionContainer';
-import TransactionForm from '../../components/Budget/TransactionForm';
+import TransactionForm from 'src/components/Budget/Transaction/TransactionForm';
 import { connect } from 'react-redux';
 import { init as initBudget } from 'src/actions/budget';
 import { AppState } from 'src/types';
@@ -27,7 +27,7 @@ class EZBudget extends React.Component<Props> {
     }
     return (
       <Switch>
-        <Route exact path="/budget" component={BudgetDashboardContainer} />
+        <Route exact path="/budget" component={TransactionHomeContainer} />
         <Route
           exact
           path="/budget/transactions"
