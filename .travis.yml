@@ -30,9 +30,15 @@ matrix:
     - language: node_js
       node_js: "8"
       cache: yarn
+      env:
+        - global:
+          - CODECOV_TOKEN="340bf0b8-91db-4593-a89f-b8a707cc56b7"
       before_script:
         - cd frontend
+        - yarn add codecov
         - yarn install
       script:
         - yarn test
         - yarn build
+      after_success:
+        - codecov
