@@ -105,9 +105,12 @@ class TransactionItem extends React.Component<Props, State> {
   render() {
     const { transaction } = this.props;
 
-    const categories: CategoryOption[] = R.map(([_, category]) => {
-      return { value: category, label: category.name };
-    }, R.toPairs(this.props.categories));
+    const categoryOptions: CategoryOption[] = R.map(
+      ([categoryId, category]) => {
+        return { value: Number(categoryId), label: category.name };
+      },
+      R.toPairs(this.props.categories)
+    );
 
     const {
       id,
@@ -159,17 +162,18 @@ class TransactionItem extends React.Component<Props, State> {
                         <Select
                           classNamePrefix="select"
                           defaultValue={
-                            categories.filter(
-                              category => category.label === values.categoryName
+                            categoryOptions.filter(
+                              (categoryOption: CategoryOption) =>
+                                categoryOption.label === values.categoryName
                             )[0]
                           }
                           isClearable={false}
                           isSearchable={true}
                           name="categoryId"
-                          options={categories}
+                          options={categoryOptions}
                           onChange={(option: ValueType<CategoryOption>) => {
                             const { value } = option as CategoryOption;
-                            setFieldValue('categoryId', value.id);
+                            setFieldValue('categoryId', value);
                           }}
                         />
                       </div>

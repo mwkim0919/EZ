@@ -51,6 +51,49 @@ export interface Category {
 }
 
 export interface CategoryOption {
-  value: Category;
+  value: number;
   label: string;
+}
+
+export type RecurringPattern =
+  | 'yearly'
+  | 'bi-monthly'
+  | 'monthly'
+  | 'bi-weekly'
+  | 'weekly';
+
+// ********************
+// ** Schedule Types **
+// ********************
+
+export interface Schedule {
+  id: number;
+  categoryId: number;
+  categoryName: string;
+  withdraw: number | null;
+  deposit: number | null;
+  description: string;
+  startDate: Date;
+  lastProcessedDate: Date;
+  nextRecurringDate: Date;
+  createDatetime: Date;
+  recurringPattern: RecurringPattern;
+}
+
+export interface ScheduleRequest {
+  categoryId: number;
+  description: string;
+  deposit: number | null;
+  withdraw: number | null;
+  startDate: string;
+  recurringPattern: RecurringPattern;
+}
+
+export interface ScheduleFormValues {
+  categoryId: number;
+  description: string;
+  type: 'withdraw' | 'deposit';
+  amount: number;
+  startDate: Date;
+  recurringPattern: RecurringPattern;
 }

@@ -21,5 +21,5 @@ public enum DefaultCategory {
   TRAVEL("Travel"),
   EMERGENCY_FUND("Emergency Fund");
 
-  private final String text;
+  private final String value;
 }

@@ -10,7 +10,7 @@ export const loadLocalStorageItem = (key: string) => {
   }
 };
 
-export const saveLocalStorageItem = <T>(key: string, state: T) => {
+export const saveLocalStorageItem = <T>(key: string, state: T): void => {
   try {
     const serialized = JSON.stringify(state);
     window.localStorage.setItem(key, serialized);
@@ -19,6 +19,6 @@ export const saveLocalStorageItem = <T>(key: string, state: T) => {
   }
 };
 
-export const clearLocalStorageItem = (storageKey: string) => {
+export const clearLocalStorageItem = (storageKey: string): void => {
   window.localStorage.removeItem(storageKey);
 };

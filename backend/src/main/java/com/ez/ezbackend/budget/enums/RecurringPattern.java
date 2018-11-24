@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum RecurringPattern {
-  YEARLY("yearly"),
-  BI_MONTHLY("bi-monthly"),
-  MONTHLY("monthly"),
-  BI_WEEKLY("bi-weekly"),
-  WEEKLY("weekly");
+  YEARLY("YEARLY"),
+  BI_MONTHLY("BI_MONTHLY"),
+  MONTHLY("MONTHLY"),
+  BI_WEEKLY("BI_WEEKLY"),
+  WEEKLY("WEEKLY");
 
   private String value;
 }

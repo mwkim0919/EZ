@@ -51,15 +51,15 @@ const transactionsValidationSchema = Yup.object().shape({
   ),
 });
 
-const generateTransaction = (categoryId: number): TransactionFormItem => ({
-  categoryId,
-  description: '',
-  type: 'deposit',
-  amount: 0,
-  transactionDatetime: new Date(),
-});
-
 class TransactionForm extends React.Component<Props & APIProps> {
+  generateTransaction = (categoryId: number): TransactionFormItem => ({
+    categoryId,
+    description: '',
+    type: 'withdraw',
+    amount: 0,
+    transactionDatetime: new Date(),
+  });
+
   handleSubmit = (values: FormikValues) => {
     const transactions = values.transactions.map(
       (value: TransactionFormItem): TransactionRequest => {
@@ -88,18 +88,24 @@ class TransactionForm extends React.Component<Props & APIProps> {
     if (this.props.loading) {
       return ' Loading ... ';
     }
-    // TODO: This check should be done somewhere else
-    if (this.props.categories.length === 0) {
-      return 'throw';
-    }
 
-    const categories: CategoryOption[] = R.map(([categoryId, category]) => {
-      return { value: category, label: category.name };
-    }, R.toPairs(this.props.categories));
+    // Generate category options for react-select
+    const categoryOptions: CategoryOption[] = R.map(category => {
+      return { value: category.id, label: category.name };
+    }, this.props.categories);
 
-    console.log('Categories ', categories);
+    const categoryNames: {
+      [categoryId: number]: string;
+    } = this.props.categories.reduce(
+      (acc: { [categoryId: number]: string }, category: Category) => {
+        acc[category.id] = category.name;
+        return acc;
+      },
+      {}
+    );
+
     const initialFormState = {
-      transactions: [generateTransaction(categories[0].value.id)],
+      transactions: [this.generateTransaction(categoryOptions[0].value)],
     };
 
     return (
@@ -113,7 +119,6 @@ class TransactionForm extends React.Component<Props & APIProps> {
           render={(formikProps: FormikProps<FormikValues>) => {
             const { values, setFieldValue, isValid } = formikProps;
             const { transactions } = values;
-            console.log('Transactioins ', transactions);
             return (
               <Form>
                 <button
@@ -121,7 +126,7 @@ class TransactionForm extends React.Component<Props & APIProps> {
                   className="btn btn-primary"
                   onClick={() => {
                     setFieldValue('transactions', [
-                      generateTransaction(categories[0].value.id),
+                      this.generateTransaction(categoryOptions[0].value),
                       ...transactions,
                     ]);
                   }}
@@ -152,6 +157,11 @@ class TransactionForm extends React.Component<Props & APIProps> {
                       render={(arrayHelpers: FieldArrayRenderProps) => {
                         return transactions.map(
                           (transaction: TransactionFormItem, index: number) => {
+                            const transactionCategoryOption = {
+                              value: transaction.categoryId,
+                              label: categoryNames[transaction.categoryId],
+                            };
+
                             return (
                               <tr key={index}>
                                 {/* DatePicker */}
@@ -179,11 +189,10 @@ class TransactionForm extends React.Component<Props & APIProps> {
                                 <td>
                                   <Select
                                     classNamePrefix="select"
-                                    defaultValue={categories[0]}
+                                    value={transactionCategoryOption}
                                     isClearable={false}
                                     isSearchable={true}
-                                    name="color"
-                                    options={categories}
+                                    options={categoryOptions}
                                     onChange={(
                                       option: ValueType<CategoryOption>
                                     ) => {
@@ -192,7 +201,7 @@ class TransactionForm extends React.Component<Props & APIProps> {
                                       } = option as CategoryOption;
                                       arrayHelpers.replace(index, {
                                         ...transaction,
-                                        categoryId: value.id,
+                                        categoryId: value,
                                       });
                                     }}
                                   />

@@ -9,5 +9,5 @@ public enum UserRole {
   ADMIN("ADMIN"),
   USER("USER");
 
-  private final String text;
+  private final String value;
 }

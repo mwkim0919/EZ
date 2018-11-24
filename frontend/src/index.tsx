@@ -6,18 +6,33 @@ import axios from 'axios';
 import { history } from './store/configureStore';
 import Routes from './hot-routes';
 import configureStore from './store/configureStore';
-import { loadLocalStorageItem } from './helpers/localStorage';
+import {
+  loadLocalStorageItem,
+  clearLocalStorageItem,
+} from './helpers/localStorage';
 import { APP_STORAGE_KEY } from 'src/constants';
 import './index.css';
+import { CurrentUser } from './types';
 
 const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
 const store = configureStore({
   currentUser: storedData || {},
 });
 
+const isExpired = (user: CurrentUser): boolean => {
+  const { expiryDate } = user;
+  return new Date(expiryDate).getTime() < new Date().getTime();
+};
+
+// Check token expiryDate
 if (storedData) {
-  axios.defaults.headers.common.Authorization =
-    'Bearer ' + storedData.accessToken;
+  if (isExpired(storedData)) {
+    clearLocalStorageItem(APP_STORAGE_KEY);
+    history.push('/auth/login');
+  } else {
+    axios.defaults.headers.common.Authorization =
+      'Bearer ' + storedData.accessToken;
+  }
 }
 
 ReactDOM.render(

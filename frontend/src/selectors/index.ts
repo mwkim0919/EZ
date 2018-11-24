@@ -3,14 +3,12 @@ import { AppState } from 'src/types';
 import { Category } from 'src/types/budget';
 import * as R from 'ramda';
 
-export const getCategories = (state: AppState) => state.budget.categories;
-
 export const createLoadingSelector = (actions: string[]) => (
   state: AppState
-) => {
+): boolean => {
   // returns true only when all actions is not loading
   return R.any((action: string) => {
-    return R.view(R.lensPath(['ui', 'loading', action]), state);
+    return state.ui.loading[action];
   }, actions);
 };
 
@@ -24,7 +22,7 @@ export const createErrorMessageSelector = (actions: string[]) => (
     R.compose(
       R.filter(R.complement(R.isEmpty)),
       R.map((action: string) => {
-        return R.view(R.lensPath(['ui', 'error', action]), state);
+        return state.ui.error[action];
       })
     )(actions)[0] || ''
   );
