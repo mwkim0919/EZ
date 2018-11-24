@@ -27,7 +27,7 @@ export default class TransactionPieChart extends React.Component<Props> {
           data: Object.keys(categoryWithdrawMap).map(
             key => categoryWithdrawMap[key]
           ),
-          backgroundColor: getRandomColors(Object.keys(categoryWithdrawMap)),
+          backgroundColor: getRandomColors(Object.keys(categoryWithdrawMap).length),
         },
       ],
     };
