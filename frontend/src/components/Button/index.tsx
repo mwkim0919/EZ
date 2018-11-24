@@ -23,7 +23,7 @@ const base = css`
 
 const StyledButton = styled.button`
   ${base};
-  background-color: ${props => props.color}};
+  background-color: ${props => props.color};
 `;
 
 const Label = styled<{ loading?: boolean }, 'span'>('span')`

@@ -15,8 +15,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
   List<Schedule> findByUser(@Param("user") User user);
 
   @Query("SELECT s FROM Schedule s WHERE s.id IN :ids AND s.user = :user")
-  List<Schedule> findScheduleByIdsAndUser(@Param("ids") Set<Long> ids, @Param("user") User user);
+  List<Schedule> findByIdsAndUser(@Param("ids") Set<Long> ids, @Param("user") User user);
 
-  @Query("SELECT s FROM Schedule s JOIN FETCH s.user LEFT JOIN FETCH s.category WHERE s.nextRecurringDate <= :date")
+  @Query("SELECT s FROM Schedule s LEFT JOIN FETCH s.category WHERE s.nextRecurringDate <= :date")
   List<Schedule> findSchedulesBeforeNextRecurringDate(@Param("date") LocalDate date);
 }

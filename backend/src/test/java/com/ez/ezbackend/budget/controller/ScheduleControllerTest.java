@@ -87,7 +87,7 @@ public class ScheduleControllerTest {
         .andExpect(jsonPath("[0].description").value("test"))
         .andExpect(jsonPath("[0].withdraw").value("100.00"))
         .andExpect(jsonPath("[0].deposit").doesNotExist())
-        .andExpect(jsonPath("[0].recurringPattern").value("monthly"))
+        .andExpect(jsonPath("[0].recurringPattern").value("MONTHLY"))
         .andExpect(jsonPath("[0].startDate").exists());
   }
 
@@ -114,7 +114,7 @@ public class ScheduleControllerTest {
         .andExpect(jsonPath("$.description").value("test"))
         .andExpect(jsonPath("$.withdraw").value("100.00"))
         .andExpect(jsonPath("$.deposit").doesNotExist())
-        .andExpect(jsonPath("$.recurringPattern").value("monthly"))
+        .andExpect(jsonPath("$.recurringPattern").value("MONTHLY"))
         .andExpect(jsonPath("$.startDate").exists());
   }
 

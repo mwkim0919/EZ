@@ -2,6 +2,7 @@ package com.ez.ezbackend.budget.response;
 
 import com.ez.ezbackend.budget.entity.Category;
 import com.ez.ezbackend.budget.entity.Schedule;
+import com.ez.ezbackend.budget.enums.RecurringPattern;
 import com.ez.ezbackend.shared.serializer.PriceJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -48,22 +49,22 @@ public class ScheduleResponse {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime createDatetime;
 
-  private String recurringPattern;
+  private RecurringPattern recurringPattern;
 
   public static ScheduleResponse convertFromSchedule(Schedule schedule) {
     Category category = schedule.getCategory();
     return ScheduleResponse.builder()
         .id(schedule.getId())
-        .categoryId(category != null ? category.getId() : null)
+        .categoryId(category != null ? category.getId(): null)
         .categoryName(category != null ? category.getName(): null)
         .description(schedule.getDescription())
         .withdraw(schedule.getWithdraw())
         .deposit(schedule.getDeposit())
-        .startDate(LocalDate.now())
+        .startDate(schedule.getStartDate())
         .lastProcessedDate(schedule.getLastProcessedDate())
-        .nextRecurringDate(LocalDate.now())
+        .nextRecurringDate(schedule.getNextRecurringDate())
         .createDatetime(schedule.getCreateDateTime())
-        .recurringPattern(schedule.getRecurringPattern().toString().toLowerCase())
+        .recurringPattern(schedule.getRecurringPattern())
         .build();
   }
 }

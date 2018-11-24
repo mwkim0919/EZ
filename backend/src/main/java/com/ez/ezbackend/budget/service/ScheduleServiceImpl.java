@@ -92,7 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
-    List<Schedule> schedules = scheduleRepository.findScheduleByIdsAndUser(scheduleIds, user);
+    List<Schedule> schedules = scheduleRepository.findByIdsAndUser(scheduleIds, user);
 
     // Check ownership of the schedules
     if (scheduleIds.size() != schedules.size()) {

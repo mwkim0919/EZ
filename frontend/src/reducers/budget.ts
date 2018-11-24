@@ -6,9 +6,13 @@ import {
   DELETE_TRASACTIONS,
   SAVE_TRANSACTIONS,
   UPDATE_TRANSACTIONS,
+  FETCH_SCHEDULES,
+  CREATE_SCHEDULE,
+  UPDATE_SCHEDULE,
+  DELETE_SCHEDULE,
 } from 'src/constants/budget';
 import { SUCCESS } from 'src/constants';
-import { Transaction } from 'src/types/budget';
+import { Transaction, Schedule } from 'src/types';
 
 export const transactions = (state = [], action: AnyAction) => {
   switch (action.type) {
@@ -46,7 +50,38 @@ export const categories = (state = [], action: AnyAction) => {
   }
 };
 
+// TODO: Write tests
+const initialSchedules: Schedule[] = [];
+export const schedules = (state = initialSchedules, action: AnyAction) => {
+  switch (action.type) {
+    case CREATE_SCHEDULE[SUCCESS]: {
+      return [...state, ...action.payload];
+    }
+    case UPDATE_SCHEDULE[SUCCESS]: {
+      const { payload } = action;
+      return state.map((schedule: Schedule) => {
+        if (payload.id === schedule.id) {
+          return payload;
+        }
+        return schedule;
+      });
+    }
+    case DELETE_SCHEDULE[SUCCESS]: {
+      const { payload } = action;
+      const nextState = state.filter(
+        (schedule: Schedule) => !payload.includes(schedule.id)
+      );
+      return nextState;
+    }
+    case FETCH_SCHEDULES[SUCCESS]:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   transactions,
   categories,
+  schedules,
 });

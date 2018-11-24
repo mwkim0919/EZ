@@ -111,7 +111,7 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_deleteSchedulesForUser() {
-    Set<Long> scheduleIds = new HashSet<>(Arrays.asList(1L,2L,3L));
+    Set<Long> scheduleIds = new HashSet<>(Arrays.asList(1L, 2L, 3L));
     scheduleService.deleteSchedulesForUser(scheduleIds, 1L);
     List<Schedule> schedules = scheduleService.getAllUserSchedules(1L);
     assertThat(schedules).hasSize(3);

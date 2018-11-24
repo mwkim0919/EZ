@@ -31,12 +31,12 @@ public class ScheduleResponseTest {
         .build();
 
     ScheduleResponse scheduleResponse = ScheduleResponse.convertFromSchedule(schedule);
-    assertThat(scheduleResponse.getId()).isEqualTo(1L);
-    assertThat(scheduleResponse.getDescription()).isEqualTo("Month pass");
+    assertThat(scheduleResponse.getId()).isEqualTo(schedule.getId());
+    assertThat(scheduleResponse.getDescription()).isEqualTo(schedule.getDescription());
     assertThat(scheduleResponse.getCategoryId()).isEqualTo(category.getId());
-    assertThat(scheduleResponse.getWithdraw()).isEqualTo(new BigDecimal("189.00"));
-    assertThat(scheduleResponse.getRecurringPattern()).isEqualTo(RecurringPattern.MONTHLY.getValue());
-    assertThat(scheduleResponse.getStartDate()).isEqualTo(LocalDate.now());
-    assertThat(scheduleResponse.getNextRecurringDate()).isEqualTo(LocalDate.now());
+    assertThat(scheduleResponse.getWithdraw()).isEqualTo(schedule.getWithdraw());
+    assertThat(scheduleResponse.getRecurringPattern()).isEqualTo(schedule.getRecurringPattern());
+    assertThat(scheduleResponse.getStartDate()).isEqualTo(schedule.getStartDate());
+    assertThat(scheduleResponse.getNextRecurringDate()).isEqualTo(schedule.getNextRecurringDate());
   }
 }
