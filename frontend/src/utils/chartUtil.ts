@@ -1,17 +1,6 @@
-// tslint:disable-next-line
-export const getRandomColors = (data: any[]): string[] => {
-  const colors: string[] = [];
+// @ts-ignore
+import * as palette from 'google-palette';
 
-  const dynamicColors = () => {
-    const r = Math.floor(Math.random() * 255);
-    const g = Math.floor(Math.random() * 255);
-    const b = Math.floor(Math.random() * 255);
-    return 'rgb(' + r + ',' + g + ',' + b + ')';
-  };
-
-  data.forEach(datum => {
-    colors.push(dynamicColors());
-  });
-
-  return colors;
-};
+export const getRandomColors = (num: number): string[] => {
+  return palette('mpn65', num).map((hex: string) => '#' + hex);
+}

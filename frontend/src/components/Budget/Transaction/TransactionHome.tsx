@@ -13,7 +13,6 @@ interface Props {
 class TransactionHome extends React.Component<Props> {
   render() {
     const { transactions, categories } = this.props;
-    console.log(transactions, categories);
     return (
       <div>
         <div className="card">

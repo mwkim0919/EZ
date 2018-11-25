@@ -5,6 +5,7 @@ import TransactionHomeContainer from './TransactionHomeContainer';
 import CategorySectionContainer from './CategorySectionContainer';
 import ScheduleSectionContainer from './ScheduleSectionContainer';
 import TransactionForm from 'src/components/Budget/Transaction/TransactionForm';
+import Loader from 'src/components/Loader/loader';
 import { connect } from 'react-redux';
 import { init as initBudget } from 'src/actions/budget';
 import { AppState, APIProps, Category } from 'src/types';
@@ -26,21 +27,13 @@ class EZBudget extends React.Component<Props & APIProps, { loaded: boolean }> {
 
   componentDidMount() {
     this.props.initBudget().then(() => {
-      console.log('*** Inited ***');
       this.setState({ loaded: true });
     });
   }
 
   render() {
-    console.log(
-      'State ',
-      this.state.loaded,
-      ' Props loading ',
-      this.props.loading
-    );
     if (!this.state.loaded) {
-      // TODO: Create a generic loading component
-      return 'Loading...';
+      return <Loader />;
     }
 
     return (
