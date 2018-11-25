@@ -28,7 +28,7 @@ const isExpired = (user: CurrentUser): boolean => {
 if (storedData) {
   if (isExpired(storedData)) {
     clearLocalStorageItem(APP_STORAGE_KEY);
-    history.push('/auth/login');
+    history.push('/login');
   } else {
     axios.defaults.headers.common.Authorization =
       'Bearer ' + storedData.accessToken;

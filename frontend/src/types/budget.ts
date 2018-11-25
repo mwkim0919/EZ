@@ -73,10 +73,10 @@ export interface Schedule {
   withdraw: number | null;
   deposit: number | null;
   description: string;
-  startDate: Date;
-  lastProcessedDate: Date;
-  nextRecurringDate: Date;
-  createDatetime: Date;
+  startDate: string;
+  lastProcessedDate: string;
+  nextRecurringDate: string;
+  createDatetime: string;
   recurringPattern: RecurringPattern;
 }
 
@@ -86,6 +86,8 @@ export interface ScheduleRequest {
   deposit: number | null;
   withdraw: number | null;
   startDate: string;
+  nextRecurringDate?: string;
+  lastProcessedDate?: string;
   recurringPattern: RecurringPattern;
 }
 

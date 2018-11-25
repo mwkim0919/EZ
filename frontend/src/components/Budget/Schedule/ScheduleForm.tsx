@@ -26,7 +26,7 @@ const scheduleSchema = Yup.object().shape({
   amount: Yup.number()
     .positive()
     .required(),
-  startDate: Yup.date().required(),
+  startDate: Yup.date(),
   recurringPattern: Yup.mixed().oneOf(R.keys(recurringPatternMap)),
 });
 
@@ -60,19 +60,22 @@ class ScheduleForm extends React.PureComponent<Props> {
     const scheduleRequest = {
       categoryId,
       description,
-      startDate: moment(startDate).format('YYYY-MM-DD'),
+      startDate: startDate && moment(startDate).format('YYYY-MM-DD'),
       recurringPattern,
       deposit: type === 'deposit' ? amount : null,
       withdraw: type === 'withdraw' ? amount : null,
+      // We need to pass these attributes when updating
+      ...(this.props.editingSchedule && {
+        nextRecurringDate: this.props.editingSchedule.nextRecurringDate,
+        lastProcessedDate: this.props.editingSchedule.lastProcessedDate,
+      }),
     };
 
-    let submitAction: Promise<void>;
     // If schedule id exists, we're updating
-    if (id) {
-      submitAction = this.props.updateSchedule(id, scheduleRequest);
-    } else {
-      submitAction = this.props.createSchedule([scheduleRequest]);
-    }
+    const submitAction: Promise<void> = id
+      ? this.props.updateSchedule(id, scheduleRequest)
+      : this.props.createSchedule([scheduleRequest]);
+
     submitAction.then(() => {
       this.props.finishEditing();
     });
@@ -99,9 +102,9 @@ class ScheduleForm extends React.PureComponent<Props> {
         id,
         categoryId,
         description,
-        type: withdraw ? 'withdraw' : 'deposit',
-        amount: withdraw || deposit,
         startDate,
+        type: withdraw ? 'withdraw' : 'deposit',
+        amount: Number(withdraw || deposit),
         recurringPattern,
       };
     }
@@ -126,10 +129,12 @@ class ScheduleForm extends React.PureComponent<Props> {
       <div className="schedule-form">
         <Formik
           initialValues={initialFormState}
+          isInitialValid={!!this.props.editingSchedule}
           validationSchema={scheduleSchema}
           onSubmit={this.handleSubmit}
           render={(formikProps: FormikProps<FormikValues>) => {
             const { setFieldValue, values, isValid } = formikProps;
+            console.log('Formik Props ', formikProps);
             const { type } = values;
             return (
               <Form>
@@ -219,23 +224,29 @@ class ScheduleForm extends React.PureComponent<Props> {
                   <ErrorMessage name="amount" />
                 </div>
 
-                <div className="form-group">
-                  <Field
-                    name="startDate"
-                    render={({ field }: FieldProps) => {
-                      return (
-                        <DayPickerInput
-                          format={'YYYY-MM-DD'}
-                          value={field.value}
-                          onDayChange={(day: Date) => {
-                            setFieldValue('startDate', day);
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                  <ErrorMessage name="startDate" />
-                </div>
+                {!this.props.editingSchedule && (
+                  <div className="form-group">
+                    <Field
+                      name="startDate"
+                      render={({ field }: FieldProps) => {
+                        return (
+                          <DayPickerInput
+                            format={'YYYY-MM-DD'}
+                            dayPickerProps={{
+                              disabledDays: { before: new Date() },
+                            }}
+                            value={field.value}
+                            onDayChange={(day: Date) => {
+                              setFieldValue('startDate', day);
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                    <ErrorMessage name="startDate" />
+                  </div>
+                )}
+
                 <button
                   disabled={!isValid}
                   type="submit"
