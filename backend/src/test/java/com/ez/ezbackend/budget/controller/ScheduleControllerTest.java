@@ -72,7 +72,7 @@ public class ScheduleControllerTest {
         .recurringPattern(RecurringPattern.MONTHLY)
         .build();
     List<ScheduleRequest> scheduleRequests = Collections.singletonList(scheduleRequest);
-    Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, new User(), new Category(), 1L);
+    Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, new User(), new Category());
     List<Schedule> schedules = Collections.singletonList(schedule);
     String json = JsonUtil.convertToJson(scheduleRequests, List.class);
     when(scheduleService.saveSchedulesForUser(any(), any(long.class))).thenReturn(schedules);
@@ -83,7 +83,6 @@ public class ScheduleControllerTest {
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("[0].id").value("1"))
         .andExpect(jsonPath("[0].description").value("test"))
         .andExpect(jsonPath("[0].withdraw").value("100.00"))
         .andExpect(jsonPath("[0].deposit").doesNotExist())
@@ -96,7 +95,9 @@ public class ScheduleControllerTest {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .withdraw(new BigDecimal("100.00"))
-        .startDate(LocalDate.now())
+        .startDate(LocalDate.now().minusDays(5))
+        .nextRecurringDate(LocalDate.now().plusMonths(1))
+        .lastProcessedDate(LocalDate.now().minusMonths(1))
         .recurringPattern(RecurringPattern.MONTHLY)
         .build();
     Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, new User(), new Category(), 1L);
@@ -115,7 +116,9 @@ public class ScheduleControllerTest {
         .andExpect(jsonPath("$.withdraw").value("100.00"))
         .andExpect(jsonPath("$.deposit").doesNotExist())
         .andExpect(jsonPath("$.recurringPattern").value("MONTHLY"))
-        .andExpect(jsonPath("$.startDate").exists());
+        .andExpect(jsonPath("$.startDate").exists())
+        .andExpect(jsonPath("$.nextRecurringDate").exists())
+        .andExpect(jsonPath("$.lastProcessedDate").exists());
   }
 
   @Test

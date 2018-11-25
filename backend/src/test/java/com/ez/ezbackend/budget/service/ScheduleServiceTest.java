@@ -72,12 +72,14 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_updateScheduleForUser() {
-    LocalDate startDate = LocalDate.of(2018, 2, 1);
+    LocalDate startDate = LocalDate.now().plusDays(1);
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .categoryId(6L)
         .description("EZ Month pay stub")
         .deposit(new BigDecimal("5000.00"))
         .startDate(startDate)
+        .nextRecurringDate(startDate)
+        .lastProcessedDate(startDate)
         .recurringPattern(RecurringPattern.MONTHLY)
         .build();
     Schedule updated = scheduleService.updateScheduleForUser(scheduleRequest, 1L, 1L);
@@ -87,6 +89,7 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
     assertThat(updated.getWithdraw()).isNull();
     assertThat(updated.getStartDate()).isEqualTo(startDate);
     assertThat(updated.getNextRecurringDate()).isEqualTo(startDate);
+    assertThat(updated.getLastProcessedDate()).isEqualTo(startDate);
   }
 
   @Test(expected = EzNotFoundException.class)

@@ -112,6 +112,15 @@ public class ScheduleRequestTest {
     ScheduleRequest.convertToSchedule(scheduleRequest, new User());
   }
 
+  @Test(expected = EzIllegalRequestException.class)
+  public void testConvertToSchedule_with_past_startDate() {
+    ScheduleRequest scheduleRequest = ScheduleRequest.builder()
+        .description("test")
+        .startDate(LocalDate.now().minusDays(1))
+        .build();
+    ScheduleRequest.convertToSchedule(scheduleRequest, new User());
+  }
+
   private void testConvertToScheduleWith(User user, Category category, Long updatingScheduleId) {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .categoryId(1L)
@@ -120,6 +129,8 @@ public class ScheduleRequestTest {
         .withdraw(null)
         .recurringPattern(RecurringPattern.YEARLY)
         .startDate(LocalDate.now())
+        .nextRecurringDate(updatingScheduleId != null ? LocalDate.now().plusYears(1) : LocalDate.now())
+        .lastProcessedDate(updatingScheduleId != null ? LocalDate.now().minusMonths(1) : LocalDate.now())
         .build();
     Schedule schedule = null;
     if (category == null && updatingScheduleId == null) {
@@ -131,15 +142,17 @@ public class ScheduleRequestTest {
     }
     if (updatingScheduleId == null) {
       assertThat(schedule.getId()).isNull();
+      // If creating schedule, nextRecurringDate should be the same as startDate
+      assertThat(schedule.getNextRecurringDate()).isEqualTo(scheduleRequest.getStartDate());
     } else {
       assertThat(schedule.getId()).isEqualTo(updatingScheduleId);
+      assertThat(schedule.getNextRecurringDate()).isEqualTo(scheduleRequest.getNextRecurringDate());
     }
     assertThat(schedule.getDescription()).isEqualTo(scheduleRequest.getDescription());
     assertThat(schedule.getDeposit()).isEqualTo(scheduleRequest.getDeposit());
     assertThat(schedule.getWithdraw()).isEqualTo(scheduleRequest.getWithdraw());
     assertThat(schedule.getRecurringPattern()).isEqualTo(scheduleRequest.getRecurringPattern());
     assertThat(schedule.getStartDate()).isEqualTo(scheduleRequest.getStartDate());
-    assertThat(schedule.getNextRecurringDate()).isEqualTo(scheduleRequest.getStartDate());
     if (user == null) {
       assertThat(schedule.getUser()).isNull();
     } else {

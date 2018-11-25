@@ -30,6 +30,15 @@ public class ScheduleRequest {
   @JsonFormat(pattern = "yyyy-MM-dd")
   @JsonSerialize(using = LocalDateSerializer.class)
   private LocalDate startDate;
+
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  @JsonSerialize(using = LocalDateSerializer.class)
+  private LocalDate nextRecurringDate;
+
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  @JsonSerialize(using = LocalDateSerializer.class)
+  private LocalDate lastProcessedDate;
+
   private RecurringPattern recurringPattern;
 
   public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user) {
@@ -41,7 +50,7 @@ public class ScheduleRequest {
   }
 
   public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user, Category category, Long updatingScheduleId) {
-    validateSchedule(scheduleRequest);
+    validateSchedule(scheduleRequest, updatingScheduleId);
 
     return Schedule.builder()
         .id(updatingScheduleId)
@@ -52,11 +61,16 @@ public class ScheduleRequest {
         .withdraw(scheduleRequest.getWithdraw())
         .startDate(scheduleRequest.getStartDate())
         .recurringPattern(scheduleRequest.getRecurringPattern())
-        .nextRecurringDate(scheduleRequest.getStartDate())
+        .lastProcessedDate(updatingScheduleId != null
+            ? scheduleRequest.getLastProcessedDate()
+            : null)
+        .nextRecurringDate(updatingScheduleId != null
+            ? scheduleRequest.getNextRecurringDate()
+            : scheduleRequest.getStartDate())
         .build();
   }
 
-  private static void validateSchedule(ScheduleRequest scheduleRequest) {
+  private static void validateSchedule(ScheduleRequest scheduleRequest, Long updatingScheduleId) {
     if (Strings.isNullOrEmpty(scheduleRequest.getDescription())) {
       throw new EzIllegalRequestException("Schedule must have a description.");
     }
@@ -74,6 +88,22 @@ public class ScheduleRequest {
     }
     if (scheduleRequest.getRecurringPattern() == null) {
       throw new EzIllegalRequestException("RecurringPattern must be one of yearly, bimonthly, monthly, biweekly, and weekly.");
+    }
+    if (updatingScheduleId != null) {
+      if (scheduleRequest.getStartDate() == null) {
+        throw new EzIllegalRequestException("Start date is required.");
+      }
+      if (scheduleRequest.getLastProcessedDate() == null) {
+        throw new EzIllegalRequestException("Last processed date is required.");
+      }
+      if (scheduleRequest.getNextRecurringDate() == null) {
+        throw new EzIllegalRequestException("Next recurring date is required.");
+      }
+    } else {
+      // If we're creating a schedule, check startDate > now
+      if (scheduleRequest.getStartDate() != null && scheduleRequest.getStartDate().isBefore(LocalDate.now())) {
+        throw new EzIllegalRequestException("Start date must be before today.");
+      }
     }
   }
 }
