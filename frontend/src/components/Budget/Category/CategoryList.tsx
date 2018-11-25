@@ -13,23 +13,23 @@ interface Props {
 }
 
 interface State {
-  date: string;
+  month: string;
 }
 
 export default class CategoryList extends React.Component<Props, State> {
   state = {
-    date: '',
+    month: '',
   };
 
   selectDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
-    this.setState({ date: e.target.value });
+    this.setState({ month: e.target.value });
   }
 
   render() {
     const { categories, transactions } = this.props;
     const months = getTransactionMonths(transactions);
-    const selectedMonth = this.state.date || months[0];
+    const selectedMonth = this.state.month || months[0];
     const selectedTransactions = transactions.filter(
       (transaction: Transaction) =>
         String(transaction.transactionDatetime).substring(0, 7) ===

@@ -89,7 +89,6 @@ class TransactionItem extends React.Component<Props, State> {
       deposit: values.transactionType === 'deposit' ? values.amount : null,
       transactionDatetime,
     };
-    console.log(transaction);
     this.props.updateTransactions(values.id, transaction);
     this.setState(prevState => {
       return { isEditing: !prevState.isEditing };

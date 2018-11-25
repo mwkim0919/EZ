@@ -29,8 +29,6 @@ const signUpValidationSchema = Yup.object().shape({
 class SignUp extends React.Component<Props> {
   // TODO: Display ajax error message...
   render() {
-    // console.log('This props ', this.props);
-
     return (
       <div>
         <h1>Sign up form</h1>

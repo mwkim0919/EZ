@@ -11,7 +11,6 @@ interface Props {
 }
 
 const TodoList = (props: Props) => {
-  console.log('TodoList => ', props);
   const { todos, ...todoActions } = props;
   return (
     <ul>

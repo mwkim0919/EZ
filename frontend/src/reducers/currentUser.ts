@@ -16,13 +16,10 @@ const initialState = {} as CurrentUser;
 export default (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      console.log('Login success ', action);
       return { ...state, ...action.payload };
     case LOGOUT:
-      console.log('Logout ', action);
       return {};
     case SIGN_UP_SUCCESS:
-      console.log('SIGN_UP_SUCCESS');
       return { ...state };
     default:
       return state;

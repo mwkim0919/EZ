@@ -35,7 +35,6 @@ export default class TodoItem extends React.Component<Props, State> {
 
   handleInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { keyCode } = e;
-    console.log('keyCode ', keyCode);
     switch (keyCode) {
       case 13:
         this.handleSave(this.props.todo.id, this.state.temp);
