@@ -127,7 +127,7 @@ export const filterTransactions = (
   transactions: Transaction[],
   selectedDate: string,
   description: string,
-  transactionType: string
+  transactionType: 'deposit' | 'withdraw' | ''
 ): Transaction[] => {
   let filteredTransactions = transactions;
   

@@ -15,17 +15,19 @@ interface Props {
   categories: Category[];
 }
 
+type TransactionType = 'deposit' | 'withdraw' | '';
+
 interface State {
   month: string;
   description: string;
-  transactionType: string;
+  transactionType: TransactionType;
 }
 
 class TransactionList extends React.Component<Props, State> {
   state = {
     month: '',
     description: '',
-    transactionType: '',
+    transactionType: '' as TransactionType,
   };
 
   selectDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -33,7 +35,7 @@ class TransactionList extends React.Component<Props, State> {
   };
 
   selectTransactionType = (e: React.MouseEvent<HTMLInputElement>) => {
-    this.setState({ transactionType: e.currentTarget.value });
+    this.setState({ transactionType: e.currentTarget.value as TransactionType });
   }
 
   render() {
