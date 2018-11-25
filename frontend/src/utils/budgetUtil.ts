@@ -123,6 +123,39 @@ export const sumDepositAndWithdraw = (
   );
 };
 
+export const filterTransactions = (
+  transactions: Transaction[],
+  selectedDate: string,
+  description: string,
+  transactionType: string
+): Transaction[] => {
+  let filteredTransactions = transactions;
+  
+  if (selectedDate) {
+    filteredTransactions = filteredTransactions.filter(
+      (transaction: Transaction) =>
+        String(transaction.transactionDatetime).substring(0, 7) === selectedDate
+    );
+  }
+  if (description) {
+    filteredTransactions = filteredTransactions.filter((transaction: Transaction) =>
+      transaction.description.toLowerCase().includes(description.toLowerCase())
+    );
+  }
+  if (transactionType) {
+    filteredTransactions = filteredTransactions.filter(
+      (transaction: Transaction) => {
+        if (transactionType === 'deposit') {
+          return transaction.withdraw == null
+        } else {
+          return transaction.deposit == null
+        }
+      }
+    );
+  }
+  return filteredTransactions;
+};
+
 function mapCategories(categories: Category[]): CategoryMap {
   return categories.reduce((acc: CategoryMap, category: Category) => {
     acc[category.id] = category;

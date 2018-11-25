@@ -39,7 +39,6 @@ export function* authenticate(email: string, password: string) {
   } finally {
     if (yield cancelled()) {
       // Dispatch an event to hide loading for LOGIN_REQUEST unless it's handled in LOGOUT reducer...
-      console.log('authenticate cancelled');
     }
   }
 }

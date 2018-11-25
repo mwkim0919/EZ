@@ -14,7 +14,6 @@ const mapStateToProps = (state: AppState) => {
   //     todos: loadState(),
   //   };
   // }
-  console.log('State in TodoList container', state);
   // saveState(state.todos);
   return {
     todos: state.todos,
