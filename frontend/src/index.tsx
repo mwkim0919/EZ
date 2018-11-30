@@ -11,7 +11,7 @@ import {
   clearLocalStorageItem,
 } from './helpers/localStorage';
 import { APP_STORAGE_KEY } from 'src/constants';
-import './index.css';
+// import './index.css';
 import { CurrentUser } from './types';
 
 const storedData = loadLocalStorageItem(APP_STORAGE_KEY);

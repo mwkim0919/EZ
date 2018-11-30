@@ -1,0 +1,17 @@
+.btn {
+  font-size: 1.6rem;
+  color: $color-white;
+  margin: 1em;
+  transition: 0.2s ease-out;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px $color-grey-dark-2;
+  }
+  &:active {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 6px $color-grey-dark-2;
+  }
+}

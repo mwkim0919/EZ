@@ -1,0 +1,6 @@
+.auth-container {
+  text-align: center;
+  padding-top: 10rem;
+  height: 100vh;
+  @include background-image('../images/auth-background.jpg');
+}
