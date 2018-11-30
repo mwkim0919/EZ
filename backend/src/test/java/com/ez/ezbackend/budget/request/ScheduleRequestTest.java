@@ -14,12 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScheduleRequestTest {
 
-  @Test
+  @Test(expected = EzIllegalRequestException.class)
   public void testConvertToSchedule_with_scheduleRequest() {
     testConvertToScheduleWith(null, null, null);
   }
 
-  @Test
+  @Test(expected = EzIllegalRequestException.class)
   public void testConvertToSchedule_with_scheduleRequest_and_user() {
     testConvertToScheduleWith(new User(), null, null);
   }
