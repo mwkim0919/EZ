@@ -1,0 +1,34 @@
+//background-image position, size, etc...
+@mixin background-image(
+  $imgpath,
+  $size: cover,
+  $position: top,
+  $repeat: no-repeat
+) {
+  background-image: url($imgpath);
+  background-size: $size;
+  background-position: $position;
+  background-repeat: $repeat;
+}
+
+//font size, weight, family, align
+@mixin font-decoration($size, $weight, $family, $align) {
+  font-size: $size;
+  font-weight: $weight;
+  font-family: $family;
+  text-align: $align;
+}
+
+@mixin add-space($property, $value) {
+  #{$property}: $value;
+}
+
+//hover and focus effect for contact link
+@mixin focus() {
+  &:hover {
+    @content;
+  }
+  &:focus {
+    @content;
+  }
+}

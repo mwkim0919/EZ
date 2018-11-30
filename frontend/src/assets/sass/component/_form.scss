@@ -1,0 +1,63 @@
+.auth-form {
+  &__text-box {
+    @extend %card-style;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(118, 177, 255, 0.8),
+        #afddff
+      ),
+      url(../images/authForm-background.jpg);
+    background-size: cover;
+    background-position: top;
+    text-align: center;
+    width: 45rem;
+    font-size: 1.6rem;
+    margin: auto;
+    padding: 3em 5em;
+
+    @media screen and (max-width: 480px) {
+      width: 35rem;
+      padding: 1em 3em;
+    }
+  }
+  &__error {
+    margin-top: 0.2em;
+    color: red;
+    font-size: 1.3rem;
+  }
+  &__input {
+    width: 100%;
+    margin-top: 1em;
+    border-radius: 2em;
+    border: none;
+    background-color: $color-grey-light-1;
+    opacity: 0.8;
+    padding: 0.5rem;
+    transition: 0.2s ease-out;
+    &:focus {
+      outline: none;
+      transform: translateY(-3px);
+      opacity: 1;
+      background-color: $color-white;
+      box-shadow: 0 5px 10px $color-grey-dark-2;
+    }
+    &::placeholder {
+      font-weight: 300;
+      margin-left: 1em;
+      color: $color-grey-dark-2;
+    }
+  }
+  &__btn--blue {
+    width: 40%;
+    background-color: $color-tertiary-light;
+    margin: 10px;
+  }
+  &__btn--green {
+    width: 40%;
+    background-color: $color-primary;
+    margin: 10px;
+  }
+  &__input-box {
+    height: 4em;
+  }
+}

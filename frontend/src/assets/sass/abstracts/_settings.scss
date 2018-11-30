@@ -1,0 +1,13 @@
+//center content
+%center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+%card-style {
+  border: solid 2px rgb(255, 255, 255);
+  box-shadow: 4px 4px 3px #5a5a5a;
+  padding: 20px;
+  border-radius: 1rem;
+}

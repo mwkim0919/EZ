@@ -54,71 +54,86 @@ class Login extends React.Component<Props> {
     // }
 
     return (
-      <div>
-        <h1>Login Form</h1>
-        <Formik
-          initialValues={{
-            email: '',
-            password: '',
-            passwordConfirm: '',
-          }}
-          onSubmit={(values: LoginFormValues) => {
-            const { email, password } = values;
-            console.log('Login Submit');
-            this.props.login({ email, password });
-          }}
-          validationSchema={loginValidationSchema}
-          render={(formikBag: FormikProps<LoginFormValues>) => {
-            return (
-              <Form>
-                <Field
-                  name="email"
-                  render={(formikProps: FieldProps<LoginFormValues>) => {
-                    const { field, form } = formikProps;
-                    return (
-                      <div>
-                        <label htmlFor="">Email</label>
-                        <input type="text" {...field} placeholder="Email" />
-                        {form.touched.email &&
-                          form.errors.email &&
-                          form.errors.email}
-                      </div>
-                    );
-                  }}
-                />
-                <Field
-                  name="password"
-                  render={({ field, form }: FieldProps<LoginFormValues>) => {
-                    return (
-                      <div>
-                        <label htmlFor="">Password</label>
-                        <input
-                          type="password"
-                          {...field}
-                          placeholder="Password"
-                        />
-                        {form.touched.password &&
-                          form.errors.password &&
-                          form.errors.password}
-                      </div>
-                    );
-                  }}
-                />
-
-                <Button type="submit">Sign In</Button>
-              </Form>
-            );
-          }}
-        />
-        <Button
-          onClick={(e: React.SyntheticEvent) => {
-            e.preventDefault();
-            this.props.push('/signup');
-          }}
-          color="green"
-        >
-          Sign Up
-        </Button>
+      // <div className="container">
+      <div className="auth-container">
+        <div className="auth-form__text-box">
+          <h1 className="header">LOG IN</h1>
+          <Formik
+            initialValues={{
+              email: '',
+              password: '',
+              passwordConfirm: '',
+            }}
+            onSubmit={(values: LoginFormValues) => {
+              const { email, password } = values;
+              console.log('Login Submit');
+              this.props.login({ email, password });
+            }}
+            validationSchema={loginValidationSchema}
+            render={(formikBag: FormikProps<LoginFormValues>) => {
+              return (
+                <Form>
+                  <Field
+                    name="email"
+                    render={(formikProps: FieldProps<LoginFormValues>) => {
+                      const { field, form } = formikProps;
+                      // @ts-ginore
+                      return (
+                        <div className="auth-form__input-box">
+                          <input
+                            type="text"
+                            {...field}
+                            className="auth-form__input"
+                            placeholder="Email"
+                          />
+                          <div className="auth-form__error">
+                            {form.touched.email &&
+                              '*' + form.errors.email &&
+                              '*' + form.errors.email}
+                          </div>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Field
+                    name="password"
+                    render={({ field, form }: FieldProps<LoginFormValues>) => {
+                      return (
+                        <div>
+                          <input
+                            className="auth-form__input"
+                            type="password"
+                            {...field}
+                            placeholder="Password"
+                          />
+                          <div className="auth-form__error">
+                            {form.touched.password &&
+                              form.errors.password &&
+                              form.errors.password}
+                          </div>
+                        </div>
+                      );
+                    }}
+                  />
+                  <hr style={{ backgroundColor: 'white', marginTop: '20px' }} />
+                  <button
+                    className="btn auth-form__btn--green"
+                    onClick={(e: React.SyntheticEvent) => {
+                      e.preventDefault();
+                      this.props.push('/signup');
+                    }}
+                    color="green"
+                  >
+                    > SIGN UP
+                  </button>
+                  <button type="submit" className="btn auth-form__btn--blue">
+                    LOG IN
+                  </button>
+                </Form>
+              );
+            }}
+          />
+        </div>
       </div>
     );
   }
