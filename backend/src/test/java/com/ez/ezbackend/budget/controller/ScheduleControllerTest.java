@@ -95,12 +95,9 @@ public class ScheduleControllerTest {
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .description("test")
         .withdraw(new BigDecimal("100.00"))
-        .startDate(LocalDate.now().minusDays(5))
-        .nextRecurringDate(LocalDate.now().plusMonths(1))
-        .lastProcessedDate(LocalDate.now().minusMonths(1))
         .recurringPattern(RecurringPattern.MONTHLY)
         .build();
-    Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, new User(), new Category(), 1L);
+    Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, new User(), new Category(), Schedule.builder().id(1L).build());
     String json = JsonUtil.convertToJson(scheduleRequest, ScheduleRequest.class);
     when(scheduleService.updateScheduleForUser(any(ScheduleRequest.class), any(long.class), any(long.class)))
         .thenReturn(schedule);
@@ -115,10 +112,7 @@ public class ScheduleControllerTest {
         .andExpect(jsonPath("$.description").value("test"))
         .andExpect(jsonPath("$.withdraw").value("100.00"))
         .andExpect(jsonPath("$.deposit").doesNotExist())
-        .andExpect(jsonPath("$.recurringPattern").value("MONTHLY"))
-        .andExpect(jsonPath("$.startDate").exists())
-        .andExpect(jsonPath("$.nextRecurringDate").exists())
-        .andExpect(jsonPath("$.lastProcessedDate").exists());
+        .andExpect(jsonPath("$.recurringPattern").value("MONTHLY"));
   }
 
   @Test

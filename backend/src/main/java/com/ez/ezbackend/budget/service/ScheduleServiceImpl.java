@@ -81,7 +81,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         .orElseThrow(() -> new EzNotFoundException("User with ID: " + userId + " not found."));
     Category category = categoryRepository.findById(scheduleRequest.getCategoryId())
         .orElseThrow(() -> new EzNotFoundException("Category with ID: " + scheduleRequest.getCategoryId() + " not found."));
-    Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, user, category, scheduleId);
+    Schedule previousSchedule = scheduleRepository.findById(scheduleId)
+        .orElseThrow(() -> new EzNotFoundException("Schedule with ID: " + scheduleId + " not found."));
+    Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, user, category, previousSchedule);
     return scheduleRepository.saveAndFlush(schedule);
   }
 

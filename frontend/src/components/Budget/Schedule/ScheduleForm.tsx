@@ -60,14 +60,11 @@ class ScheduleForm extends React.PureComponent<Props> {
     const scheduleRequest = {
       categoryId,
       description,
-      startDate: startDate && moment(startDate).format('YYYY-MM-DD'),
       recurringPattern,
       deposit: type === 'deposit' ? amount : null,
       withdraw: type === 'withdraw' ? amount : null,
-      // We need to pass these attributes when updating
-      ...(this.props.editingSchedule && {
-        nextRecurringDate: this.props.editingSchedule.nextRecurringDate,
-        lastProcessedDate: this.props.editingSchedule.lastProcessedDate,
+      ...(!this.props.editingSchedule && {
+        startDate: startDate && moment(startDate).format('YYYY-MM-DD'),
       }),
     };
 

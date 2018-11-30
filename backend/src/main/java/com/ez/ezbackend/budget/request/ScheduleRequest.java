@@ -31,46 +31,35 @@ public class ScheduleRequest {
   @JsonSerialize(using = LocalDateSerializer.class)
   private LocalDate startDate;
 
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  @JsonSerialize(using = LocalDateSerializer.class)
-  private LocalDate nextRecurringDate;
-
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  @JsonSerialize(using = LocalDateSerializer.class)
-  private LocalDate lastProcessedDate;
-
   private RecurringPattern recurringPattern;
-
-  public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user) {
-    return convertToSchedule(scheduleRequest, user, null, null);
-  }
 
   public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user, Category category) {
     return convertToSchedule(scheduleRequest, user, category, null);
   }
 
-  public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user, Category category, Long updatingScheduleId) {
-    validateSchedule(scheduleRequest, updatingScheduleId);
+  public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user, Category category, Schedule previousSchedule) {
+    validateSchedule(scheduleRequest, category, previousSchedule);
 
     return Schedule.builder()
-        .id(updatingScheduleId)
+        .id(previousSchedule != null ? previousSchedule.getId() : null)
         .user(user)
         .category(category)
         .description(scheduleRequest.getDescription())
         .deposit(scheduleRequest.getDeposit())
         .withdraw(scheduleRequest.getWithdraw())
-        .startDate(scheduleRequest.getStartDate())
+        .startDate(previousSchedule != null ? previousSchedule.getStartDate() : scheduleRequest.getStartDate())
         .recurringPattern(scheduleRequest.getRecurringPattern())
-        .lastProcessedDate(updatingScheduleId != null
-            ? scheduleRequest.getLastProcessedDate()
-            : null)
-        .nextRecurringDate(updatingScheduleId != null
-            ? scheduleRequest.getNextRecurringDate()
-            : scheduleRequest.getStartDate())
+        .lastProcessedDate(previousSchedule != null ? previousSchedule.getLastProcessedDate() : null)
+        // If we're creating schedule, next recurring date will be set to startDate
+        .nextRecurringDate(previousSchedule != null ? previousSchedule.getNextRecurringDate() : scheduleRequest.getStartDate())
         .build();
   }
 
-  private static void validateSchedule(ScheduleRequest scheduleRequest, Long updatingScheduleId) {
+  private static void validateSchedule(ScheduleRequest scheduleRequest, Category category, Schedule previousSchedule) {
+    // Category will be null if user tries to send a ScheduleRequest with category that he shouldn't have access to
+    if (category == null) {
+      throw new EzIllegalRequestException("Schedule must have an associated category.");
+    }
     if (Strings.isNullOrEmpty(scheduleRequest.getDescription())) {
       throw new EzIllegalRequestException("Schedule must have a description.");
     }
@@ -89,21 +78,9 @@ public class ScheduleRequest {
     if (scheduleRequest.getRecurringPattern() == null) {
       throw new EzIllegalRequestException("RecurringPattern must be one of yearly, bimonthly, monthly, biweekly, and weekly.");
     }
-    if (updatingScheduleId != null) {
-      if (scheduleRequest.getStartDate() == null) {
-        throw new EzIllegalRequestException("Start date is required.");
-      }
-      if (scheduleRequest.getLastProcessedDate() == null) {
-        throw new EzIllegalRequestException("Last processed date is required.");
-      }
-      if (scheduleRequest.getNextRecurringDate() == null) {
-        throw new EzIllegalRequestException("Next recurring date is required.");
-      }
-    } else {
-      // If we're creating a schedule, check startDate > now
-      if (scheduleRequest.getStartDate() != null && scheduleRequest.getStartDate().isBefore(LocalDate.now())) {
-        throw new EzIllegalRequestException("Start date must be before today.");
-      }
+    // If we're creating a schedule, check startDate > now
+    if (previousSchedule == null && scheduleRequest.getStartDate().isAfter(LocalDate.now())) {
+      throw new EzIllegalRequestException("Start date must come after today.");
     }
   }
 }

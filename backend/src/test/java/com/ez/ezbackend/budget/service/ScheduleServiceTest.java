@@ -77,9 +77,6 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
         .categoryId(6L)
         .description("EZ Month pay stub")
         .deposit(new BigDecimal("5000.00"))
-        .startDate(startDate)
-        .nextRecurringDate(startDate)
-        .lastProcessedDate(startDate)
         .recurringPattern(RecurringPattern.MONTHLY)
         .build();
     Schedule updated = scheduleService.updateScheduleForUser(scheduleRequest, 1L, 1L);
@@ -87,9 +84,7 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
     assertThat(updated.getDescription()).isEqualTo("EZ Month pay stub");
     assertThat(updated.getDeposit()).isEqualTo(new BigDecimal("5000.00"));
     assertThat(updated.getWithdraw()).isNull();
-    assertThat(updated.getStartDate()).isEqualTo(startDate);
-    assertThat(updated.getNextRecurringDate()).isEqualTo(startDate);
-    assertThat(updated.getLastProcessedDate()).isEqualTo(startDate);
+    assertThat(updated.getLastProcessedDate()).isNull();
   }
 
   @Test(expected = EzNotFoundException.class)
