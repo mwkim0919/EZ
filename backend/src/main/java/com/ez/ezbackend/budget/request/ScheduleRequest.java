@@ -39,19 +39,38 @@ public class ScheduleRequest {
 
   public static Schedule convertToSchedule(ScheduleRequest scheduleRequest, User user, Category category, Schedule previousSchedule) {
     validateSchedule(scheduleRequest, category, previousSchedule);
+    if (previousSchedule == null) {
+      return convertToScheduleForCreate(scheduleRequest, user, category);
+    } else {
+      return convertToScheduleForUpdate(scheduleRequest, user, category, previousSchedule);
+    }
+  }
 
+  private static Schedule convertToScheduleForCreate(ScheduleRequest scheduleRequest, User user, Category category) {
     return Schedule.builder()
-        .id(previousSchedule != null ? previousSchedule.getId() : null)
         .user(user)
         .category(category)
         .description(scheduleRequest.getDescription())
         .deposit(scheduleRequest.getDeposit())
         .withdraw(scheduleRequest.getWithdraw())
-        .startDate(previousSchedule != null ? previousSchedule.getStartDate() : scheduleRequest.getStartDate())
+        .startDate(scheduleRequest.getStartDate())
         .recurringPattern(scheduleRequest.getRecurringPattern())
-        .lastProcessedDate(previousSchedule != null ? previousSchedule.getLastProcessedDate() : null)
-        // If we're creating schedule, next recurring date will be set to startDate
-        .nextRecurringDate(previousSchedule != null ? previousSchedule.getNextRecurringDate() : scheduleRequest.getStartDate())
+        .nextRecurringDate(scheduleRequest.getStartDate())
+        .build();
+  }
+
+  private static Schedule convertToScheduleForUpdate(ScheduleRequest scheduleRequest, User user, Category category, Schedule previousSchedule) {
+    return Schedule.builder()
+        .id(previousSchedule.getId())
+        .user(user)
+        .category(category)
+        .description(scheduleRequest.getDescription())
+        .deposit(scheduleRequest.getDeposit())
+        .withdraw(scheduleRequest.getWithdraw())
+        .startDate(previousSchedule.getStartDate())
+        .recurringPattern(scheduleRequest.getRecurringPattern())
+        .lastProcessedDate(previousSchedule.getLastProcessedDate())
+        .nextRecurringDate(previousSchedule.getNextRecurringDate())
         .build();
   }
 
@@ -79,8 +98,8 @@ public class ScheduleRequest {
       throw new EzIllegalRequestException("RecurringPattern must be one of yearly, bimonthly, monthly, biweekly, and weekly.");
     }
     // If we're creating a schedule, check startDate > now
-    if (previousSchedule == null && scheduleRequest.getStartDate().isAfter(LocalDate.now())) {
-      throw new EzIllegalRequestException("Start date must come after today.");
+    if (previousSchedule == null && scheduleRequest.getStartDate().isBefore(LocalDate.now())) {
+      throw new EzIllegalRequestException("Start date must be after today.");
     }
   }
 }

@@ -131,7 +131,6 @@ class ScheduleForm extends React.PureComponent<Props> {
           onSubmit={this.handleSubmit}
           render={(formikProps: FormikProps<FormikValues>) => {
             const { setFieldValue, values, isValid } = formikProps;
-            console.log('Formik Props ', formikProps);
             const { type } = values;
             return (
               <Form>
