@@ -41,9 +41,8 @@ public class ScheduleRequest {
     validateSchedule(scheduleRequest, category, previousSchedule);
     if (previousSchedule == null) {
       return convertToScheduleForCreate(scheduleRequest, user, category);
-    } else {
-      return convertToScheduleForUpdate(scheduleRequest, user, category, previousSchedule);
     }
+    return convertToScheduleForUpdate(scheduleRequest, user, category, previousSchedule);
   }
 
   private static Schedule convertToScheduleForCreate(ScheduleRequest scheduleRequest, User user, Category category) {

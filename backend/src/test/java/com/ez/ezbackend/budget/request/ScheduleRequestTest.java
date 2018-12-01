@@ -134,7 +134,7 @@ public class ScheduleRequestTest {
     Schedule previousSchedule = Schedule.builder()
         .id(updatingScheduleId)
         .startDate(LocalDate.of(2018, 1, 1))
-        .nextRecurringDate(LocalDate.of(2018,1,15))
+        .nextRecurringDate(LocalDate.of(2018, 1, 15))
         .build();
 
     Schedule schedule = ScheduleRequest.convertToSchedule(scheduleRequest, user, category, updatingScheduleId != null ? previousSchedule : null);
