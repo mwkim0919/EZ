@@ -16,7 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,10 +42,8 @@ public class Schedule {
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "category_id",
-      // Not sure if this is the best approach.
-      foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (category_id) REFERENCES Category ON DELETE SET NULL"))
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  @JoinColumn(name = "category_id")
   private Category category;
 
   @Column(nullable = false)

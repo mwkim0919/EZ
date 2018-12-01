@@ -33,6 +33,7 @@ public class TransactionRequest {
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime transactionDatetime;
 
+  // TODO: Do we need this?
   public static Transaction convertToTransaction(TransactionRequest transactionRequest, User user) {
     return convertToTransaction(transactionRequest, user, null);
   }

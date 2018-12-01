@@ -14,24 +14,24 @@ import { APP_STORAGE_KEY } from 'src/constants';
 import './index.css';
 import { CurrentUser } from './types';
 
-const storedData = loadLocalStorageItem(APP_STORAGE_KEY);
+const storedUser = loadLocalStorageItem(APP_STORAGE_KEY);
 const store = configureStore({
-  currentUser: storedData || {},
+  currentUser: storedUser || {},
 });
 
-const isExpired = (user: CurrentUser): boolean => {
-  const { expiryDate } = user;
+const isExpired = (expiryDate: string): boolean => {
   return new Date(expiryDate).getTime() < new Date().getTime();
 };
 
 // Check token expiryDate
-if (storedData) {
-  if (isExpired(storedData)) {
+if (storedUser) {
+  console.log('Stored Data ', storedUser);
+  if (isExpired(storedUser.expiryDate)) {
     clearLocalStorageItem(APP_STORAGE_KEY);
-    history.push('/auth/login');
+    history.push('/login');
   } else {
     axios.defaults.headers.common.Authorization =
-      'Bearer ' + storedData.accessToken;
+      'Bearer ' + storedUser.accessToken;
   }
 }
 

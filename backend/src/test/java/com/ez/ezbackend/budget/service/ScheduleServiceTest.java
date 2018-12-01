@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,6 +65,19 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
     assertThat(scheduleService.getAllUserSchedules(1L)).hasSize(8);
   }
 
+  @Test(expected = EzIllegalRequestException.class)
+  public void test_saveSchedulesForUser_invalid_date() {
+    List<ScheduleRequest> scheduleRequests = Collections.singletonList(
+        ScheduleRequest.builder()
+        .categoryId(1L)
+        .description("Monthly pass")
+        .withdraw(new BigDecimal("189.00"))
+        .startDate(LocalDate.now().minusDays(5))
+        .recurringPattern(RecurringPattern.MONTHLY)
+        .build());
+    scheduleService.saveSchedulesForUser(scheduleRequests, 1L);
+  }
+
   @Test(expected = EzNotFoundException.class)
   public void test_saveSchedulesForUser_invalid_userId() {
     scheduleService.saveSchedulesForUser(null, 100L);
@@ -72,12 +86,10 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
   @Test
   @DirtiesContext
   public void test_updateScheduleForUser() {
-    LocalDate startDate = LocalDate.of(2018, 2, 1);
     ScheduleRequest scheduleRequest = ScheduleRequest.builder()
         .categoryId(6L)
         .description("EZ Month pay stub")
         .deposit(new BigDecimal("5000.00"))
-        .startDate(startDate)
         .recurringPattern(RecurringPattern.MONTHLY)
         .build();
     Schedule updated = scheduleService.updateScheduleForUser(scheduleRequest, 1L, 1L);
@@ -85,8 +97,7 @@ public class ScheduleServiceTest extends DatabaseIntegrationTest {
     assertThat(updated.getDescription()).isEqualTo("EZ Month pay stub");
     assertThat(updated.getDeposit()).isEqualTo(new BigDecimal("5000.00"));
     assertThat(updated.getWithdraw()).isNull();
-    assertThat(updated.getStartDate()).isEqualTo(startDate);
-    assertThat(updated.getNextRecurringDate()).isEqualTo(startDate);
+    assertThat(updated.getLastProcessedDate()).isNull();
   }
 
   @Test(expected = EzNotFoundException.class)

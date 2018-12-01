@@ -30,6 +30,7 @@ public class Category {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // TODO: Make this field unique and handle it in frontend as well
   @Column(nullable = false)
   private String name;
 
