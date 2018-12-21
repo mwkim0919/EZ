@@ -42,6 +42,10 @@ export interface TransactionFormItem {
   transactionDatetime: Date;
 }
 
+// ********************
+// ** Category Types **
+// ********************
+
 export interface Category {
   id: number;
   name: string;
@@ -50,17 +54,29 @@ export interface Category {
   createDatetime: Date | string;
 }
 
+export interface CategoryRequest {
+  name: string;
+  categoryLimit: number;
+  parentCategoryId: number | null;
+}
+
+// export interface CategoryFormItem {
+//   name: string;
+//   categoryLimit: number;
+//   parentCategoryId: number | null;
+// }
+
 export interface CategoryOption {
   value: number;
   label: string;
 }
 
 export type RecurringPattern =
-  | 'yearly'
-  | 'bi-monthly'
-  | 'monthly'
-  | 'bi-weekly'
-  | 'weekly';
+  | 'YEARLY'
+  | 'BI_MONTHLY'
+  | 'MONTHLY'
+  | 'BI_WEEKLY'
+  | 'WEEKLY';
 
 // ********************
 // ** Schedule Types **

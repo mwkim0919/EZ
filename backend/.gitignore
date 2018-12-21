@@ -23,3 +23,6 @@ __pycache__/
 
 ### Miscellaneous ###
 .DS_Store
+
+#
+application-prod.properties

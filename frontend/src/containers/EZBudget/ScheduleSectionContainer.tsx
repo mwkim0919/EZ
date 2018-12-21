@@ -6,7 +6,7 @@ import {
   createSchedule,
   updateSchedule,
   deleteSchedule,
-} from 'src/actions/budget';
+} from 'src/actions/budget/Schedule';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { push } from 'connected-react-router';

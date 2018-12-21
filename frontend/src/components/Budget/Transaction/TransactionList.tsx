@@ -7,7 +7,7 @@ import TransactionLineChart from 'src/components/Budget/Transaction/TransactionL
 import { Transaction, DeleteTransactions, Category } from 'src/types/budget';
 import { getTransactionMonths, filterTransactions } from 'src/utils/budgetUtil';
 import { connect } from 'react-redux';
-import { deleteTransactions } from 'src/actions/budget';
+import { deleteTransactions } from 'src/actions/budget/Transaction';
 
 interface Props {
   deleteTransactions: DeleteTransactions;
@@ -35,8 +35,10 @@ class TransactionList extends React.Component<Props, State> {
   };
 
   selectTransactionType = (e: React.MouseEvent<HTMLInputElement>) => {
-    this.setState({ transactionType: e.currentTarget.value as TransactionType });
-  }
+    this.setState({
+      transactionType: e.currentTarget.value as TransactionType,
+    });
+  };
 
   render() {
     const { transactions, categories } = this.props;

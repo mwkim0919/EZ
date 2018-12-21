@@ -16,6 +16,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
   List<Category> findByParentCategory(Category category);
   List<Category> findByUser(User user);
 
+  // "select * from category c left join category c1 on c.id = c1.parent_category_id where user_id = :id"
+  @Query("SELECT c FROM Category c LEFT JOIN FETCH c.parentCategory WHERE c.user = :user")
+  List<Category> findAllByUser(@Param("user") User user);
+
   @Query("SELECT c FROM Category c WHERE c.id IN :ids AND c.user = :user")
   List<Category> findCategoriesByIdsAndUser(@Param("ids") Set<Long> ids, @Param("user") User user);
 

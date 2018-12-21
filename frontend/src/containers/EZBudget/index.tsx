@@ -15,6 +15,7 @@ import {
 } from 'src/selectors';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
+import CategoryForm from './CategoryForm';
 
 interface Props {
   initBudget: () => Promise<void[]>;
@@ -54,6 +55,7 @@ class EZBudget extends React.Component<Props & APIProps, { loaded: boolean }> {
           path="/budget/categories"
           component={CategorySectionContainer}
         />
+        <Route exact path="/budget/categories/form" component={CategoryForm} />
         <Route path="/budget/schedules" component={ScheduleSectionContainer} />
       </Switch>
     );

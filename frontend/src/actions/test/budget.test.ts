@@ -1,4 +1,5 @@
 import * as budget from 'src/actions/budget';
+import * as fetchTransactions from 'src/actions/budget/Transaction';
 import axios from 'axios';
 import * as sinon from 'sinon';
 import thunk from 'redux-thunk';
@@ -55,7 +56,7 @@ describe('action', () => {
     ];
     const store = mockStore({ currentUser: { userId: 1 } });
     // @ts-ignore
-    return store.dispatch(budget.fetchTransactions()).then(() => {
+    return store.dispatch(fetchTransactions.fetchTransactions()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -80,7 +81,7 @@ describe('action', () => {
     ];
     const store = mockStore({ currentUser: { userId: 1 } });
     // @ts-ignore
-    return store.dispatch(budget.fetchTransactions()).then(() => {
+    return store.dispatch(fetchTransactions.fetchTransactions()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

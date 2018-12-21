@@ -15,7 +15,7 @@ import {
   Field,
   FieldProps,
 } from 'formik';
-import { updateTransactions } from 'src/actions/budget';
+import { updateTransactions } from 'src/actions/budget/Transaction';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { AppState } from 'src/types';

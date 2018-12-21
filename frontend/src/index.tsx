@@ -12,28 +12,37 @@ import {
 } from './helpers/localStorage';
 import { APP_STORAGE_KEY } from 'src/constants';
 import './index.css';
-import { CurrentUser } from './types';
 
 const storedUser = loadLocalStorageItem(APP_STORAGE_KEY);
-const store = configureStore({
-  currentUser: storedUser || {},
-});
-
 const isExpired = (expiryDate: string): boolean => {
   return new Date(expiryDate).getTime() < new Date().getTime();
 };
 
+let store = configureStore();
+
 // Check token expiryDate
 if (storedUser) {
-  console.log('Stored Data ', storedUser);
   if (isExpired(storedUser.expiryDate)) {
+    // Clear previous session
     clearLocalStorageItem(APP_STORAGE_KEY);
     history.push('/login');
   } else {
+    // Set user in store
+    store = configureStore({
+      currentUser: storedUser,
+    });
     axios.defaults.headers.common.Authorization =
       'Bearer ' + storedUser.accessToken;
   }
 }
+
+// if (process.env.NODE_ENV === 'production') {
+//   axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
+// } else {
+//   axios.defaults.baseURL = 'http://localhost:8080';
+// }
+
+console.log('Process ', process.env);
 
 ReactDOM.render(
   <Provider store={store}>

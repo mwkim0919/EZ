@@ -23,7 +23,7 @@ import { AppState, APIProps } from 'src/types';
 import * as R from 'ramda';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
-import { saveTransactions } from 'src/actions/budget';
+import { saveTransactions } from 'src/actions/budget/Transaction';
 import { createLoadingSelector } from 'src/selectors';
 import { ValueType } from 'react-select/lib/types';
 import { push, RouterAction } from 'connected-react-router';
@@ -271,7 +271,7 @@ class TransactionForm extends React.Component<Props & APIProps> {
   }
 }
 
-const loadingSelector = createLoadingSelector(['SAVE_TRANSACTIONS']);
+const loadingSelector = createLoadingSelector(['CREATE_TRANSACTIONS']);
 const mapStateToProps = (state: AppState) => {
   return {
     loading: loadingSelector(state),
